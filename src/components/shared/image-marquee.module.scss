@@ -1,0 +1,63 @@
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: max-content;
+  padding-block: 1.25rem;
+  animation-name: drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.item {
+  flex: 0 0 auto;
+}
+
+.image {
+  display: block;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .track {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .item[data-clone] {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .track {
+    gap: 0.75rem;
+  }
+}

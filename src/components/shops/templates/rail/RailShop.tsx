@@ -83,6 +83,8 @@ export function RailShop({
         instanceId={instanceId}
         title={data.categoriesTitle}
         groups={categories}
+        layout={data.categoriesLayout}
+        viewLabel={data.viewCategoryLabel}
       />
     </>
   );

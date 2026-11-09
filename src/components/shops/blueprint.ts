@@ -31,6 +31,8 @@ export const shopBlueprintSchema = z.object({
   title: z.string().default(""),
   galleryTitle: z.string().default(""),
   categoriesTitle: z.string().default(""),
+  categoriesLayout: z.enum(["grid", "stack"]).default("stack"),
+  viewCategoryLabel: z.string().default("View more"),
   viewAllLabel: z.string().default("View all"),
   teaserLimit: z.number().int().min(1).max(24).default(8),
   items: z.array(shopItemSchema).default([]),

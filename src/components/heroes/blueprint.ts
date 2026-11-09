@@ -6,6 +6,7 @@ import { splitHeroBlueprintSchema } from "@/components/heroes/templates/split/bl
 import { editorialHeroBlueprintSchema } from "@/components/heroes/templates/editorial/blueprint";
 import { magazineHeroBlueprintSchema } from "@/components/heroes/templates/magazine/blueprint";
 import { plateHeroBlueprintSchema } from "@/components/heroes/templates/plate/blueprint";
+import { marqueeHeroBlueprintSchema } from "@/components/heroes/templates/marquee/blueprint";
 
 export const COMPONENT_ID = "BrochureHero" as const;
 
@@ -40,6 +41,7 @@ export const heroBlueprintSchema = z.discriminatedUnion("variant", [
   magazineHeroBlueprintSchema,
   runwayHeroBlueprintSchema,
   plateHeroBlueprintSchema,
+  marqueeHeroBlueprintSchema,
 ]);
 
 export function emptyHeroBlueprint(): BrochureHeroContent {

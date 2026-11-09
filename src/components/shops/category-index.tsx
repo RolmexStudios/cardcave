@@ -9,18 +9,24 @@ import {
   shopCategoryHref,
   type ShopCategoryGroup,
 } from "@/components/shops/data";
+import { CategoryStack } from "@/components/shops/category-stack";
+import type { BrochureShopCategoriesLayout } from "@/types/brochure";
 import styles from "./category-index.module.scss";
 
 type CategoryIndexProps = {
   instanceId: string;
   title: string;
   groups: ShopCategoryGroup[];
+  layout?: BrochureShopCategoriesLayout;
+  viewLabel?: string;
 };
 
 export function CategoryIndex({
   instanceId,
   title,
   groups,
+  layout = "stack",
+  viewLabel = "View more",
 }: CategoryIndexProps) {
   if (groups.length === 0) return null;
 
@@ -52,39 +58,47 @@ export function CategoryIndex({
       ) : null}
 
       <ScrollReveal compact delayMs={heading ? 80 : 0}>
-        <ul className={styles.grid}>
-          {groups.map((group) => {
-            const countLabel =
-              group.count === 1 ? "1 piece" : `${group.count} pieces`;
-            return (
-              <li key={group.slug} className={styles.cell}>
-                <Link
-                  href={shopCategoryHref(group.name)}
-                  className={styles.tile}
-                  aria-label={`${group.name}, ${countLabel}`}
-                >
-                  <span className={styles.plate}>
-                    {group.imageUrl ? (
-                      <Photo
-                        src={group.imageUrl}
-                        alt=""
-                        className={styles.image}
-                      />
-                    ) : (
-                      <span className={styles.placeholder} aria-hidden />
-                    )}
-                    <span className={styles.overlay} aria-hidden />
-                  </span>
-                  <span className={styles.copy}>
-                    <span className={styles.name}>{group.name}</span>
-                    <span className={styles.kicker}>{countLabel}</span>
-                    <span className={styles.cta}>View</span>
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {layout === "stack" ? (
+          <CategoryStack
+            instanceId={instanceId}
+            groups={groups}
+            viewLabel={viewLabel}
+          />
+        ) : (
+          <ul className={styles.grid}>
+            {groups.map((group) => {
+              const countLabel =
+                group.count === 1 ? "1 piece" : `${group.count} pieces`;
+              return (
+                <li key={group.slug} className={styles.cell}>
+                  <Link
+                    href={shopCategoryHref(group.name)}
+                    className={styles.tile}
+                    aria-label={`${group.name}, ${countLabel}`}
+                  >
+                    <span className={styles.plate}>
+                      {group.imageUrl ? (
+                        <Photo
+                          src={group.imageUrl}
+                          alt=""
+                          className={styles.image}
+                        />
+                      ) : (
+                        <span className={styles.placeholder} aria-hidden />
+                      )}
+                      <span className={styles.overlay} aria-hidden />
+                    </span>
+                    <span className={styles.copy}>
+                      <span className={styles.name}>{group.name}</span>
+                      <span className={styles.kicker}>{countLabel}</span>
+                      <span className={styles.cta}>View</span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </ScrollReveal>
     </section>
   );

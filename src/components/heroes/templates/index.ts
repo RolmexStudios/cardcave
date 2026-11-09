@@ -10,6 +10,7 @@ import { EditorialHero } from "@/components/heroes/templates/editorial/Editorial
 import { MagazineHero } from "@/components/heroes/templates/magazine/MagazineHero";
 import { RunwayHero } from "@/components/heroes/templates/runway/RunwayHero";
 import { PlateHero } from "@/components/heroes/templates/plate/PlateHero";
+import { MarqueeHero } from "@/components/heroes/templates/marquee/MarqueeHero";
 
 export type HeroTemplateComponent = ComponentType<
   BrochureBlockProps<BrochureHeroContent>
@@ -22,4 +23,5 @@ export const heroTemplates = {
   magazine: MagazineHero,
   runway: RunwayHero,
   plate: PlateHero,
+  marquee: MarqueeHero,
 } satisfies Record<BrochureHeroVariant, HeroTemplateComponent>;

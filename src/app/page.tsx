@@ -9,6 +9,7 @@ import { Gallery } from "@/components/galleries";
 import { Hero } from "@/components/heroes";
 import { SiteNav } from "@/components/navs";
 import { Process } from "@/components/processes";
+import { Shop } from "@/components/shops";
 import { SmoothScrollScope } from "@/components/shared/hash-link";
 import { injectBrochureInstances } from "@/lib/brochure/inject-instances";
 import { parseBrochureBlueprint } from "@/lib/brochure/schema";
@@ -22,7 +23,7 @@ export default function Home() {
       <main id="top">
         <Hero />
         <Banner />
-        <Gallery />
+        <Shop />
         <Gallery />
         <Divider />
         <About />

@@ -35,17 +35,39 @@ export function shopCategoryHref(name: string): string {
   return slug ? `${shopHref()}?category=${encodeURIComponent(slug)}` : shopHref();
 }
 
+export type ShopCategoryPhoto = {
+  src: string;
+  alt: string;
+};
+
 export type ShopCategoryGroup = {
   name: string;
   slug: string;
   imageUrl: string;
   imageAlt: string;
   count: number;
+  /** Cover of each listed piece first, then extra frames, capped. */
+  photos: ShopCategoryPhoto[];
 };
+
+const CATEGORY_STACK_LIMIT = 8;
+
+function pushCategoryPhoto(
+  group: ShopCategoryGroup,
+  src: string,
+  alt: string,
+) {
+  if (group.photos.length >= CATEGORY_STACK_LIMIT) return;
+  if (group.photos.some((photo) => photo.src === src)) return;
+  group.photos.push({ src, alt: alt.trim() || group.name });
+}
 
 /** Listed pieces, in blueprint order, grouped by the first time each category appears. */
 export function shopCategoryGroups(items: BrochureShopItem[]): ShopCategoryGroup[] {
-  const groups = new Map<string, ShopCategoryGroup>();
+  const groups = new Map<
+    string,
+    { group: ShopCategoryGroup; pending: BrochureShopItem[] }
+  >();
   for (const item of items) {
     if (!isListedItem(item)) continue;
     const name = item.category.trim();
@@ -53,18 +75,41 @@ export function shopCategoryGroups(items: BrochureShopItem[]): ShopCategoryGroup
     if (!slug) continue;
     const existing = groups.get(slug);
     if (existing) {
-      existing.count += 1;
+      existing.group.count += 1;
+      existing.pending.push(item);
       continue;
     }
     groups.set(slug, {
-      name,
-      slug,
-      imageUrl: item.imageUrl.trim(),
-      imageAlt: item.imageAlt.trim() || name,
-      count: 1,
+      group: {
+        name,
+        slug,
+        imageUrl: item.imageUrl.trim(),
+        imageAlt: item.imageAlt.trim() || name,
+        count: 1,
+        photos: [],
+      },
+      pending: [item],
     });
   }
-  return [...groups.values()];
+
+  for (const { group, pending } of groups.values()) {
+    for (const item of pending) {
+      const [cover] = shopPhotos(item);
+      if (!cover) continue;
+      pushCategoryPhoto(
+        group,
+        cover,
+        item.imageAlt.trim() || item.title.trim() || group.name,
+      );
+    }
+    for (const item of pending) {
+      for (const src of shopPhotos(item).slice(1)) {
+        pushCategoryPhoto(group, src, item.title.trim() || group.name);
+      }
+    }
+  }
+
+  return [...groups.values()].map(({ group }) => group);
 }
 
 export function shopItemHref(item: BrochureShopItem): string {

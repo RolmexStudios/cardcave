@@ -80,7 +80,8 @@ export type BrochureHeroVariant =
   | "editorial"
   | "magazine"
   | "runway"
-  | "plate";
+  | "plate"
+  | "marquee";
 
 export interface BrochureHeroCopy {
   eyebrow: string;
@@ -142,6 +143,16 @@ export interface BrochureHeroRunwayContent extends BrochureHeroCopy {
   backgroundImageUrl: string;
 }
 
+/** Centered introduction over a looping row of portrait photographs. */
+export interface BrochureHeroMarqueeContent extends BrochureHeroCopy {
+  variant: "marquee";
+  /** Where the pill button goes. Empty renders the label without a link. */
+  ctaHref: string;
+  /** Milliseconds for one pass of the portrait row. */
+  marqueeDurationMs: number;
+  slideshowImages: BrochureHeroSlide[];
+}
+
 /** Full-bleed ambient video or still. Optional center logo, and an optional retail lockup. */
 export interface BrochureHeroPlateContent {
   variant: "plate";
@@ -166,7 +177,8 @@ export type BrochureHeroContent =
   | BrochureHeroEditorialContent
   | BrochureHeroMagazineContent
   | BrochureHeroRunwayContent
-  | BrochureHeroPlateContent;
+  | BrochureHeroPlateContent
+  | BrochureHeroMarqueeContent;
 
 export interface BrochureGalleryCategory {
   title: string;
@@ -530,6 +542,9 @@ export interface BrochureProjectContent {
 
 export type BrochureShopVariant = "rail" | "gallery";
 
+/** Home type index: a wrapping grid of tiles, or one photo deck per type. */
+export type BrochureShopCategoriesLayout = "grid" | "stack";
+
 /** `sold` records stay off the home rail and the shop page. */
 export type BrochureShopStatus = "available" | "sold";
 
@@ -567,6 +582,10 @@ export interface BrochureShopContent {
   galleryTitle: string;
   /** Home category index. Hidden when no listed piece has a category. */
   categoriesTitle: string;
+  /** `grid` is a tile per type. `stack` is one photo deck per type. */
+  categoriesLayout: BrochureShopCategoriesLayout;
+  /** Link under a category deck. Opens `/shop` for that type. */
+  viewCategoryLabel: string;
   viewAllLabel: string;
   /** Home rail: how many available pieces to preview. */
   teaserLimit: number;

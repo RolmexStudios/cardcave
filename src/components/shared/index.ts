@@ -3,6 +3,12 @@ export { TextSlot, hasSlotText } from "./text-slot";
 export { SectionHeading } from "./section-heading";
 export { MediaSlot, Photo, initials, telHref } from "./media";
 export { Slideshow, type SlideshowProps, type SlideshowSlide } from "./slideshow";
+export { ImageStack, type ImageStackProps, type ImageStackFrame } from "./image-stack";
+export {
+  ImageMarquee,
+  type ImageMarqueeProps,
+  type ImageMarqueeSlide,
+} from "./image-marquee";
 export {
   TabImageSelector,
   type TabImageItem,

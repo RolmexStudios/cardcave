@@ -4,6 +4,8 @@
   "title": "",
   "galleryTitle": "",
   "categoriesTitle": "",
+  "categoriesLayout": "stack",
+  "viewCategoryLabel": "View more",
   "viewAllLabel": "View all",
   "teaserLimit": 8,
   "items": []

@@ -1,0 +1,139 @@
+$ease: cubic-bezier(0.22, 1, 0.36, 1);
+$gutter: var(--gutter, 1.5rem);
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 0.5rem;
+}
+
+.types {
+  display: flex;
+  justify-content: safe center;
+  gap: 0.15rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 $gutter 0.15rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.type {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a8680;
+  cursor: pointer;
+  box-shadow: inset 0 -1px 0 transparent;
+  transition:
+    color 0.35s $ease,
+    box-shadow 0.35s $ease;
+
+  &[aria-current="true"] {
+    color: #141413;
+    box-shadow: inset 0 -1px 0 #141413;
+  }
+
+  &:hover {
+    color: #141413;
+  }
+
+  &:focus-visible {
+    outline: 1px solid #141413;
+    outline-offset: 3px;
+  }
+}
+
+.solo {
+  margin: 0;
+  padding: 0 $gutter;
+  font-size: clamp(1.65rem, 1.1rem + 1.4vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-align: center;
+  color: #141413;
+}
+
+.count {
+  margin: 0.15rem 0 1.15rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a8680;
+}
+
+.more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 1.15rem;
+  padding: 0 0.35rem;
+  color: #141413;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid #141413;
+  transition: color 0.35s $ease;
+
+  &:hover {
+    color: #3f3c38;
+  }
+
+  &:focus-visible {
+    outline: 1px solid #141413;
+    outline-offset: 4px;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .types {
+    justify-content: flex-start;
+    padding-inline: 1.25rem;
+  }
+
+  .count {
+    margin-bottom: 0.85rem;
+  }
+
+  .more {
+    margin-top: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .type,
+  .more {
+    transition: none;
+  }
+}
