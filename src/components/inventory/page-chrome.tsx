@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { showroomHref } from "@/components/inventory/data";
-import { newsletterHref } from "@/components/newsletters/data";
 import styles from "./page-chrome.module.scss";
 
 type ShowroomChromeProps = {
@@ -39,10 +38,9 @@ export function ShowroomChrome({
             <Link href="/" className={styles.homeLink}>
               Home
             </Link>
-            <Link href={showroomHref()}>Showroom</Link>
-            <Link href={newsletterHref()}>Letters</Link>
+            <Link href={showroomHref()}>The case</Link>
             <Link href="/#BrochureContact_1" className={styles.inquire}>
-              Private inquiry
+              Ask for a number
             </Link>
           </nav>
         </div>

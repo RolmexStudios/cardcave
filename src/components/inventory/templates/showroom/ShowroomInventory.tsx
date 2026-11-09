@@ -116,7 +116,7 @@ export function ShowroomInventory({
 
   const countLabel =
     filtered.length === vehicles.length
-      ? `${vehicles.length} motorcars`
+      ? `${vehicles.length} slabs`
       : `${filtered.length} of ${vehicles.length}`;
 
   return (

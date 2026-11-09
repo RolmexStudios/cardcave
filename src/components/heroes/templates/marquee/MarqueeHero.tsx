@@ -71,6 +71,7 @@ export function MarqueeHero({
           jsonPath={fieldPath(instanceId, "eyebrow")}
           as="p"
           className={styles.eyebrow}
+          hideWhenEmpty
         />
 
         {words.length > 0 ? (

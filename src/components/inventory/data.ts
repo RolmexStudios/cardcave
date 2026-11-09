@@ -34,11 +34,11 @@ export function vehicleSlug(vehicle: BrochureVehicle): string {
 }
 
 export function showroomHref(): string {
-  return "/showroom";
+  return "/shop";
 }
 
 export function vehicleHref(vehicle: BrochureVehicle): string {
-  return `/showroom/${vehicleSlug(vehicle)}`;
+  return `/shop/${vehicleSlug(vehicle)}`;
 }
 
 export function vehicleTitle(vehicle: BrochureVehicle): string {

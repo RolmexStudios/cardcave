@@ -152,7 +152,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
 
 .card {
   position: relative;
-  height: 16rem;
+  height: 19.5rem;
   aspect-ratio: 3 / 4;
   background: #ece7e1;
 
@@ -228,6 +228,6 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   }
 
   .card {
-    height: 12rem;
+    height: 14.5rem;
   }
 }

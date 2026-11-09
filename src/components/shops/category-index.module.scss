@@ -4,8 +4,8 @@ $gutter: var(--gutter, 1.5rem);
 .section {
   background: #fff;
   color: #1a1a1a;
-  padding: 1.25rem 0 4.5rem;
-  scroll-margin-top: 5.5rem;
+  padding: 2.5rem 0 1.5rem;
+  scroll-margin-top: 7.25rem;
 }
 
 .heading {
@@ -152,7 +152,7 @@ $gutter: var(--gutter, 1.5rem);
 
 @media (max-width: 767px) {
   .section {
-    padding: 0.75rem 0 3.25rem;
+    padding: 1.75rem 0 1rem;
   }
 
   .heading {

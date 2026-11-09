@@ -28,11 +28,11 @@
     "component": "BrochureHero",
     "variant": "marquee",
     "sectionSize": "auto",
-    "eyebrow": "South Texas",
+    "eyebrow": "",
     "headline": "The case is open.",
     "subheadline": "Graded basketball and football from The Card Cave. Buy it, sell into it, or trade for it. The number is a message away.",
     "ctaLabel": "Browse the case",
-    "ctaHref": "#BrochureShop_1",
+    "ctaHref": "#BrochureShop_1-categories",
     "marqueeDurationMs": 40000,
     "slideshowImages": [
       {
@@ -84,130 +84,20 @@
     "line": "Buy, sell, or trade",
     "cues": [
       {
-        "targetId": "BrochureShop_1",
-        "line": "Budget, fair, or high"
+        "targetId": "BrochureShop_1-categories",
+        "line": "Budget, fair, or hard to find"
       },
       {
-        "targetId": "BrochureGallery_1",
-        "line": "The vault"
+        "targetId": "BrochureShop_1",
+        "line": "On the table"
       },
       {
         "targetId": "BrochureAbout_1",
         "line": "Lewis, South Texas"
       },
       {
-        "targetId": "BrochureProcess_1",
-        "line": "Pick a slab"
-      },
-      {
         "targetId": "BrochureContact_1",
         "line": "Message @cardcave956"
-      }
-    ]
-  },
-  "BrochureGallery_1": {
-    "component": "BrochureGallery",
-    "variant": "lookbook",
-    "title": "In the case",
-    "description": "Sport on the label. Open a plate for a closer look.",
-    "browseAxis": "vertical",
-    "tabLayout": "grid",
-    "dimInactiveTabs": true,
-    "sectionSize": "auto",
-    "categories": [
-      {
-        "title": "Basketball",
-        "description": "Chrome, Prizm, Downtown, and ink."
-      },
-      {
-        "title": "Football",
-        "description": "Downtown and a numbered auto."
-      }
-    ],
-    "items": [
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/689238732_18411625486196572_6744477452910825488_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=a6xajtMh8TIQ7kNvwG7r3Nz&_nc_oc=AdqC3Uf570fSVqxk6JjGYEHXONFJmz7GJU0kCFhHjHb_j0DVAaM6Hpt2sI0NicboWnsDUXB7aciNGKJ5otNZMQ0d&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTGqCSZFO7Ogciqp-pQMpD2j40F3ySQcgfTsjr3sBoOZg&oe=6AF7DDFE",
-        "title": "1996 Chrome Kobe · Ask",
-        "category": "Basketball",
-        "alt": "1996 Topps Chrome Kobe Bryant Refractor in a PSA 9 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/703564894_18411941770196572_4942629863577185610_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=37LWQ0dQ7igQ7kNvwFKexeO&_nc_oc=AdomiSRnsQSyGJi4xWarmfGeD-0vey1YvDnkNqOvEPePMra9E5rxG6bRc0348zD8D61appPEq_RZu1uSayIV5VHo&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQR_sS96vpUc3S8WO5HbUxSMtICx7lBFG-Tdv1Z942i7MQ&oe=6AF7ECD3",
-        "title": "1998 East-West Jordan · Ask",
-        "category": "Basketball",
-        "alt": "1998 Topps East-West Michael Jordan and Kobe Bryant in a PSA 10 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/722753823_18415710913196572_925972500517994534_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=sNko3VtRqVwQ7kNvwGJZUue&_nc_oc=AdpRzKElEtvXmiaJ8M6MhhgNRXzoASLlzHG0x3GKErhuRea3nAy-lC87ULThPNH8_NrdM-r_lK4Tzs_U3A7VnpwK&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTPzCy5TKm9s-ENESuiIJP_Z8d2E0N38zhNhdxWexTq2Q&oe=6AF7F295",
-        "title": "2023 Prizm Wemby Pink Ice · Ask",
-        "category": "Basketball",
-        "alt": "2023 Prizm Victor Wembanyama Pink Ice in a PSA 10 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/711868118_18414092185196572_1672283198720507384_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=109&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=PXefCbsaWxoQ7kNvwFqA1Gm&_nc_oc=AdoZFBYJNrhTQBOjcSWYFiBsvV5FaCaLdFylEejHPxOCp6lyD-SOsk9YVese6q7ks7Ce6QJ5Mtm7RCBhJ75s4R5w&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQSnGb-XNoetTO23Q8jJoAvzxN6uzkMbpJPbFPz-NsuEXQ&oe=6AF804D7",
-        "title": "2023 Prizm Wemby Silver · Ask",
-        "category": "Basketball",
-        "alt": "2023 Prizm Victor Wembanyama Silver in a PSA 10 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/735485982_18419682529196572_426163222991249355_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=43N_Y1MqQ6EQ7kNvwFAwZl-&_nc_oc=Adq1JwIEUrj1K1uz0p4HKMgSanC3yEvuux-BbzQKPHbIvEQOvgPGRGi-gV2loDCCFtY2SN9eiaqLjgc7OHd8HLMv&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQS_0BQ0h_mGY9UFFGpNa3adoOr0pLDjkfRdyvnjQLaFkA&oe=6AF7E710",
-        "title": "2023 Downtown Wemby · Ask",
-        "category": "Basketball",
-        "alt": "2023 Panini One and One Victor Wembanyama Downtown variation in a PSA 9 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/756724632_18422882044196572_8032618252022348740_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=R7255p3H2oIQ7kNvwGk3Ys-&_nc_oc=Adq_MKnSf4knmFqv4ij8kIE4v9IAWrua4zbddNrEZtmn32Y_80SPQH02vbTuh6NJMx3X_jwD_MJvj9BbLk8Q6d0N&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQw9XIuOtiMkJESeCnFE9UmMy9dOXLOgx8w1b1Rh7h9iw&oe=6AF80C33",
-        "title": "2023 Downtown LeBron · Ask",
-        "category": "Basketball",
-        "alt": "2023 Panini One and One LeBron James Downtown variation in a PSA 9 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/773736068_18426261514196572_798115229119899304_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=RWTM7RWKCwEQ7kNvwHql5yI&_nc_oc=AdqDdb3gf3FwSGL1eyPdIIiuOrkzvxEzCs2PQ82IdpuYVtCxpDA4uHUgu3sXsUzgb2b_FuTea5Fcyrkd9bsYzvTq&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTBSLri1qaKpitd0nyzHMfnp1nFwHkpr_JQR6YkYmQF3A&oe=6AF7F4BB",
-        "title": "2012-13 Modern Marks Kobe · Ask",
-        "category": "Basketball",
-        "alt": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph, BGS 9 with a 10 auto"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/825269515_18434080396196572_6940731086745302122_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=-LYEjalx2EQQ7kNvwGGNNW6&_nc_oc=AdofPh-IK4ZmwBEgXU6ZF4MNTejylRqDCQrmgnxO6gcArMExp-2Fx_9oUEV5KwvK-JTu591503c2sQiMxwtc2946&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTssZHKjsoTF3LUQ1HPxyeq__yRo_s0aRxlNmNuKDPqbg&oe=6AF7F2BB",
-        "title": "2009 Adrenalyn LeBron · Ask",
-        "category": "Basketball",
-        "alt": "2009 Panini Adrenalyn XL LeBron James Extra Signature in a PSA 10 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/704327540_18412085167196572_2671822380625971863_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=105&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=KgfSxNEVUZsQ7kNvwGAiLuZ&_nc_oc=AdqUIOEMHSDVGJXCiKaPeacnEjua-FDagvG8lOM4LloLRgWUZ8t_f5Yg4dyv4BViA2B9tQCWVK4e1LOB-Ls6J1e8&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTfuAC8apd7yVlF4UA2hPeYXJ4k3pfKO9_w-LKZRQXxtg&oe=6AF7FCC1",
-        "title": "2025 Downtown Saquon · Ask",
-        "category": "Football",
-        "alt": "2025 Donruss Saquon Barkley Downtown in a PSA 10 slab"
-      },
-      {
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/843190956_18436815697196572_7233723678124321756_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=raCxNmJUnnMQ7kNvwHqM6Tu&_nc_oc=AdorwbNl3Pr1JV68VcQGEh0yW-fHd8plNSt7WGXMsew_d9tz0dOP45vq8VB3TMnP26T47Di6lDKc8GtUYxP4UMF6&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQBpnUIdqWqu4p7H7Fa69CCBrZp3lr5dZz9-QbsCHr39w&oe=6AF80097",
-        "title": "Mendoza Chrome auto · Ask",
-        "category": "Football",
-        "alt": "Fernando Mendoza Chrome autograph numbered 5 of 5 in a one-touch"
-      }
-    ]
-  },
-  "BrochureDivider_1": {
-    "component": "BrochureDivider",
-    "variant": "stats",
-    "eyebrow": "The cave",
-    "sectionSize": "auto",
-    "items": [
-      {
-        "label": "Price on every slab",
-        "value": "Ask"
-      },
-      {
-        "label": "Pickup and trades",
-        "value": "STX"
-      },
-      {
-        "label": "Buy, sell, or trade",
-        "value": "3"
-      },
-      {
-        "label": "On Instagram",
-        "value": "1,599"
       }
     ]
   },
@@ -217,7 +107,7 @@
     "eyebrow": "The owner",
     "title": "Lewis, aka The Card Cave.",
     "paragraphs": [
-      "The Card Cave is Lewis’s table: graded basketball and football, shown until now on Instagram and Facebook. This page is the case, with a name and a grade on every slab.",
+      "The Card Cave is Lewis\u2019s table: graded basketball and football, shown until now on Instagram and Facebook. This page is the case, with a name and a grade on every slab.",
       "He buys, sells, and trades. Online deals, hobby pulls, case setups, hosted trade nights, and local pickup in South Texas."
     ],
     "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/730332008_18418677463196572_1568560958723003165_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=vBLA4GorFK4Q7kNvwFJSG-l&_nc_oc=AdpbMGLAvzeN3G-BSuPA-hajjYIlmPhV3BbJsNUTJEy2Rm6ciqbtcvRpfkUFbeDwpF0lylYtE4WoI0zUu4CeRXvF&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQYPIVc9EM5tTGfZbHl5Plo4d595EZc_Bi7vNfZhmQSkw&oe=6AF7F97B",
@@ -248,33 +138,6 @@
     "ctaLabel": "",
     "ctaHref": "",
     "sectionSize": "auto"
-  },
-  "BrochureProcess_1": {
-    "component": "BrochureProcess",
-    "variant": "steps",
-    "eyebrow": "How a deal works",
-    "title": "From the case to your hand.",
-    "intro": "Same three moves as the bio. The inventory just lives on one page now.",
-    "ctaLabel": "Message the cave",
-    "sectionSize": "auto",
-    "steps": [
-      {
-        "title": "Pick a slab",
-        "body": "Basketball or football. The grade is on the label."
-      },
-      {
-        "title": "Ask the number",
-        "body": "Nothing here is a listed price. Message @cardcave956 with the card."
-      },
-      {
-        "title": "Buy or trade",
-        "body": "Cash, cards, or a mix. He does all three."
-      },
-      {
-        "title": "Pickup or ship",
-        "body": "A South Texas handoff, or an online deal."
-      }
-    ]
   },
   "BrochureContact_1": {
     "component": "BrochureContact",
@@ -519,7 +382,7 @@
         "id": "chrome-kobe",
         "slug": "1996-chrome-kobe",
         "brand": "Topps",
-        "category": "High",
+        "category": "Hard to find",
         "title": "1996 Chrome Kobe",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/689238732_18411625486196572_6744477452910825488_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=a6xajtMh8TIQ7kNvwG7r3Nz&_nc_oc=AdqC3Uf570fSVqxk6JjGYEHXONFJmz7GJU0kCFhHjHb_j0DVAaM6Hpt2sI0NicboWnsDUXB7aciNGKJ5otNZMQ0d&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTGqCSZFO7Ogciqp-pQMpD2j40F3ySQcgfTsjr3sBoOZg&oe=6AF7DDFE",
@@ -537,7 +400,7 @@
           },
           {
             "label": "Band",
-            "value": "High"
+            "value": "Hard to find"
           }
         ],
         "status": "available"
@@ -546,7 +409,7 @@
         "id": "east-west-jordan",
         "slug": "1998-east-west-jordan",
         "brand": "Topps",
-        "category": "High",
+        "category": "Hard to find",
         "title": "1998 East-West Jordan",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/703564894_18411941770196572_4942629863577185610_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=37LWQ0dQ7igQ7kNvwFKexeO&_nc_oc=AdomiSRnsQSyGJi4xWarmfGeD-0vey1YvDnkNqOvEPePMra9E5rxG6bRc0348zD8D61appPEq_RZu1uSayIV5VHo&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQR_sS96vpUc3S8WO5HbUxSMtICx7lBFG-Tdv1Z942i7MQ&oe=6AF7ECD3",
@@ -564,7 +427,7 @@
           },
           {
             "label": "Band",
-            "value": "High"
+            "value": "Hard to find"
           }
         ],
         "status": "available"
@@ -573,7 +436,7 @@
         "id": "modern-marks-kobe",
         "slug": "2012-13-modern-marks-kobe",
         "brand": "Panini",
-        "category": "High",
+        "category": "Hard to find",
         "title": "2012-13 Modern Marks Kobe",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/773736068_18426261514196572_798115229119899304_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=RWTM7RWKCwEQ7kNvwHql5yI&_nc_oc=AdqDdb3gf3FwSGL1eyPdIIiuOrkzvxEzCs2PQ82IdpuYVtCxpDA4uHUgu3sXsUzgb2b_FuTea5Fcyrkd9bsYzvTq&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTBSLri1qaKpitd0nyzHMfnp1nFwHkpr_JQR6YkYmQF3A&oe=6AF7F4BB",
@@ -591,10 +454,232 @@
           },
           {
             "label": "Band",
-            "value": "High"
+            "value": "Hard to find"
           }
         ],
         "status": "available"
+      }
+    ]
+  },
+  "BrochureInventory_1": {
+    "component": "BrochureInventory",
+    "variant": "showroom",
+    "eyebrow": "The case",
+    "title": "What's on offer",
+    "intro": "Filter by year, brand, or sport. Every number is still Ask \u2014 message @cardcave956.",
+    "teaserLimit": 3,
+    "viewAllLabel": "",
+    "sectionSize": "auto",
+    "vehicles": [
+      {
+        "id": "downtown-wemby",
+        "slug": "2023-downtown-wemby",
+        "year": "2023",
+        "make": "Panini",
+        "model": "Downtown Wemby",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 9",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/735485982_18419682529196572_426163222991249355_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=43N_Y1MqQ6EQ7kNvwFAwZl-&_nc_oc=Adq1JwIEUrj1K1uz0p4HKMgSanC3yEvuux-BbzQKPHbIvEQOvgPGRGi-gV2loDCCFtY2SN9eiaqLjgc7OHd8HLMv&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQS_0BQ0h_mGY9UFFGpNa3adoOr0pLDjkfRdyvnjQLaFkA&oe=6AF7E710",
+        "imageAlt": "2023 Panini One and One Victor Wembanyama Downtown variation in a PSA 9 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/735485982_18419682529196572_426163222991249355_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=43N_Y1MqQ6EQ7kNvwFAwZl-&_nc_oc=Adq1JwIEUrj1K1uz0p4HKMgSanC3yEvuux-BbzQKPHbIvEQOvgPGRGi-gV2loDCCFtY2SN9eiaqLjgc7OHd8HLMv&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQS_0BQ0h_mGY9UFFGpNa3adoOr0pLDjkfRdyvnjQLaFkA&oe=6AF7E710"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2023 Panini One and One Victor Wembanyama Downtown variation. PSA 9. Message @cardcave956 for the number."
+      },
+      {
+        "id": "downtown-lebron",
+        "slug": "2023-downtown-lebron",
+        "year": "2023",
+        "make": "Panini",
+        "model": "Downtown LeBron",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 9",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/756724632_18422882044196572_8032618252022348740_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=R7255p3H2oIQ7kNvwGk3Ys-&_nc_oc=Adq_MKnSf4knmFqv4ij8kIE4v9IAWrua4zbddNrEZtmn32Y_80SPQH02vbTuh6NJMx3X_jwD_MJvj9BbLk8Q6d0N&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQw9XIuOtiMkJESeCnFE9UmMy9dOXLOgx8w1b1Rh7h9iw&oe=6AF80C33",
+        "imageAlt": "2023 Panini One and One LeBron James Downtown variation in a PSA 9 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/756724632_18422882044196572_8032618252022348740_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=111&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=R7255p3H2oIQ7kNvwGk3Ys-&_nc_oc=Adq_MKnSf4knmFqv4ij8kIE4v9IAWrua4zbddNrEZtmn32Y_80SPQH02vbTuh6NJMx3X_jwD_MJvj9BbLk8Q6d0N&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQw9XIuOtiMkJESeCnFE9UmMy9dOXLOgx8w1b1Rh7h9iw&oe=6AF80C33"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2023 Panini One and One LeBron James Downtown variation. PSA 9. Message @cardcave956 for the number."
+      },
+      {
+        "id": "prizm-wemby-silver",
+        "slug": "2023-prizm-wemby-silver",
+        "year": "2023",
+        "make": "Panini",
+        "model": "Prizm Wemby Silver",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 10",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/711868118_18414092185196572_1672283198720507384_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=109&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=PXefCbsaWxoQ7kNvwFqA1Gm&_nc_oc=AdoZFBYJNrhTQBOjcSWYFiBsvV5FaCaLdFylEejHPxOCp6lyD-SOsk9YVese6q7ks7Ce6QJ5Mtm7RCBhJ75s4R5w&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQSnGb-XNoetTO23Q8jJoAvzxN6uzkMbpJPbFPz-NsuEXQ&oe=6AF804D7",
+        "imageAlt": "2023 Prizm Victor Wembanyama Silver in a PSA 10 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/711868118_18414092185196572_1672283198720507384_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=109&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=PXefCbsaWxoQ7kNvwFqA1Gm&_nc_oc=AdoZFBYJNrhTQBOjcSWYFiBsvV5FaCaLdFylEejHPxOCp6lyD-SOsk9YVese6q7ks7Ce6QJ5Mtm7RCBhJ75s4R5w&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQSnGb-XNoetTO23Q8jJoAvzxN6uzkMbpJPbFPz-NsuEXQ&oe=6AF804D7"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2023 Prizm Victor Wembanyama Silver. PSA 10. Message @cardcave956 for the number."
+      },
+      {
+        "id": "prizm-wemby-pink",
+        "slug": "2023-prizm-wemby-pink-ice",
+        "year": "2023",
+        "make": "Panini",
+        "model": "Prizm Wemby Pink Ice",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 10",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/722753823_18415710913196572_925972500517994534_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=sNko3VtRqVwQ7kNvwGJZUue&_nc_oc=AdpRzKElEtvXmiaJ8M6MhhgNRXzoASLlzHG0x3GKErhuRea3nAy-lC87ULThPNH8_NrdM-r_lK4Tzs_U3A7VnpwK&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTPzCy5TKm9s-ENESuiIJP_Z8d2E0N38zhNhdxWexTq2Q&oe=6AF7F295",
+        "imageAlt": "2023 Prizm Victor Wembanyama Pink Ice in a PSA 10 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/722753823_18415710913196572_925972500517994534_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=sNko3VtRqVwQ7kNvwGJZUue&_nc_oc=AdpRzKElEtvXmiaJ8M6MhhgNRXzoASLlzHG0x3GKErhuRea3nAy-lC87ULThPNH8_NrdM-r_lK4Tzs_U3A7VnpwK&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTPzCy5TKm9s-ENESuiIJP_Z8d2E0N38zhNhdxWexTq2Q&oe=6AF7F295"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2023 Prizm Victor Wembanyama Pink Ice. PSA 10. Message @cardcave956 for the number."
+      },
+      {
+        "id": "downtown-saquon",
+        "slug": "2025-downtown-saquon",
+        "year": "2025",
+        "make": "Donruss",
+        "model": "Downtown Saquon",
+        "chassis": "",
+        "transmission": "Football",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 10",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/704327540_18412085167196572_2671822380625971863_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=105&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=KgfSxNEVUZsQ7kNvwGAiLuZ&_nc_oc=AdqUIOEMHSDVGJXCiKaPeacnEjua-FDagvG8lOM4LloLRgWUZ8t_f5Yg4dyv4BViA2B9tQCWVK4e1LOB-Ls6J1e8&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTfuAC8apd7yVlF4UA2hPeYXJ4k3pfKO9_w-LKZRQXxtg&oe=6AF7FCC1",
+        "imageAlt": "2025 Donruss Saquon Barkley Downtown in a PSA 10 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/704327540_18412085167196572_2671822380625971863_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=105&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=KgfSxNEVUZsQ7kNvwGAiLuZ&_nc_oc=AdqUIOEMHSDVGJXCiKaPeacnEjua-FDagvG8lOM4LloLRgWUZ8t_f5Yg4dyv4BViA2B9tQCWVK4e1LOB-Ls6J1e8&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTfuAC8apd7yVlF4UA2hPeYXJ4k3pfKO9_w-LKZRQXxtg&oe=6AF7FCC1"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2025 Donruss Saquon Barkley Downtown. PSA 10. Message @cardcave956 for the number."
+      },
+      {
+        "id": "adrenalyn-lebron",
+        "slug": "2009-adrenalyn-lebron",
+        "year": "2009",
+        "make": "Panini",
+        "model": "Adrenalyn LeBron",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 10",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/825269515_18434080396196572_6940731086745302122_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=-LYEjalx2EQQ7kNvwGGNNW6&_nc_oc=AdofPh-IK4ZmwBEgXU6ZF4MNTejylRqDCQrmgnxO6gcArMExp-2Fx_9oUEV5KwvK-JTu591503c2sQiMxwtc2946&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTssZHKjsoTF3LUQ1HPxyeq__yRo_s0aRxlNmNuKDPqbg&oe=6AF7F2BB",
+        "imageAlt": "2009 Panini Adrenalyn XL LeBron James Extra Signature in a PSA 10 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/825269515_18434080396196572_6940731086745302122_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=-LYEjalx2EQQ7kNvwGGNNW6&_nc_oc=AdofPh-IK4ZmwBEgXU6ZF4MNTejylRqDCQrmgnxO6gcArMExp-2Fx_9oUEV5KwvK-JTu591503c2sQiMxwtc2946&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTssZHKjsoTF3LUQ1HPxyeq__yRo_s0aRxlNmNuKDPqbg&oe=6AF7F2BB"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2009 Panini Adrenalyn XL LeBron James Extra Signature. PSA 10. Message @cardcave956 for the number."
+      },
+      {
+        "id": "mendoza-chrome",
+        "slug": "mendoza-chrome-auto",
+        "year": "",
+        "make": "Bowman",
+        "model": "Mendoza Chrome auto",
+        "chassis": "",
+        "transmission": "Football",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "Raw /5",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/843190956_18436815697196572_7233723678124321756_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=raCxNmJUnnMQ7kNvwHqM6Tu&_nc_oc=AdorwbNl3Pr1JV68VcQGEh0yW-fHd8plNSt7WGXMsew_d9tz0dOP45vq8VB3TMnP26T47Di6lDKc8GtUYxP4UMF6&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQBpnUIdqWqu4p7H7Fa69CCBrZp3lr5dZz9-QbsCHr39w&oe=6AF80097",
+        "imageAlt": "Fernando Mendoza Chrome autograph numbered 5 of 5 in a one-touch",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/843190956_18436815697196572_7233723678124321756_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=raCxNmJUnnMQ7kNvwHqM6Tu&_nc_oc=AdorwbNl3Pr1JV68VcQGEh0yW-fHd8plNSt7WGXMsew_d9tz0dOP45vq8VB3TMnP26T47Di6lDKc8GtUYxP4UMF6&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQBpnUIdqWqu4p7H7Fa69CCBrZp3lr5dZz9-QbsCHr39w&oe=6AF80097"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "Fernando Mendoza Chrome autograph, numbered 5 of 5. Message @cardcave956 for the number."
+      },
+      {
+        "id": "chrome-kobe",
+        "slug": "1996-chrome-kobe",
+        "year": "1996",
+        "make": "Topps",
+        "model": "Chrome Kobe",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 9",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/689238732_18411625486196572_6744477452910825488_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=a6xajtMh8TIQ7kNvwG7r3Nz&_nc_oc=AdqC3Uf570fSVqxk6JjGYEHXONFJmz7GJU0kCFhHjHb_j0DVAaM6Hpt2sI0NicboWnsDUXB7aciNGKJ5otNZMQ0d&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTGqCSZFO7Ogciqp-pQMpD2j40F3ySQcgfTsjr3sBoOZg&oe=6AF7DDFE",
+        "imageAlt": "1996 Topps Chrome Kobe Bryant Refractor in a PSA 9 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/689238732_18411625486196572_6744477452910825488_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=a6xajtMh8TIQ7kNvwG7r3Nz&_nc_oc=AdqC3Uf570fSVqxk6JjGYEHXONFJmz7GJU0kCFhHjHb_j0DVAaM6Hpt2sI0NicboWnsDUXB7aciNGKJ5otNZMQ0d&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTGqCSZFO7Ogciqp-pQMpD2j40F3ySQcgfTsjr3sBoOZg&oe=6AF7DDFE"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "1996 Topps Chrome Kobe Bryant Refractor. PSA 9. Message @cardcave956 for the number."
+      },
+      {
+        "id": "east-west-jordan",
+        "slug": "1998-east-west-jordan",
+        "year": "1998",
+        "make": "Topps",
+        "model": "East-West Jordan",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "PSA 10",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/703564894_18411941770196572_4942629863577185610_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=37LWQ0dQ7igQ7kNvwFKexeO&_nc_oc=AdomiSRnsQSyGJi4xWarmfGeD-0vey1YvDnkNqOvEPePMra9E5rxG6bRc0348zD8D61appPEq_RZu1uSayIV5VHo&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQR_sS96vpUc3S8WO5HbUxSMtICx7lBFG-Tdv1Z942i7MQ&oe=6AF7ECD3",
+        "imageAlt": "1998 Topps East-West Michael Jordan and Kobe Bryant in a PSA 10 slab",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/703564894_18411941770196572_4942629863577185610_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=37LWQ0dQ7igQ7kNvwFKexeO&_nc_oc=AdomiSRnsQSyGJi4xWarmfGeD-0vey1YvDnkNqOvEPePMra9E5rxG6bRc0348zD8D61appPEq_RZu1uSayIV5VHo&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQR_sS96vpUc3S8WO5HbUxSMtICx7lBFG-Tdv1Z942i7MQ&oe=6AF7ECD3"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "1998 Topps East-West Michael Jordan and Kobe Bryant. PSA 10. Message @cardcave956 for the number."
+      },
+      {
+        "id": "modern-marks-kobe",
+        "slug": "2012-13-modern-marks-kobe",
+        "year": "2012-13",
+        "make": "Panini",
+        "model": "Modern Marks Kobe",
+        "chassis": "",
+        "transmission": "Basketball",
+        "status": "available",
+        "price": "Ask",
+        "metricLabel": "Grade",
+        "metricValue": "BGS 9 / auto 10",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/773736068_18426261514196572_798115229119899304_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=RWTM7RWKCwEQ7kNvwHql5yI&_nc_oc=AdqDdb3gf3FwSGL1eyPdIIiuOrkzvxEzCs2PQ82IdpuYVtCxpDA4uHUgu3sXsUzgb2b_FuTea5Fcyrkd9bsYzvTq&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTBSLri1qaKpitd0nyzHMfnp1nFwHkpr_JQR6YkYmQF3A&oe=6AF7F4BB",
+        "imageAlt": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph, BGS 9 with a 10 auto",
+        "galleryImageUrls": [
+          "https://scontent.cdninstagram.com/v/t51.82787-15/773736068_18426261514196572_798115229119899304_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=RWTM7RWKCwEQ7kNvwHql5yI&_nc_oc=AdqDdb3gf3FwSGL1eyPdIIiuOrkzvxEzCs2PQ82IdpuYVtCxpDA4uHUgu3sXsUzgb2b_FuTea5Fcyrkd9bsYzvTq&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTBSLri1qaKpitd0nyzHMfnp1nFwHkpr_JQR6YkYmQF3A&oe=6AF7F4BB"
+        ],
+        "provenance": [],
+        "placedNote": "",
+        "description": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph. BGS 9, auto 10. Message @cardcave956 for the number."
       }
     ]
   }

@@ -3,12 +3,9 @@
 import { About } from "@/components/abouts";
 import { Banner } from "@/components/banners";
 import { Contact } from "@/components/contacts";
-import { Divider } from "@/components/dividers";
 import { Footer } from "@/components/footers";
-import { Gallery } from "@/components/galleries";
 import { Hero } from "@/components/heroes";
 import { SiteNav } from "@/components/navs";
-import { Process } from "@/components/processes";
 import { Shop } from "@/components/shops";
 import { SmoothScrollScope } from "@/components/shared/hash-link";
 import { injectBrochureInstances } from "@/lib/brochure/inject-instances";
@@ -24,10 +21,7 @@ export default function Home() {
         <Hero />
         <Banner />
         <Shop />
-        <Gallery />
-        <Divider />
         <About />
-        <Process />
         <Contact />
       </main>
       <Footer />

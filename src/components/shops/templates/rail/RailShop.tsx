@@ -33,13 +33,16 @@ export function RailShop({
 
   return (
     <>
+      <CategoryIndex
+        instanceId={instanceId}
+        title={data.categoriesTitle}
+        groups={categories}
+        layout={data.categoriesLayout}
+        viewLabel={data.viewCategoryLabel}
+      />
       <section
         id={instanceId}
-        className={
-          categories.length > 0
-            ? `${styles.section} ${styles.sectionLeads}`
-            : styles.section
-        }
+        className={styles.section}
         data-bg="#ffffff"
         data-theme="light"
         data-nav="on-light"
@@ -79,13 +82,6 @@ export function RailShop({
           </ul>
         </ScrollReveal>
       </section>
-      <CategoryIndex
-        instanceId={instanceId}
-        title={data.categoriesTitle}
-        groups={categories}
-        layout={data.categoriesLayout}
-        viewLabel={data.viewCategoryLabel}
-      />
     </>
   );
 }

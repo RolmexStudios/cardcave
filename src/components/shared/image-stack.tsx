@@ -27,12 +27,20 @@ export type ImageStackProps = {
 
 const FAN = 4;
 const MIN_FLICK = 56;
+const CYCLE_MS = 520;
 
 type Pose = {
   x: number;
   y: number;
   rotate: number;
   opacity: number;
+};
+
+type Flight = {
+  id: string;
+  extraX: number;
+  lift: boolean;
+  skip: boolean;
 };
 
 function fanPose(index: number): Pose {
@@ -57,6 +65,13 @@ function rubber(value: number, limit = 150) {
   return sign * (limit + (abs - limit) * 0.2);
 }
 
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
 export function ImageStack({
   frames,
   className,
@@ -67,6 +82,7 @@ export function ImageStack({
   const [order, setOrder] = useState<string[]>(() => deck.map((frame) => frame.id));
   const [deckTrack, setDeckTrack] = useState(deckKey);
   const [offset, setOffset] = useState({ x: 0, dragging: false });
+  const [flight, setFlight] = useState<Flight | null>(null);
   const gesture = useRef<{
     pointerId: number;
     originX: number;
@@ -77,17 +93,22 @@ export function ImageStack({
   const gestureEpoch = useRef(0);
   const frameRef = useRef(0);
   const orderRef = useRef(order);
+  const busyRef = useRef(false);
+  const timersRef = useRef<number[]>([]);
   orderRef.current = order;
 
   if (deckTrack !== deckKey) {
     setDeckTrack(deckKey);
     setOrder(deck.map((frame) => frame.id));
     setOffset({ x: 0, dragging: false });
+    setFlight(null);
+    busyRef.current = false;
   }
 
   useEffect(() => {
     return () => {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      for (const timer of timersRef.current) window.clearTimeout(timer);
     };
   }, []);
 
@@ -102,16 +123,68 @@ export function ImageStack({
   );
   const canCycle = ordered.length > 1;
 
-  function sendToBack() {
+  function later(fn: () => void, ms: number) {
+    const timer = window.setTimeout(fn, ms);
+    timersRef.current.push(timer);
+    return timer;
+  }
+
+  function commitSendToBack() {
     setOrder((prev) =>
       prev.length < 2 ? prev : [...prev.slice(1), prev[0]],
     );
   }
 
-  function bringForward() {
+  function commitBringForward() {
     setOrder((prev) =>
       prev.length < 2 ? prev : [prev[prev.length - 1], ...prev.slice(0, -1)],
     );
+  }
+
+  function finishFlight() {
+    setFlight(null);
+    busyRef.current = false;
+  }
+
+  function sendToBack() {
+    if (!canCycle || busyRef.current) return;
+    if (prefersReducedMotion()) {
+      commitSendToBack();
+      return;
+    }
+    const id = orderRef.current[0];
+    if (!id) return;
+    busyRef.current = true;
+    setFlight({ id, extraX: 168, lift: true, skip: false });
+    later(() => {
+      commitSendToBack();
+      setFlight({ id, extraX: 168, lift: false, skip: true });
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setFlight({ id, extraX: 0, lift: false, skip: false });
+        });
+      });
+    }, CYCLE_MS);
+    later(finishFlight, CYCLE_MS * 2);
+  }
+
+  function bringForward() {
+    if (!canCycle || busyRef.current) return;
+    if (prefersReducedMotion()) {
+      commitBringForward();
+      return;
+    }
+    const id = orderRef.current[orderRef.current.length - 1];
+    if (!id) return;
+    busyRef.current = true;
+    commitBringForward();
+    setFlight({ id, extraX: -168, lift: true, skip: true });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setFlight({ id, extraX: 0, lift: true, skip: false });
+      });
+    });
+    later(finishFlight, CYCLE_MS);
   }
 
   function clearGestureFrame() {
@@ -122,7 +195,7 @@ export function ImageStack({
   }
 
   function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    if (!canCycle) return;
+    if (!canCycle || busyRef.current) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     gesture.current = {
       pointerId: event.pointerId,
@@ -202,13 +275,16 @@ export function ImageStack({
         {ordered.map((frame, index) => {
           const pose = fanPose(index);
           const isTop = index === 0;
+          const flying = flight?.id === frame.id;
           const dragging = isTop && offset.dragging;
+          const extraX = flying ? flight.extraX : isTop ? offset.x : 0;
+          const skip = Boolean(flying && flight.skip);
           const style: CSSProperties = {
-            zIndex: ordered.length - index,
+            zIndex: flying && flight.lift ? ordered.length + 2 : ordered.length - index,
             opacity: pose.opacity,
             transform: cardTransform(
               pose,
-              isTop ? offset.x : 0,
+              extraX,
               dragging ? 1.04 : 1,
             ),
           };
@@ -217,7 +293,7 @@ export function ImageStack({
               key={frame.id}
               className={styles.card}
               data-top={isTop ? "true" : undefined}
-              data-dragging={dragging ? "true" : undefined}
+              data-dragging={dragging || skip ? "true" : undefined}
               style={style}
               onPointerDown={isTop ? onPointerDown : undefined}
               onPointerMove={isTop ? onPointerMove : undefined}

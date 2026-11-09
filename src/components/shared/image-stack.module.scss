@@ -29,7 +29,7 @@ $card: min(16rem, 68vw);
   transform-origin: center bottom;
   pointer-events: none;
   transition:
-    transform 0.55s $ease,
+    transform 0.52s $ease,
     opacity 0.45s $ease;
 
   &[data-top="true"] {

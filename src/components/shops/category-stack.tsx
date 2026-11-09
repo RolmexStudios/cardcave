@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { ImageStack, type ImageStackFrame } from "@/components/shared/image-stack";
 import { TextSlot } from "@/components/shared/text-slot";
@@ -31,65 +31,46 @@ export function CategoryStack({
   groups,
   viewLabel,
 }: CategoryStackProps) {
-  const [active, setActive] = useState(0);
-  const typesRef = useRef<HTMLElement>(null);
-  const index = Math.min(active, Math.max(groups.length - 1, 0));
-  const group = groups[index];
-  useSmoothHorizontalWheelScroll(typesRef, groups.length > 1, {
+  const rowRef = useRef<HTMLDivElement>(null);
+  useSmoothHorizontalWheelScroll(rowRef, groups.length > 1, {
     mapVertical: false,
   });
 
-  if (!group) return null;
-
-  const countLabel = group.count === 1 ? "1 piece" : `${group.count} pieces`;
+  if (groups.length === 0) return null;
 
   return (
     <div className={styles.root}>
-      {groups.length > 1 ? (
-        <nav
-          ref={typesRef}
-          className={styles.types}
-          aria-label="Shop by type"
-          data-smooth-wheel=""
-        >
-          {groups.map((entry, entryIndex) => {
-            const selected = entryIndex === index;
-            return (
-              <button
-                key={entry.slug}
-                type="button"
-                className={styles.type}
-                aria-current={selected ? "true" : undefined}
-                onClick={() => setActive(entryIndex)}
-              >
-                {entry.name}
-              </button>
-            );
-          })}
-        </nav>
-      ) : (
-        <p className={styles.solo}>{group.name}</p>
-      )}
-
-      <p className={styles.count}>{countLabel}</p>
-
-      <ImageStack
-        key={group.slug}
-        frames={framesFor(group)}
-        label={`${group.name} photos`}
-      />
-
-      <Link
-        href={shopCategoryHref(group.name)}
-        className={styles.more}
+      <div
+        ref={rowRef}
+        className={styles.row}
+        data-count={Math.min(groups.length, 4)}
+        data-smooth-wheel=""
       >
-        <TextSlot
-          value={viewLabel}
-          jsonPath={fieldPath(instanceId, "viewCategoryLabel")}
-          as="span"
-        />
-        <span className={styles.srOnly}>{group.name}</span>
-      </Link>
+        {groups.map((group) => {
+          const countLabel = group.count === 1 ? "1 piece" : `${group.count} pieces`;
+          return (
+            <article key={group.slug} className={styles.column}>
+              <h3 className={styles.solo}>{group.name}</h3>
+              <p className={styles.count}>{countLabel}</p>
+              <ImageStack
+                frames={framesFor(group)}
+                label={`${group.name} photos`}
+              />
+              <Link
+                href={shopCategoryHref(group.name)}
+                className={styles.more}
+              >
+                <TextSlot
+                  value={viewLabel}
+                  jsonPath={fieldPath(instanceId, "viewCategoryLabel")}
+                  as="span"
+                />
+                <span className={styles.srOnly}>{group.name}</span>
+              </Link>
+            </article>
+          );
+        })}
+      </div>
     </div>
   );
 }
