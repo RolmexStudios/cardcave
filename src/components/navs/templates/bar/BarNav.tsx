@@ -3,10 +3,7 @@ import { NavSurfaceHeader } from "@/components/shared/nav-surface";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
 import type { BrochureBlockProps, BrochureNavContent } from "@/types/brochure";
-import {
-  BROCHURE_QUOTE_CTA,
-  brochureContactHref,
-} from "../../links";
+import { brochureContactHref } from "../../links";
 import { NavLogoMark } from "../../logo-mark";
 import styles from "./bar.module.scss";
 
@@ -49,12 +46,12 @@ export function BarNav({
             </a>
           ))}
           <a href={contactHref} className={styles.phone}>
-            {BROCHURE_QUOTE_CTA.label}
+            Buy, sell, or trade
           </a>
         </nav>
 
         <a href={contactHref} className={styles.callMobile}>
-          {BROCHURE_QUOTE_CTA.label}
+          Buy, sell, or trade
         </a>
       </div>
     </NavSurfaceHeader>

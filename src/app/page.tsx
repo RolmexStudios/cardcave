@@ -1,7 +1,6 @@
 "use client";
 
 import { About } from "@/components/abouts";
-import { Banner } from "@/components/banners";
 import { Contact } from "@/components/contacts";
 import { Footer } from "@/components/footers";
 import { Hero } from "@/components/heroes";
@@ -19,7 +18,6 @@ export default function Home() {
       <SiteNav />
       <main id="top">
         <Hero />
-        <Banner />
         <Shop />
         <About />
         <Contact />

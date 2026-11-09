@@ -77,30 +77,6 @@
       }
     ]
   },
-  "BrochureBanner_1": {
-    "component": "BrochureBanner",
-    "variant": "dock",
-    "sectionSize": "auto",
-    "line": "Buy, sell, or trade",
-    "cues": [
-      {
-        "targetId": "BrochureShop_1-categories",
-        "line": "Budget, fair, or hard to find"
-      },
-      {
-        "targetId": "BrochureShop_1",
-        "line": "On the table"
-      },
-      {
-        "targetId": "BrochureAbout_1",
-        "line": "Lewis, South Texas"
-      },
-      {
-        "targetId": "BrochureContact_1",
-        "line": "Message @cardcave956"
-      }
-    ]
-  },
   "BrochureAbout_1": {
     "component": "BrochureAbout",
     "variant": "story",
@@ -187,7 +163,7 @@
     "categoriesLayout": "stack",
     "viewCategoryLabel": "View more",
     "viewAllLabel": "View all",
-    "teaserLimit": 8,
+    "teaserLimit": 12,
     "items": [
       {
         "id": "downtown-wemby",

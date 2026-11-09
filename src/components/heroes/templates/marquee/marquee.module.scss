@@ -20,11 +20,11 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100%;
+  justify-content: flex-start;
+  min-height: 100svh;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 6.5rem 1.25rem max(2.5rem, 28%);
+  padding: 7rem 1.25rem 2.5rem;
   text-align: center;
   background: var(--color-bg, #fafafa);
   color: $ink;
@@ -38,6 +38,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   flex-direction: column;
   align-items: center;
   width: min(100%, 48rem);
+  padding-bottom: 1.25rem;
 }
 
 .eyebrow {
@@ -132,27 +133,27 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   z-index: 0;
   display: flex;
   align-items: center;
-  height: 40%;
+  height: 58%;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent,
-    #000 20%,
-    #000 80%,
+    #000 6%,
+    #000 94%,
     transparent
   );
   mask-image: linear-gradient(
     to bottom,
     transparent,
-    #000 20%,
-    #000 80%,
+    #000 6%,
+    #000 94%,
     transparent
   );
 }
 
 .card {
   position: relative;
-  height: 19.5rem;
+  height: min(32rem, 54vh);
   aspect-ratio: 3 / 4;
   background: #ece7e1;
 
@@ -199,7 +200,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
 
 @media (max-width: 767px) {
   .root {
-    padding: 5.25rem 1rem max(1.25rem, 22%);
+    padding: 5.5rem 1rem 1.5rem;
   }
 
   .headline {
@@ -224,10 +225,10 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   }
 
   .band {
-    height: 33%;
+    height: 48%;
   }
 
   .card {
-    height: 14.5rem;
+    height: min(22rem, 42vh);
   }
 }
