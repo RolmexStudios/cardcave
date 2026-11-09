@@ -247,33 +247,6 @@
         "status": "available"
       },
       {
-        "id": "prizm-wemby-pink",
-        "slug": "2023-prizm-wemby-pink-ice",
-        "brand": "Panini",
-        "category": "Fair",
-        "title": "2023 Prizm Wemby Pink Ice",
-        "price": "Ask",
-        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/722753823_18415710913196572_925972500517994534_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=sNko3VtRqVwQ7kNvwGJZUue&_nc_oc=AdpRzKElEtvXmiaJ8M6MhhgNRXzoASLlzHG0x3GKErhuRea3nAy-lC87ULThPNH8_NrdM-r_lK4Tzs_U3A7VnpwK&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTPzCy5TKm9s-ENESuiIJP_Z8d2E0N38zhNhdxWexTq2Q&oe=6AF7F295",
-        "imageAlt": "2023 Prizm Victor Wembanyama Pink Ice in a PSA 10 slab",
-        "images": [],
-        "description": "2023 Prizm Victor Wembanyama Pink Ice. PSA 10. Message @cardcave956 for the number.",
-        "details": [
-          {
-            "label": "Grade",
-            "value": "PSA 10"
-          },
-          {
-            "label": "Sport",
-            "value": "Basketball"
-          },
-          {
-            "label": "Band",
-            "value": "Fair"
-          }
-        ],
-        "status": "available"
-      },
-      {
         "id": "downtown-saquon",
         "slug": "2025-downtown-saquon",
         "brand": "Donruss",
@@ -328,10 +301,37 @@
         "status": "available"
       },
       {
+        "id": "prizm-wemby-pink",
+        "slug": "2023-prizm-wemby-pink-ice",
+        "brand": "Panini",
+        "category": "Steep",
+        "title": "2023 Prizm Wemby Pink Ice",
+        "price": "Ask",
+        "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/722753823_18415710913196572_925972500517994534_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=104&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=sNko3VtRqVwQ7kNvwGJZUue&_nc_oc=AdpRzKElEtvXmiaJ8M6MhhgNRXzoASLlzHG0x3GKErhuRea3nAy-lC87ULThPNH8_NrdM-r_lK4Tzs_U3A7VnpwK&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTPzCy5TKm9s-ENESuiIJP_Z8d2E0N38zhNhdxWexTq2Q&oe=6AF7F295",
+        "imageAlt": "2023 Prizm Victor Wembanyama Pink Ice in a PSA 10 slab",
+        "images": [],
+        "description": "2023 Prizm Victor Wembanyama Pink Ice. PSA 10. Message @cardcave956 for the number.",
+        "details": [
+          {
+            "label": "Grade",
+            "value": "PSA 10"
+          },
+          {
+            "label": "Sport",
+            "value": "Basketball"
+          },
+          {
+            "label": "Band",
+            "value": "Steep"
+          }
+        ],
+        "status": "available"
+      },
+      {
         "id": "mendoza-chrome",
         "slug": "mendoza-chrome-auto",
         "brand": "Bowman",
-        "category": "Fair",
+        "category": "Steep",
         "title": "Mendoza Chrome auto",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/843190956_18436815697196572_7233723678124321756_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=raCxNmJUnnMQ7kNvwHqM6Tu&_nc_oc=AdorwbNl3Pr1JV68VcQGEh0yW-fHd8plNSt7WGXMsew_d9tz0dOP45vq8VB3TMnP26T47Di6lDKc8GtUYxP4UMF6&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQQBpnUIdqWqu4p7H7Fa69CCBrZp3lr5dZz9-QbsCHr39w&oe=6AF80097",
@@ -349,7 +349,7 @@
           },
           {
             "label": "Band",
-            "value": "Fair"
+            "value": "Steep"
           }
         ],
         "status": "available"
@@ -358,7 +358,7 @@
         "id": "chrome-kobe",
         "slug": "1996-chrome-kobe",
         "brand": "Topps",
-        "category": "Hard to find",
+        "category": "Grails",
         "title": "1996 Chrome Kobe",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/689238732_18411625486196572_6744477452910825488_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=103&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=a6xajtMh8TIQ7kNvwG7r3Nz&_nc_oc=AdqC3Uf570fSVqxk6JjGYEHXONFJmz7GJU0kCFhHjHb_j0DVAaM6Hpt2sI0NicboWnsDUXB7aciNGKJ5otNZMQ0d&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTGqCSZFO7Ogciqp-pQMpD2j40F3ySQcgfTsjr3sBoOZg&oe=6AF7DDFE",
@@ -376,7 +376,7 @@
           },
           {
             "label": "Band",
-            "value": "Hard to find"
+            "value": "Grails"
           }
         ],
         "status": "available"
@@ -385,7 +385,7 @@
         "id": "east-west-jordan",
         "slug": "1998-east-west-jordan",
         "brand": "Topps",
-        "category": "Hard to find",
+        "category": "Grails",
         "title": "1998 East-West Jordan",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/703564894_18411941770196572_4942629863577185610_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0FST1VTRUxfSVRFTS5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=37LWQ0dQ7igQ7kNvwFKexeO&_nc_oc=AdomiSRnsQSyGJi4xWarmfGeD-0vey1YvDnkNqOvEPePMra9E5rxG6bRc0348zD8D61appPEq_RZu1uSayIV5VHo&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQR_sS96vpUc3S8WO5HbUxSMtICx7lBFG-Tdv1Z942i7MQ&oe=6AF7ECD3",
@@ -403,7 +403,7 @@
           },
           {
             "label": "Band",
-            "value": "Hard to find"
+            "value": "Grails"
           }
         ],
         "status": "available"
@@ -412,7 +412,7 @@
         "id": "modern-marks-kobe",
         "slug": "2012-13-modern-marks-kobe",
         "brand": "Panini",
-        "category": "Hard to find",
+        "category": "Grails",
         "title": "2012-13 Modern Marks Kobe",
         "price": "Ask",
         "imageUrl": "https://scontent.cdninstagram.com/v/t51.82787-15/773736068_18426261514196572_798115229119899304_n.jpg?stp=dst-jpg_e35_s640x640_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiRkVFRC5iZXN0X2ltYWdlX3VybGdlbi5DMyJ9&_nc_ohc=RWTM7RWKCwEQ7kNvwHql5yI&_nc_oc=AdqDdb3gf3FwSGL1eyPdIIiuOrkzvxEzCs2PQ82IdpuYVtCxpDA4uHUgu3sXsUzgb2b_FuTea5Fcyrkd9bsYzvTq&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tBhr2q9bf-b7x8s0ThKIhg&_nc_ss=7f60f&oh=00_AQTBSLri1qaKpitd0nyzHMfnp1nFwHkpr_JQR6YkYmQF3A&oe=6AF7F4BB",
@@ -430,7 +430,7 @@
           },
           {
             "label": "Band",
-            "value": "Hard to find"
+            "value": "Grails"
           }
         ],
         "status": "available"

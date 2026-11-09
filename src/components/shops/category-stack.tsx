@@ -43,7 +43,7 @@ export function CategoryStack({
       <div
         ref={rowRef}
         className={styles.row}
-        data-count={Math.min(groups.length, 4)}
+        data-count={Math.min(groups.length, 4) || 1}
         data-smooth-wheel=""
       >
         {groups.map((group) => {

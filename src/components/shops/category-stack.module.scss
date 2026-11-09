@@ -10,9 +10,9 @@ $gutter: var(--gutter, 1.5rem);
 
 .row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: start;
-  gap: 1.75rem 1.25rem;
+  gap: 1.75rem 1.15rem;
   width: 100%;
   padding: 0 $gutter;
 
@@ -24,8 +24,8 @@ $gutter: var(--gutter, 1.5rem);
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  &[data-count="4"] {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  &[data-count="3"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -39,7 +39,7 @@ $gutter: var(--gutter, 1.5rem);
 .solo {
   margin: 0;
   padding: 0;
-  font-size: clamp(1.45rem, 1rem + 1.1vw, 2rem);
+  font-size: clamp(1.2rem, 0.85rem + 1vw, 1.75rem);
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.05;
@@ -95,42 +95,37 @@ $gutter: var(--gutter, 1.5rem);
   white-space: nowrap;
 }
 
+@media (max-width: 1099px) {
+  .row,
+  .row[data-count="3"],
+  .row[data-count="4"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 767px) {
   .row {
-    display: flex;
-    justify-content: flex-start;
-    gap: 1.5rem;
-    overflow-x: auto;
+    gap: 1.35rem 0.75rem;
     padding-inline: 1.25rem;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 1.25rem;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 
-  .column {
-    flex: 0 0 min(18.5rem, 78vw);
-    scroll-snap-align: start;
+  .solo {
+    font-size: 1.2rem;
   }
 
   .count {
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.7rem;
   }
 
   .more {
-    margin-top: 0.9rem;
+    margin-top: 0.65rem;
+    min-height: 40px;
+    font-size: 0.6875rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .more {
     transition: none;
-  }
-
-  .row {
-    scroll-snap-type: none;
   }
 }
