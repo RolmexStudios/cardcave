@@ -78,7 +78,13 @@ export function ImageField({
       {value ? (
         // Uploaded media can be any host the Worker returns.
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={value} alt="" className={styles.preview} />
+        <img
+          src={value}
+          alt=""
+          className={styles.preview}
+          loading="lazy"
+          decoding="async"
+        />
       ) : null}
       <div className={styles.row}>
         <FilePickButton label={value ? "Replace" : "Choose photo"} onPick={pickFile} />

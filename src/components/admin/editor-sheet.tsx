@@ -6,6 +6,7 @@ import { brochureComponentRegistry } from "@/lib/brochure/registry";
 import { parseInstanceKey } from "@/lib/brochure/scan-template";
 import { fieldsForSchema, instanceFields, instanceLabel } from "@/lib/admin/schema-fields";
 import { FieldList } from "./field-editor";
+import { InventoryEditor } from "./inventory-editor";
 import styles from "./admin.module.scss";
 
 export function EditorSheet({
@@ -29,6 +30,7 @@ export function EditorSheet({
   const component = parsed?.component ?? snapshot.component;
   const def = brochureComponentRegistry[component];
   const skipLinks = component === "BrochureSiteNav" || component === "BrochureFooter";
+  const isInventory = component === "BrochureInventory";
   const fields = useMemo(() => {
     return fieldsForSchema(def.schema, instanceFields(draft), {
       locked: skipLinks ? ["variant", "links"] : ["variant"],
@@ -60,28 +62,51 @@ export function EditorSheet({
 
   return (
     <div className={styles.sheetScrim} onClick={requestClose}>
-      <aside className={styles.sheet} onClick={(event) => event.stopPropagation()}>
+      <aside
+        className={styles.sheet}
+        data-wide={isInventory ? "true" : undefined}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.sheetHead}>
           <div>
-            <h2 className={styles.title}>Edit {instanceLabel(instanceId)}</h2>
-            <p className={styles.hint}>Changes preview on the page. Save to publish.</p>
+            <h2 className={styles.title}>
+              Edit {isInventory ? "inventory" : instanceLabel(instanceId)}
+            </h2>
+            <p className={styles.hint}>
+              {isInventory
+                ? "Find a slab, open it, then save to publish."
+                : "Changes preview on the page. Save to publish."}
+            </p>
           </div>
           <button type="button" className={styles.ghost} onClick={requestClose}>
             Close
           </button>
         </div>
-        <div className={styles.sheetBody}>
-          <FieldList
-            fields={fields}
-            value={instanceFields(draft)}
-            onChange={(next) => {
-              const record = next && typeof next === "object" ? next : {};
-              onDraft({
-                component,
-                ...(record as Record<string, unknown>),
-              } as BrochureInstanceContent);
-            }}
-          />
+        <div className={isInventory ? styles.sheetBodyFill : styles.sheetBody}>
+          {isInventory ? (
+            <InventoryEditor
+              value={instanceFields(draft)}
+              onChange={(next) => {
+                const record = next && typeof next === "object" ? next : {};
+                onDraft({
+                  component,
+                  ...(record as Record<string, unknown>),
+                } as BrochureInstanceContent);
+              }}
+            />
+          ) : (
+            <FieldList
+              fields={fields}
+              value={instanceFields(draft)}
+              onChange={(next) => {
+                const record = next && typeof next === "object" ? next : {};
+                onDraft({
+                  component,
+                  ...(record as Record<string, unknown>),
+                } as BrochureInstanceContent);
+              }}
+            />
+          )}
           {error ? <p className={styles.error}>{error}</p> : null}
         </div>
         <div className={styles.sheetFoot}>

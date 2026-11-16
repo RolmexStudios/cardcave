@@ -31,6 +31,26 @@ export const vehicleSchema = z.object({
   description: z.string().default(""),
 });
 
+export const slabSchema = z.object({
+  id: z.string().default(""),
+  slug: z.string().default(""),
+  year: z.string().default(""),
+  set: z.string().default(""),
+  player: z.string().default(""),
+  parallel: z.string().default(""),
+  sport: z.string().default(""),
+  grader: z.string().default(""),
+  grade: z.string().default(""),
+  cert: z.string().default(""),
+  band: z.string().default(""),
+  status: z.enum(["available", "hold", "traded", "sold"]).default("available"),
+  price: z.string().default(""),
+  imageUrl: z.string().default(""),
+  imageAlt: z.string().default(""),
+  galleryImageUrls: z.array(z.string()).default([]),
+  description: z.string().default(""),
+});
+
 export const inventoryBlueprintSchema = z.object({
   variant: z.enum(["showroom", "teaser", "archive"]).default("showroom"),
   eyebrow: z.string().default(""),
@@ -41,6 +61,8 @@ export const inventoryBlueprintSchema = z.object({
   showStatusFilter: z.boolean().default(true),
   sectionSize: sectionSizeSchema,
   vehicles: z.array(vehicleSchema).default([]),
+  items: z.array(slabSchema).default([]),
+  groupBy: z.enum(["band", "sport", "set", ""]).default(""),
 });
 
 export function emptyInventoryBlueprint(): BrochureInventoryContent {

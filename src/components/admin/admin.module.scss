@@ -141,8 +141,13 @@
   flex-direction: column;
 }
 
+.sheet[data-wide="true"] {
+  width: min(36rem, 100vw);
+}
+
 @media (max-width: 720px) {
-  .sheet {
+  .sheet,
+  .sheet[data-wide="true"] {
     width: 100vw;
   }
 }
@@ -180,6 +185,19 @@
   padding: 0.75rem 1rem 1.25rem;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+.sheetBody,
+.sheetBodyFill {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.sheetBodyFill {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
 }
 
 .sheetFoot,

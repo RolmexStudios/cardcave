@@ -204,6 +204,12 @@ export type BrochureInventoryVariant = "showroom" | "teaser" | "archive";
 /** `sold` records are kept off the teaser and showroom; the archive variant lists them. */
 export type BrochureVehicleStatus = "available" | "incoming" | "private" | "sold";
 
+/** Collectible slabs. `sold` / `traded` stay off case and vault; binder can still show them. */
+export type BrochureSlabStatus = "available" | "hold" | "traded" | "sold";
+
+/** How a case teaser groups slabs. Blank leaves a flat grid. */
+export type BrochureSlabGroupBy = "band" | "sport" | "set" | "";
+
 export interface BrochureVehicleProvenance {
   year: string;
   label: string;
@@ -232,6 +238,26 @@ export interface BrochureVehicle {
   description: string;
 }
 
+export interface BrochureSlab {
+  id: string;
+  slug: string;
+  year: string;
+  set: string;
+  player: string;
+  parallel: string;
+  sport: string;
+  grader: string;
+  grade: string;
+  cert: string;
+  band: string;
+  status: BrochureSlabStatus;
+  price: string;
+  imageUrl: string;
+  imageAlt: string;
+  galleryImageUrls: string[];
+  description: string;
+}
+
 export interface BrochureInventoryContent {
   variant: BrochureInventoryVariant;
   eyebrow: string;
@@ -244,6 +270,8 @@ export interface BrochureInventoryContent {
   showStatusFilter: boolean;
   sectionSize: BrochureSectionSize;
   vehicles: BrochureVehicle[];
+  items: BrochureSlab[];
+  groupBy: BrochureSlabGroupBy;
 }
 
 export type BrochureNavLogoLayout = "square" | "horizontal";

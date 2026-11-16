@@ -10,7 +10,10 @@ import {
 import { ImageField } from "./image-field";
 import styles from "./admin.module.scss";
 
-function pretty(key: string) {
+function pretty(key: string, labels?: Record<string, string>) {
+  if (labels?.[key]) {
+    return labels[key];
+  }
   return key
     .replace(/Url$/i, "")
     .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -21,10 +24,12 @@ export function FieldList({
   fields,
   value,
   onChange,
+  labels,
 }: {
   fields: FieldNode[];
   value: unknown;
   onChange: (next: unknown) => void;
+  labels?: Record<string, string>;
 }) {
   return (
     <>
@@ -34,6 +39,7 @@ export function FieldList({
           field={field}
           value={value}
           onChange={onChange}
+          labels={labels}
         />
       ))}
     </>
@@ -44,10 +50,12 @@ function FieldControl({
   field,
   value,
   onChange,
+  labels,
 }: {
   field: FieldNode;
   value: unknown;
   onChange: (next: unknown) => void;
+  labels?: Record<string, string>;
 }) {
   const current = getAtPath(value, field.path);
 
@@ -58,7 +66,7 @@ function FieldControl({
   if (field.kind === "locked") {
     return (
       <div className={styles.field}>
-        <span>{pretty(field.key)}</span>
+        <span>{pretty(field.key, labels)}</span>
         <div className={styles.locked}>{String(current ?? "")}</div>
       </div>
     );
@@ -72,7 +80,7 @@ function FieldControl({
           checked={Boolean(current)}
           onChange={(event) => patch(event.target.checked)}
         />
-        <span>{pretty(field.key)}</span>
+        <span>{pretty(field.key, labels)}</span>
       </label>
     );
   }
@@ -80,7 +88,7 @@ function FieldControl({
   if (field.kind === "number") {
     return (
       <label className={styles.field}>
-        <span>{pretty(field.key)}</span>
+        <span>{pretty(field.key, labels)}</span>
         <input
           type="number"
           value={typeof current === "number" ? current : Number(current ?? 0)}
@@ -93,7 +101,7 @@ function FieldControl({
   if (field.kind === "enum") {
     return (
       <label className={styles.field}>
-        <span>{pretty(field.key)}</span>
+        <span>{pretty(field.key, labels)}</span>
         <select
           value={String(current ?? "")}
           onChange={(event) => patch(event.target.value)}
@@ -111,7 +119,7 @@ function FieldControl({
   if (field.kind === "image") {
     return (
       <ImageField
-        label={pretty(field.key)}
+        label={pretty(field.key, labels)}
         value={String(current ?? "")}
         onChange={patch}
       />
@@ -122,7 +130,7 @@ function FieldControl({
     const items = Array.isArray(current) ? current.map(String) : [];
     return (
       <fieldset className={styles.field}>
-        <legend className={styles.legend}>{pretty(field.key)}</legend>
+        <legend className={styles.legend}>{pretty(field.key, labels)}</legend>
         <div className={styles.list}>
           {items.map((item, index) => (
             <div key={`${field.path}-${index}`} className={styles.item}>
@@ -160,7 +168,7 @@ function FieldControl({
     const element = field.element;
     return (
       <fieldset className={styles.field}>
-        <legend className={styles.legend}>{pretty(field.key)}</legend>
+        <legend className={styles.legend}>{pretty(field.key, labels)}</legend>
         <div className={styles.list}>
           {items.map((item, index) => (
             <div key={`${field.path}-${index}`} className={styles.item}>
@@ -171,6 +179,7 @@ function FieldControl({
                     prefix: "",
                   })}
                   value={item}
+                  labels={labels}
                   onChange={(nextItem) => {
                     const next = [...items];
                     next[index] = nextItem;
@@ -179,7 +188,7 @@ function FieldControl({
                 />
               ) : (
                 <StringInput
-                  label={`${pretty(field.key)} ${index + 1}`}
+                  label={`${pretty(field.key, labels)} ${index + 1}`}
                   value={String(item ?? "")}
                   multiline={element?.kind === "text"}
                   onChange={(text) => {
@@ -218,13 +227,14 @@ function FieldControl({
     const record = current && typeof current === "object" ? current : {};
     return (
       <fieldset className={styles.field}>
-        <legend className={styles.legend}>{pretty(field.key)}</legend>
+        <legend className={styles.legend}>{pretty(field.key, labels)}</legend>
         <FieldList
           fields={
             field.children ??
             fieldsForSchema(field.schema, record, { locked: [], prefix: "" })
           }
           value={record}
+          labels={labels}
           onChange={patch}
         />
       </fieldset>
@@ -233,7 +243,7 @@ function FieldControl({
 
   return (
     <StringInput
-      label={pretty(field.key)}
+      label={pretty(field.key, labels)}
       value={String(current ?? "")}
       multiline={field.kind === "text"}
       onChange={patch}

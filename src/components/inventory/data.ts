@@ -2,6 +2,8 @@ import inventoryJson from "./blueprint.json";
 import { inventoryBlueprintSchema } from "@/components/inventory/blueprint";
 import type {
   BrochureInventoryContent,
+  BrochureSlab,
+  BrochureSlabStatus,
   BrochureVehicle,
   BrochureVehicleStatus,
 } from "@/types/brochure";
@@ -46,6 +48,55 @@ export function vehicleTitle(vehicle: BrochureVehicle): string {
     .map((part) => part.trim())
     .filter(Boolean)
     .join(" ");
+}
+
+export const SLAB_STATUS_LABELS: Record<BrochureSlabStatus, string> = {
+  available: "Available",
+  hold: "On hold",
+  traded: "Traded",
+  sold: "Sold",
+};
+
+function parseGradeParts(value: string): { grader: string; grade: string } {
+  const trimmed = value.trim();
+  const match = trimmed.match(/^(PSA|BGS|CGC|SGC|RAW)\s*(.*)$/i);
+  if (!match) {
+    return { grader: "", grade: trimmed };
+  }
+  const tag = match[1].toUpperCase();
+  return {
+    grader: tag === "RAW" ? "Raw" : tag,
+    grade: match[2].trim(),
+  };
+}
+
+export function vehicleToSlab(vehicle: BrochureVehicle): BrochureSlab {
+  const parsed = parseGradeParts(vehicle.metricValue);
+  const status: BrochureSlabStatus =
+    vehicle.status === "sold"
+      ? "sold"
+      : vehicle.status === "incoming"
+        ? "hold"
+        : "available";
+  return {
+    id: vehicle.id,
+    slug: vehicle.slug,
+    year: vehicle.year,
+    set: vehicle.make,
+    player: vehicle.model,
+    parallel: "",
+    sport: vehicle.transmission,
+    grader: parsed.grader,
+    grade: parsed.grade || vehicle.metricValue,
+    cert: vehicle.chassis,
+    band: vehicle.placedNote,
+    status,
+    price: vehicle.price,
+    imageUrl: vehicle.imageUrl,
+    imageAlt: vehicle.imageAlt,
+    galleryImageUrls: vehicle.galleryImageUrls,
+    description: vehicle.description,
+  };
 }
 
 type BlueprintLike = Record<string, unknown> | null | undefined;
