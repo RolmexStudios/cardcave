@@ -19,6 +19,7 @@ import {
   fetchLiveBlueprint,
   saveInstance as saveInstanceRequest,
 } from "@/lib/admin/api";
+import { rewriteMediaUrlsInJson } from "@/lib/admin/media-url";
 import {
   clearSessionToken,
   readSessionToken,
@@ -88,7 +89,9 @@ export function BrochureStoreProvider({
       try {
         const live = await fetchLiveBlueprint(site);
         if (!cancelled) {
-          setBlueprint(parseBrochureBlueprint(live));
+          setBlueprint(
+            parseBrochureBlueprint(rewriteMediaUrlsInJson(live, site.adminApi)),
+          );
         }
       } catch {
         // keep bundled
@@ -138,8 +141,9 @@ export function BrochureStoreProvider({
       if (!site || !token) {
         throw new Error("Sign in required");
       }
-      setBlueprint((current) => ({ ...current, [instanceId]: content }));
-      await saveInstanceRequest(site, token, instanceId, content);
+      const rewritten = rewriteMediaUrlsInJson(content, site.adminApi);
+      setBlueprint((current) => ({ ...current, [instanceId]: rewritten }));
+      await saveInstanceRequest(site, token, instanceId, rewritten);
     },
     [site, token],
   );

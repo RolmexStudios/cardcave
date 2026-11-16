@@ -1,4 +1,5 @@
 import type { BrochureBlueprint, BrochureInstanceContent } from "@/types/brochure";
+import { rewriteMediaUrl } from "@/lib/admin/media-url";
 import type { SiteConfig } from "@/lib/admin/site";
 
 async function request<T>(
@@ -123,5 +124,5 @@ export async function uploadImage(
   if (!response.ok || !data.url) {
     throw new Error(data.error ?? "Upload failed");
   }
-  return data.url;
+  return rewriteMediaUrl(data.url, site.adminApi);
 }

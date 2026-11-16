@@ -21,6 +21,8 @@ import type {
   BrochureSlab,
   BrochureVehicle,
 } from "@/types/brochure";
+import { rewriteMediaUrl } from "@/lib/admin/media-url";
+import { useBrochureStore } from "@/lib/admin/store";
 import { FieldList } from "./field-editor";
 import admin from "./admin.module.scss";
 import styles from "./inventory-editor.module.scss";
@@ -520,15 +522,17 @@ function FilterChip({
 }
 
 function Thumb({ src, alt }: { src: string; alt: string }) {
+  const store = useBrochureStore();
+  const resolved = store?.site ? rewriteMediaUrl(src, store.site.adminApi) : src;
   const [failed, setFailed] = useState(false);
-  if (!src.trim() || failed) {
+  if (!resolved.trim() || failed) {
     return <span className={styles.thumbFallback} aria-hidden />;
   }
   return (
     // Catalog thumbs can be any uploaded host.
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={src}
+      src={resolved}
       alt={alt}
       className={styles.thumb}
       loading="lazy"

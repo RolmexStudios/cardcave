@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import Cropper, { type Area } from "react-easy-crop";
 import { cropImageBlob } from "@/lib/admin/crop-image";
 import { uploadImage } from "@/lib/admin/api";
+import { rewriteMediaUrl } from "@/lib/admin/media-url";
 import { useBrochureStore } from "@/lib/admin/store";
 import styles from "./admin.module.scss";
 
@@ -26,6 +27,7 @@ export function ImageField({
   onChange: (url: string) => void;
 }) {
   const store = useBrochureStore();
+  const preview = store?.site ? rewriteMediaUrl(value, store.site.adminApi) : value;
   const [source, setSource] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -75,11 +77,11 @@ export function ImageField({
   return (
     <div className={styles.field}>
       <span>{label}</span>
-      {value ? (
+      {preview ? (
         // Uploaded media can be any host the Worker returns.
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={value}
+          src={preview}
           alt=""
           className={styles.preview}
           loading="lazy"
