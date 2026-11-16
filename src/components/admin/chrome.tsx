@@ -2,7 +2,12 @@
 
 import { useState, type ReactNode } from "react";
 import type { BrochureInstanceContent } from "@/types/brochure";
-import { changeSitePassword, loginSite, logoutSite } from "@/lib/admin/api";
+import {
+  changeSitePassword,
+  loginSite,
+  logoutSite,
+  pruneReleasedMedia,
+} from "@/lib/admin/api";
 import { instanceLabel } from "@/lib/admin/schema-fields";
 import { useBrochureStore } from "@/lib/admin/store";
 import { AdminEditorProvider } from "./editor-context";
@@ -37,12 +42,21 @@ export function AdminChrome({ children }: { children: ReactNode }) {
   }
 
   function closeEditor() {
-    if (editingId && snapshot) {
-      store?.restoreInstance(editingId, snapshot);
+    const instanceId = editingId;
+    const previous = snapshot;
+    const current = draft;
+    if (instanceId && previous) {
+      store.restoreInstance(instanceId, previous);
     }
     setEditingId(null);
     setSnapshot(null);
     setDraft(null);
+    if (instanceId && previous && current && store.token) {
+      void pruneReleasedMedia(store.site!, store.token, current, {
+        ...store.blueprint,
+        [instanceId]: previous,
+      });
+    }
   }
 
   return (
@@ -140,7 +154,15 @@ export function AdminChrome({ children }: { children: ReactNode }) {
             store.previewInstance(editingId, next);
           }}
           onSave={async (content) => {
-            await store.persistInstance(editingId, content);
+            const instanceId = editingId;
+            const previous = snapshot;
+            await store.persistInstance(instanceId, content);
+            if (previous && store.token) {
+              await pruneReleasedMedia(store.site!, store.token, previous, {
+                ...store.blueprint,
+                [instanceId]: content,
+              });
+            }
             setSnapshot(content);
             setDraft(content);
             setEditingId(null);

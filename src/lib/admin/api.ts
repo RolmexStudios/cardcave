@@ -1,5 +1,9 @@
 import type { BrochureBlueprint, BrochureInstanceContent } from "@/types/brochure";
-import { rewriteMediaUrl } from "@/lib/admin/media-url";
+import {
+  releasedMediaFilenames,
+  rewriteMediaUrl,
+  trackUploadedMedia,
+} from "@/lib/admin/media-url";
 import type { SiteConfig } from "@/lib/admin/site";
 
 async function request<T>(
@@ -124,5 +128,41 @@ export async function uploadImage(
   if (!response.ok || !data.url) {
     throw new Error(data.error ?? "Upload failed");
   }
-  return rewriteMediaUrl(data.url, site.adminApi);
+  const url = rewriteMediaUrl(data.url, site.adminApi);
+  trackUploadedMedia(url, site.siteId);
+  return url;
+}
+
+export async function deleteSiteMedia(
+  site: SiteConfig,
+  token: string,
+  filename: string,
+): Promise<void> {
+  try {
+    await request<{ ok: boolean }>(
+      site,
+      `/v1/sites/${site.siteId}/media/${encodeURIComponent(filename)}`,
+      {
+        method: "DELETE",
+        headers: authHeaders(token),
+      },
+    );
+  } catch {
+    // Already gone, or the Worker is an older build without DELETE.
+  }
+}
+
+export async function pruneReleasedMedia(
+  site: SiteConfig,
+  token: string,
+  candidates: unknown,
+  keep: unknown,
+): Promise<void> {
+  const released = releasedMediaFilenames(candidates, keep, site.siteId);
+  if (released.length === 0) {
+    return;
+  }
+  await Promise.all(
+    released.map((filename) => deleteSiteMedia(site, token, filename)),
+  );
 }
