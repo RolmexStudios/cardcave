@@ -17,6 +17,7 @@ export function EditChip({
   return (
     <button
       type="button"
+      data-admin-edit=""
       className={`${styles.chip} ${className ?? ""}`.trim()}
       onClick={() => editor.openEditor(instanceId)}
     >
