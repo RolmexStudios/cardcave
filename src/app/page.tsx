@@ -6,22 +6,20 @@ import { Hero } from "@/components/heroes";
 import { SiteNav } from "@/components/navs";
 import { Shop } from "@/components/shops";
 import { SmoothScrollScope } from "@/components/shared/hash-link";
-import { injectBrochureInstances } from "@/lib/brochure/inject-instances";
-import { parseBrochureBlueprint } from "@/lib/brochure/schema";
-import blueprintJson from "../../content/blueprint.json";
+import { BrochureTree } from "@/lib/brochure/inject-instances";
 
 export default function Home() {
-  const blueprint = parseBrochureBlueprint(blueprintJson);
-  return injectBrochureInstances(
-    <SmoothScrollScope className="min-h-screen bg-[#faf8f5] text-[#1c1916]">
-      <SiteNav />
-      <main id="top">
-        <Hero />
-        <Shop />
-        <Contact />
-      </main>
-      <Footer />
-    </SmoothScrollScope>,
-    blueprint,
+  return (
+    <BrochureTree>
+      <SmoothScrollScope className="min-h-screen bg-[#faf8f5] text-[#1c1916]">
+        <SiteNav />
+        <main id="top">
+          <Hero />
+          <Shop />
+          <Contact />
+        </main>
+        <Footer />
+      </SmoothScrollScope>
+    </BrochureTree>
   );
 }

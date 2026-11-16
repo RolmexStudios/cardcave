@@ -7,6 +7,8 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyInventoryBlueprint } from "@/components/inventory/blueprint";
 import { VehicleCard } from "@/components/inventory/templates/vehicle-card";
+import { EditChip } from "@/components/admin/edit-chip";
+import adminStyles from "@/components/admin/admin.module.scss";
 import {
   VEHICLE_STATUS_LABELS,
   isListedVehicle,
@@ -122,6 +124,7 @@ export function ShowroomInventory({
 
   return (
     <section id={instanceId} className={styles.section} aria-label="Showroom">
+      <EditChip instanceId={instanceId} className={adminStyles.editChip} />
       <div className={styles.inner}>
         <aside className={styles.filters} aria-label="Filter the collection">
           <div className={styles.filtersInner}>

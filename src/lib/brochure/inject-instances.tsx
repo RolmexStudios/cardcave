@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Children,
   cloneElement,
@@ -5,6 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
+import { useOptionalBrochureBlueprint } from "@/lib/admin/store";
 import type {
   BrochureBlueprint,
   BrochureComponentId,
@@ -64,7 +67,8 @@ function contentFromBlueprint(
 ) {
   const instance = blueprint[instanceId];
   if (instance) {
-    const { component: _c, ...data } = instance;
+    const data = { ...instance } as Record<string, unknown>;
+    delete data.component;
     return data;
   }
   return brochureComponentRegistry[component].schema.parse({});
@@ -136,4 +140,19 @@ export function injectBrochureInstances(
   }
 
   return walk(node);
+}
+
+export function BrochureTree({
+  children,
+  blueprint,
+}: {
+  children: ReactNode;
+  blueprint?: BrochureBlueprint;
+}) {
+  const live = useOptionalBrochureBlueprint();
+  const data = live ?? blueprint;
+  if (!data) {
+    return children;
+  }
+  return injectBrochureInstances(children, data);
 }

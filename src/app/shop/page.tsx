@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ShowroomView } from "@/components/inventory/showroom-view";
-import { siteChrome, siteInventory } from "@/lib/site-content";
+import { siteChrome } from "@/lib/site-content";
+import { ShopIndexLive } from "./live";
 
 const chrome = siteChrome();
 
@@ -12,15 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default function ShopPage() {
-  const content = siteInventory();
-  if (!content) {
-    return null;
-  }
-  return (
-    <ShowroomView
-      content={content}
-      businessName={chrome.businessName}
-      logoUrl={chrome.logoUrl}
-    />
-  );
+  return <ShopIndexLive />;
 }

@@ -11,7 +11,7 @@ export function Shop({
 }: BrochureBlockProps<BrochureShopContent>) {
   const Template = shopTemplates[data.variant] ?? shopTemplates.rail;
   return (
-    <BrochureBlock size={data.sectionSize} reveal={false}>
+    <BrochureBlock instanceId={instanceId} size={data.sectionSize} reveal={false}>
       <Template instanceId={instanceId} data={data} />
     </BrochureBlock>
   );

@@ -7,6 +7,8 @@ import { ImageLightbox, type LightboxImage } from "@/components/shared/image-lig
 import { MediaSlot } from "@/components/shared/media";
 import { sendBrochureInquiry, whatsappHref } from "@/components/shared/form-submit";
 import { ShowroomChrome } from "@/components/inventory/page-chrome";
+import { EditChip } from "@/components/admin/edit-chip";
+import adminStyles from "@/components/admin/admin.module.scss";
 import {
   INVENTORY_INSTANCE_ID,
   VEHICLE_STATUS_LABELS,
@@ -129,6 +131,7 @@ export function VehicleView({
       statusBanner={sold ? "Sold" : undefined}
     >
       <article className={styles.article}>
+        <EditChip instanceId={INVENTORY_INSTANCE_ID} className={adminStyles.editChip} />
         <button
           type="button"
           className={styles.cover}

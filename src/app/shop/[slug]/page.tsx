@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { VehicleView } from "@/components/inventory/vehicle-view";
 import {
   getAllInventoryVehicles,
   getVehicleBySlug,
@@ -8,6 +6,7 @@ import {
   vehicleTitle,
 } from "@/components/inventory/data";
 import { siteBlueprint, siteChrome } from "@/lib/site-content";
+import { ShopSlugLive } from "./live";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -41,19 +40,6 @@ export async function generateMetadata({
 }
 
 export default async function ShopItemPage({ params }: PageProps) {
-  const chrome = siteChrome();
   const { slug } = await params;
-  const vehicle = getVehicleBySlug(siteBlueprint(), slug);
-  if (!vehicle) {
-    notFound();
-  }
-  return (
-    <VehicleView
-      vehicle={vehicle}
-      businessName={chrome.businessName}
-      logoUrl={chrome.logoUrl}
-      inquiryEmail={chrome.email}
-      whatsapp={chrome.whatsapp}
-    />
-  );
+  return <ShopSlugLive slug={slug} />;
 }

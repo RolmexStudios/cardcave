@@ -14,7 +14,7 @@ export function Contact({
 }: BrochureBlockProps<BrochureContactContent>) {
   const Template = contactTemplates[data.variant] ?? contactTemplates.form;
   return (
-    <BrochureBlock size={data.sectionSize} reveal={data.variant !== "plate"}>
+    <BrochureBlock instanceId={instanceId} size={data.sectionSize} reveal={data.variant !== "plate"}>
       <Template instanceId={instanceId} data={data} />
     </BrochureBlock>
   );

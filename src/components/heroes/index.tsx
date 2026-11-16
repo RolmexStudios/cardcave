@@ -13,6 +13,7 @@ export function Hero({
   const Template = heroTemplates[data.variant] ?? heroTemplates.cover;
   return (
     <BrochureBlock
+      instanceId={instanceId}
       size={data.sectionSize}
       className={data.variant === "plate" ? plateStyles.pin : undefined}
       reveal={data.variant !== "plate"}

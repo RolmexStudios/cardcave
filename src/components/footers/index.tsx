@@ -14,7 +14,7 @@ export function Footer({
 }: BrochureBlockProps<BrochureFooterContent>) {
   const Template = footerTemplates[data.variant] ?? footerTemplates.simple;
   return (
-    <BrochureBlock size={data.sectionSize} navSurface="dark">
+    <BrochureBlock instanceId={instanceId} size={data.sectionSize} navSurface="dark">
       <Template instanceId={instanceId} data={data} />
     </BrochureBlock>
   );

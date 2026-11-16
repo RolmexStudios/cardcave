@@ -14,7 +14,7 @@ export function Inventory({
 }: BrochureBlockProps<BrochureInventoryContent>) {
   const Template = inventoryTemplates[data.variant] ?? inventoryTemplates.teaser;
   return (
-    <BrochureBlock size={data.sectionSize}>
+    <BrochureBlock instanceId={instanceId} size={data.sectionSize}>
       <Template instanceId={instanceId} data={data} />
     </BrochureBlock>
   );
