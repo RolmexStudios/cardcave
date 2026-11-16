@@ -13,6 +13,7 @@ import {
   INVENTORY_INSTANCE_ID,
   VEHICLE_STATUS_LABELS,
   showroomHref,
+  vehicleCoverUrl,
   vehicleSlug,
   vehicleTitle,
 } from "@/components/inventory/data";
@@ -63,14 +64,15 @@ export function VehicleView({
   const sold = vehicle.status === "sold";
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  const coverUrl = vehicleCoverUrl(vehicle);
   const lead = useMemo<LightboxImage>(
     () => ({
-      url: vehicle.imageUrl,
+      url: coverUrl,
       alt: vehicle.imageAlt.trim() || title,
       slotId: `${INVENTORY_INSTANCE_ID}_${slug}_hero`,
       jsonPath: `${INVENTORY_INSTANCE_ID}.vehicles[].imageUrl`,
     }),
-    [slug, title, vehicle.imageAlt, vehicle.imageUrl],
+    [coverUrl, slug, title, vehicle.imageAlt],
   );
 
   const gallery = useMemo<LightboxImage[]>(

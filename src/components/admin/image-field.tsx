@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import Cropper, { type Area } from "react-easy-crop";
-import { cropImageBlob } from "@/lib/admin/crop-image";
+import { cropImageBlob, imagePixelSize } from "@/lib/admin/crop-image";
 import { uploadImage } from "@/lib/admin/api";
 import { rewriteMediaUrl } from "@/lib/admin/media-url";
 import { useBrochureStore } from "@/lib/admin/store";
@@ -56,13 +56,23 @@ export function ImageField({
   }
 
   async function confirmCrop() {
-    if (!source || !area || !store?.site || !store.token) {
+    if (!source) {
+      return;
+    }
+    if (!store?.site || !store.token) {
+      setError("Sign in to upload photos.");
       return;
     }
     setBusy(true);
     setError("");
     try {
-      const blob = await cropImageBlob(source, area);
+      const pixels =
+        area ??
+        ({ x: 0, y: 0, ...(await imagePixelSize(source)) } as Area);
+      if (pixels.width < 1 || pixels.height < 1) {
+        throw new Error("Could not read that photo");
+      }
+      const blob = await cropImageBlob(source, pixels);
       const url = await uploadImage(store.site, store.token, blob);
       onChange(url);
       URL.revokeObjectURL(source);

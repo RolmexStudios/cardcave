@@ -50,6 +50,17 @@ export function vehicleTitle(vehicle: BrochureVehicle): string {
     .join(" ");
 }
 
+export function vehicleCoverUrl(vehicle: {
+  imageUrl: string;
+  galleryImageUrls: string[];
+}): string {
+  return (
+    vehicle.imageUrl.trim() ||
+    vehicle.galleryImageUrls.find((url) => url.trim())?.trim() ||
+    ""
+  );
+}
+
 export const SLAB_STATUS_LABELS: Record<BrochureSlabStatus, string> = {
   available: "Available",
   hold: "On hold",
@@ -92,7 +103,7 @@ export function vehicleToSlab(vehicle: BrochureVehicle): BrochureSlab {
     band: vehicle.placedNote,
     status,
     price: vehicle.price,
-    imageUrl: vehicle.imageUrl,
+    imageUrl: vehicleCoverUrl(vehicle),
     imageAlt: vehicle.imageAlt,
     galleryImageUrls: vehicle.galleryImageUrls,
     description: vehicle.description,

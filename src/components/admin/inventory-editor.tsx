@@ -237,7 +237,7 @@ export function InventoryEditor({
             labels={source === "items" ? SLAB_LABELS : VEHICLE_LABELS}
             onChange={(nextItem) => {
               const next = [...records];
-              next[view.index] = nextItem as typeof current;
+              next[view.index] = withCoverPhoto(nextItem) as typeof current;
               patchCatalog(next);
             }}
           />
@@ -498,6 +498,25 @@ export function InventoryEditor({
       </div>
     </div>
   );
+}
+
+function withCoverPhoto(item: unknown): unknown {
+  if (!item || typeof item !== "object" || Array.isArray(item)) {
+    return item;
+  }
+  const record = item as { imageUrl?: unknown; galleryImageUrls?: unknown };
+  const imageUrl = String(record.imageUrl ?? "").trim();
+  if (imageUrl) {
+    return item;
+  }
+  const gallery = Array.isArray(record.galleryImageUrls)
+    ? record.galleryImageUrls.map(String)
+    : [];
+  const cover = gallery.find((url) => url.trim())?.trim() ?? "";
+  if (!cover) {
+    return item;
+  }
+  return { ...record, imageUrl: cover };
 }
 
 function FilterChip({

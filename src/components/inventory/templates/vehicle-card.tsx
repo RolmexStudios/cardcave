@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { MediaSlot } from "@/components/shared/media";
 import { fieldPath } from "@/components/shared/field-path";
-import { vehicleHref, vehicleTitle } from "@/components/inventory/data";
+import { vehicleCoverUrl, vehicleHref, vehicleTitle } from "@/components/inventory/data";
 import type { BrochureVehicle } from "@/types/brochure";
 import styles from "./vehicle-card.module.scss";
 
@@ -25,7 +25,7 @@ export function VehicleCard({ vehicle, instanceId, index }: VehicleCardProps) {
     >
       <figure className={styles.plate}>
         <MediaSlot
-          url={vehicle.imageUrl}
+          url={vehicleCoverUrl(vehicle)}
           slotId={`${instanceId}_${index + 1}`}
           jsonPath={fieldPath(instanceId, `vehicles[${index}].imageUrl`)}
           alt={alt}

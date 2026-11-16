@@ -1,3 +1,10 @@
+export async function imagePixelSize(
+  src: string,
+): Promise<{ width: number; height: number }> {
+  const image = await loadImage(src);
+  return { width: image.naturalWidth, height: image.naturalHeight };
+}
+
 export async function cropImageBlob(
   imageSrc: string,
   croppedAreaPixels: { x: number; y: number; width: number; height: number },
