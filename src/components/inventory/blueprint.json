@@ -5,6 +5,7 @@
   "intro": "A quiet register of the cars currently under our care. Each is offered privately, with full history and inspection on appointment.",
   "teaserLimit": 3,
   "viewAllLabel": "",
+  "showStatusFilter": true,
   "sectionSize": "auto",
   "vehicles": [
     {

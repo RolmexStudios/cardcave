@@ -2,15 +2,22 @@ $ease: cubic-bezier(0.22, 1, 0.36, 1);
 
 .root {
   position: relative;
+  z-index: 0;
   width: min(16rem, 100%);
   margin-inline: auto;
+
+  &:has([data-flying="true"]) {
+    z-index: 3;
+  }
 }
 
 .stage {
   position: relative;
+  z-index: 0;
   width: 100%;
   aspect-ratio: 5 / 7.45;
   margin-inline: auto;
+  overflow: visible;
   outline: none;
 
   &:focus-visible {
@@ -29,8 +36,8 @@ $ease: cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: center bottom;
   pointer-events: none;
   transition:
-    transform 0.52s $ease,
-    opacity 0.45s $ease;
+    transform 0.32s cubic-bezier(0.22, 0.84, 0.28, 1),
+    opacity 0.3s cubic-bezier(0.22, 0.84, 0.28, 1);
 
   &[data-top="true"] {
     pointer-events: auto;
@@ -41,6 +48,11 @@ $ease: cubic-bezier(0.22, 1, 0.36, 1);
   &[data-dragging="true"] {
     cursor: grabbing;
     transition: none;
+  }
+
+  &[data-flying="true"] {
+    will-change: transform;
+    pointer-events: none;
   }
 }
 

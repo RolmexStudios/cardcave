@@ -9,8 +9,7 @@ const marqueeImageSchema = z.object({
 });
 
 /**
- * Marquee hero: centered introduction, a red pill button, and a looping
- * row of portrait photographs along the bottom.
+ * Marquee hero: centered introduction over a looping row of portraits.
  */
 export const marqueeHeroBlueprintSchema = z.object({
   variant: z.literal("marquee"),

@@ -240,6 +240,8 @@ export interface BrochureInventoryContent {
   /** Teaser variant: how many records to preview on the home page. */
   teaserLimit: number;
   viewAllLabel: string;
+  /** Showroom filter rail. Turn off when status is not part of the merchandising. */
+  showStatusFilter: boolean;
   sectionSize: BrochureSectionSize;
   vehicles: BrochureVehicle[];
 }
@@ -252,7 +254,12 @@ export type BrochureNavBrandDisplay = "logo-only" | "logo-and-name";
 /** When the nav brand (logo / name) becomes visible. */
 export type BrochureNavLogoReveal = "always" | "after-hero";
 
-export type BrochureNavVariant = "bar" | "editorial" | "runway" | "studio";
+export type BrochureNavVariant =
+  | "bar"
+  | "editorial"
+  | "runway"
+  | "studio"
+  | "capsule";
 
 export interface BrochureNavLink {
   href: string;

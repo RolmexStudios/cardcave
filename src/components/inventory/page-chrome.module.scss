@@ -37,11 +37,11 @@
 
 .logoImage {
   display: block;
-  height: 1.5rem;
+  height: 2.25rem;
   width: auto;
   max-width: min(50vw, 11rem);
   object-fit: contain;
-  filter: brightness(0);
+  border-radius: 0.35rem;
 }
 
 .links {

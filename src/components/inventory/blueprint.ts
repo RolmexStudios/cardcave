@@ -38,6 +38,7 @@ export const inventoryBlueprintSchema = z.object({
   intro: z.string().default(""),
   teaserLimit: z.number().int().min(1).max(12).default(3),
   viewAllLabel: z.string().default(""),
+  showStatusFilter: z.boolean().default(true),
   sectionSize: sectionSizeSchema,
   vehicles: z.array(vehicleSchema).default([]),
 });

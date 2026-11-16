@@ -104,11 +104,12 @@ export function ShowroomInventory({
     [indexed, filters],
   );
 
+  const showStatusFilter = data.showStatusFilter !== false;
   const hasActiveFilters =
     filters.make !== ALL ||
     filters.year !== ALL ||
     filters.transmission !== ALL ||
-    filters.status !== ALL;
+    (showStatusFilter && filters.status !== ALL);
 
   function update<K extends keyof FilterState>(key: K, value: string) {
     setFilters((current) => ({ ...current, [key]: value }));
@@ -150,16 +151,18 @@ export function ShowroomInventory({
               options={transmissions}
               onChange={(value) => update("transmission", value)}
             />
-            <FilterSelect
-              id={`${instanceId}-status`}
-              label="Status"
-              value={filters.status}
-              options={statuses}
-              labelFor={(value) =>
-                VEHICLE_STATUS_LABELS[value as BrochureVehicleStatus] ?? value
-              }
-              onChange={(value) => update("status", value)}
-            />
+            {showStatusFilter ? (
+              <FilterSelect
+                id={`${instanceId}-status`}
+                label="Status"
+                value={filters.status}
+                options={statuses}
+                labelFor={(value) =>
+                  VEHICLE_STATUS_LABELS[value as BrochureVehicleStatus] ?? value
+                }
+                onChange={(value) => update("status", value)}
+              />
+            ) : null}
 
             <button
               type="button"

@@ -27,7 +27,10 @@ export type ImageStackProps = {
 
 const FAN = 4;
 const MIN_FLICK = 56;
-const CYCLE_MS = 520;
+const PEEK_X = 44;
+const PEEK_MS = 180;
+const TUCK_MS = 320;
+const FLIGHT_EASE = "cubic-bezier(0.22, 0.84, 0.28, 1)";
 
 type Pose = {
   x: number;
@@ -41,6 +44,7 @@ type Flight = {
   extraX: number;
   lift: boolean;
   skip: boolean;
+  ms: number;
 };
 
 function fanPose(index: number): Pose {
@@ -95,6 +99,7 @@ export function ImageStack({
   const orderRef = useRef(order);
   const busyRef = useRef(false);
   const timersRef = useRef<number[]>([]);
+  const stageRef = useRef<HTMLDivElement>(null);
   orderRef.current = order;
 
   if (deckTrack !== deckKey) {
@@ -129,6 +134,12 @@ export function ImageStack({
     return timer;
   }
 
+  function afterPaint(fn: () => void) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(fn);
+    });
+  }
+
   function commitSendToBack() {
     setOrder((prev) =>
       prev.length < 2 ? prev : [...prev.slice(1), prev[0]],
@@ -155,17 +166,12 @@ export function ImageStack({
     const id = orderRef.current[0];
     if (!id) return;
     busyRef.current = true;
-    setFlight({ id, extraX: 168, lift: true, skip: false });
+    setFlight({ id, extraX: PEEK_X, lift: true, skip: false, ms: PEEK_MS });
     later(() => {
       commitSendToBack();
-      setFlight({ id, extraX: 168, lift: false, skip: true });
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setFlight({ id, extraX: 0, lift: false, skip: false });
-        });
-      });
-    }, CYCLE_MS);
-    later(finishFlight, CYCLE_MS * 2);
+      setFlight({ id, extraX: 0, lift: false, skip: false, ms: TUCK_MS });
+    }, PEEK_MS);
+    later(finishFlight, PEEK_MS + TUCK_MS);
   }
 
   function bringForward() {
@@ -177,14 +183,12 @@ export function ImageStack({
     const id = orderRef.current[orderRef.current.length - 1];
     if (!id) return;
     busyRef.current = true;
-    commitBringForward();
-    setFlight({ id, extraX: -168, lift: true, skip: true });
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setFlight({ id, extraX: 0, lift: true, skip: false });
-      });
+    setFlight({ id, extraX: -PEEK_X, lift: true, skip: true, ms: PEEK_MS });
+    afterPaint(() => {
+      commitBringForward();
+      setFlight({ id, extraX: 0, lift: true, skip: false, ms: TUCK_MS });
+      later(finishFlight, TUCK_MS);
     });
-    later(finishFlight, CYCLE_MS);
   }
 
   function clearGestureFrame() {
@@ -266,13 +270,16 @@ export function ImageStack({
   return (
     <div className={[styles.root, className].filter(Boolean).join(" ")}>
       <div
+        ref={stageRef}
         className={styles.stage}
         role="group"
         tabIndex={0}
         aria-label={label}
         onKeyDown={onKeyDown}
       >
-        {ordered.map((frame, index) => {
+        {deck.map((frame) => {
+          const index = ordered.findIndex((item) => item.id === frame.id);
+          if (index < 0) return null;
           const pose = fanPose(index);
           const isTop = index === 0;
           const flying = flight?.id === frame.id;
@@ -281,18 +288,23 @@ export function ImageStack({
           const skip = Boolean(flying && flight.skip);
           const style: CSSProperties = {
             zIndex: flying && flight.lift ? ordered.length + 2 : ordered.length - index,
-            opacity: pose.opacity,
+            opacity: flying ? 1 : pose.opacity,
             transform: cardTransform(
               pose,
               extraX,
               dragging ? 1.04 : 1,
             ),
+            transition:
+              dragging || skip
+                ? "none"
+                : `transform ${flying ? flight.ms : TUCK_MS}ms ${FLIGHT_EASE}, opacity 0.3s ${FLIGHT_EASE}`,
           };
           return (
             <div
               key={frame.id}
               className={styles.card}
               data-top={isTop ? "true" : undefined}
+              data-flying={flying ? "true" : undefined}
               data-dragging={dragging || skip ? "true" : undefined}
               style={style}
               onPointerDown={isTop ? onPointerDown : undefined}

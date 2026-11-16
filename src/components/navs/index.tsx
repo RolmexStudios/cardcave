@@ -13,11 +13,9 @@ export function SiteNav({
   return (
     <>
       <Template instanceId={instanceId} data={data} />
-      {data.variant === "editorial" ||
-      data.variant === "runway" ||
-      data.variant === "studio" ? null : (
+      {data.variant === "bar" ? (
         <FloatingCta href={contactHref} label="Buy, sell, or trade" />
-      )}
+      ) : null}
     </>
   );
 }

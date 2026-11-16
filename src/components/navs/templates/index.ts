@@ -5,6 +5,7 @@ import type {
   BrochureNavVariant,
 } from "@/types/brochure";
 import { BarNav } from "@/components/navs/templates/bar/BarNav";
+import { CapsuleNav } from "@/components/navs/templates/capsule/CapsuleNav";
 import { EditorialNav } from "@/components/navs/templates/editorial/EditorialNav";
 import { RunwayNav } from "@/components/navs/templates/runway/RunwayNav";
 import { StudioNav } from "@/components/navs/templates/studio/StudioNav";
@@ -18,4 +19,5 @@ export const navTemplates: Record<BrochureNavVariant, NavTemplateComponent> = {
   editorial: EditorialNav,
   runway: RunwayNav,
   studio: StudioNav,
+  capsule: CapsuleNav,
 };

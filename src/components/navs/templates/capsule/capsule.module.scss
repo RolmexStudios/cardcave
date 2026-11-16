@@ -1,0 +1,368 @@
+$ease: cubic-bezier(0.22, 1, 0.36, 1);
+$ink: #1c1916;
+$paper: #faf8f5;
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(-0.7rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top, 0px));
+  left: 50%;
+  z-index: 50;
+  width: max-content;
+  max-width: min(54rem, calc(100vw - 1.25rem));
+  transform: translateX(-50%);
+  color: $ink;
+
+  &[data-logo-reveal="after-hero"]:not([data-past-hero="true"]) .brand {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.shell {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  min-width: min(100%, 18rem);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 1px 2px rgba(28, 25, 22, 0.05),
+    0 10px 28px rgba(28, 25, 22, 0.1),
+    0 28px 60px rgba(28, 25, 22, 0.08);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  animation: settle 0.55s $ease both;
+  transition:
+    border-radius 0.42s $ease,
+    background 0.4s $ease,
+    border-color 0.4s $ease,
+    box-shadow 0.4s $ease,
+    color 0.4s $ease;
+
+  &[data-open="true"] {
+    border-radius: 1.45rem;
+  }
+}
+
+.header[data-tone="on-dark"] .shell {
+  color: $paper;
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(20, 18, 16, 0.58);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem 1.15rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.7rem;
+}
+
+.brand {
+  display: flex;
+  min-width: 0;
+  max-width: 14rem;
+  align-items: center;
+  gap: 0.55rem;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    opacity 0.45s $ease,
+    max-width 0.45s $ease,
+    gap 0.45s $ease;
+}
+
+.brandLogoOnly {
+  gap: 0;
+}
+
+.navLogo {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.mark,
+.markFallback {
+  display: block;
+  height: 1.85rem;
+  width: 1.85rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.markWide {
+  display: block;
+  height: 1.4rem;
+  width: auto;
+  max-width: 7.5rem;
+  flex-shrink: 1;
+  overflow: hidden;
+  border-radius: 0.45rem;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.markFallback {
+  display: grid;
+  place-items: center;
+  background: #c45c3e;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.markEmpty {
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  background: rgba(196, 92, 62, 0.8);
+  font-family: ui-monospace, monospace;
+  font-size: 0.4rem;
+  font-weight: 400;
+}
+
+.brandName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.links {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem 0.15rem;
+  min-width: 0;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.72;
+  white-space: nowrap;
+  transition:
+    opacity 0.28s $ease,
+    background 0.28s $ease;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(28, 25, 22, 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+.header[data-tone="on-dark"] .link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0 0.95rem;
+  border-radius: 999px;
+  background: $ink;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: $paper;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.28s $ease,
+    background 0.28s $ease,
+    color 0.28s $ease,
+    opacity 0.28s $ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+.header[data-tone="on-dark"] .cta {
+  background: $paper;
+  color: $ink;
+}
+
+.menuButton {
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(28, 25, 22, 0.06);
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.28s $ease;
+
+  &:hover {
+    background: rgba(28, 25, 22, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+.header[data-tone="on-dark"] .menuButton {
+  background: rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.menuIcon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.drawer {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .header {
+    top: max(0.55rem, env(safe-area-inset-top, 0px));
+    width: min(26.5rem, calc(100vw - 1.5rem));
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  .shell {
+    width: 100%;
+  }
+
+  .row {
+    gap: 0.5rem;
+    padding: 0.35rem 0.35rem 0.35rem 0.6rem;
+  }
+
+  .brand {
+    max-width: calc(100% - 3.2rem);
+  }
+
+  .links,
+  .cta {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .drawer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.15rem 0.45rem 0.55rem;
+  }
+
+  .drawer[hidden] {
+    display: none;
+  }
+
+  .drawerLink,
+  .drawerCta {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.7rem;
+    border-radius: 0.95rem;
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.25s $ease;
+  }
+
+  .drawerLink:hover,
+  .drawerCta:hover {
+    background: rgba(28, 25, 22, 0.06);
+  }
+
+  .drawerCta {
+    margin-top: 0.2rem;
+    justify-content: center;
+    background: $ink;
+    color: $paper;
+    font-weight: 600;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .header[data-tone="on-dark"] {
+    .drawerLink:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .drawerCta {
+      background: $paper;
+      color: $ink;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell,
+  .brand,
+  .link,
+  .cta,
+  .menuButton,
+  .drawerLink,
+  .drawerCta {
+    animation: none;
+    transition: none;
+  }
+
+  .cta:hover {
+    transform: none;
+  }
+}

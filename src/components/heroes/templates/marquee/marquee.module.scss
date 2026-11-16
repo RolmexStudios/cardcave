@@ -19,26 +19,52 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100svh;
+  align-items: stretch;
+  justify-content: stretch;
+  min-height: min(36rem, 88dvh);
   overflow: hidden;
   box-sizing: border-box;
-  padding: 7rem 1.25rem 2.5rem;
   text-align: center;
   background: var(--color-bg, #fafafa);
   color: $ink;
   scroll-margin-top: 5rem;
 }
 
+:global([data-section-fill="true"]) .root {
+  min-height: 0;
+  flex: 1 1 auto;
+  height: 100%;
+}
+
 .copy {
-  position: relative;
+  position: absolute;
+  isolation: isolate;
   z-index: 1;
+  top: auto;
+  bottom: clamp(3.75rem, 14%, 6.5rem);
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: min(100%, 48rem);
-  padding-bottom: 1.25rem;
+  margin-inline: auto;
+  padding: 1.75rem 1.75rem 1.5rem;
+}
+
+.copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -38% -48%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 58% 52% at 50% 48%,
+    color-mix(in srgb, var(--color-bg, #fafafa) 78%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg, #fafafa) 42%, transparent) 42%,
+    transparent 74%
+  );
+  filter: blur(42px);
 }
 
 .eyebrow {
@@ -66,6 +92,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   letter-spacing: -0.045em;
   text-wrap: balance;
   color: $ink;
+  text-shadow: 0 1px 18px color-mix(in srgb, var(--color-bg, #fafafa) 55%, transparent);
 }
 
 .word {
@@ -79,16 +106,17 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
 }
 
 .subheadline {
-  margin: 1.5rem 0 0;
+  margin: 1.1rem 0 0;
   max-width: 36rem;
   font-size: 1.125rem;
   line-height: 1.6;
   color: $muted;
+  text-shadow: 0 1px 14px color-mix(in srgb, var(--color-bg, #fafafa) 50%, transparent);
   animation: rise 0.75s $ease 0.5s both;
 }
 
 .ctaReveal {
-  margin-top: 2rem;
+  margin-top: 1.35rem;
   animation: rise 0.75s $ease 0.6s both;
 }
 
@@ -126,36 +154,38 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
 }
 
 .band {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: relative;
   z-index: 0;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
-  height: 58%;
+  min-height: min(26rem, 58dvh);
+  padding: 5.25rem 0 2.75rem;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent,
-    #000 6%,
-    #000 94%,
+    #000 8%,
+    #000 90%,
     transparent
   );
   mask-image: linear-gradient(
     to bottom,
     transparent,
-    #000 6%,
-    #000 94%,
+    #000 8%,
+    #000 90%,
     transparent
   );
 }
 
 .card {
   position: relative;
-  height: min(32rem, 54vh);
+  overflow: hidden;
+  height: clamp(16.5rem, 42dvh, 30rem);
   aspect-ratio: 3 / 4;
+  border-radius: 0.85rem;
   background: #ece7e1;
+  box-shadow: 0 8px 18px rgba(28, 25, 22, 0.16);
 
   &[data-tilt="a"] {
     transform: rotate(-2deg);
@@ -172,8 +202,6 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 1rem;
-  box-shadow: 0 8px 18px rgba(28, 25, 22, 0.16);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -199,8 +227,15 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
 }
 
 @media (max-width: 767px) {
-  .root {
-    padding: 5.5rem 1rem 1.5rem;
+  .copy {
+    top: auto;
+    bottom: clamp(2.75rem, 12%, 4.5rem);
+    padding: 1.15rem 1.15rem 1rem;
+  }
+
+  .copy::before {
+    inset: -32% -36%;
+    filter: blur(28px);
   }
 
   .headline {
@@ -209,13 +244,13 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   }
 
   .subheadline {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     font-size: 1rem;
     line-height: 1.55;
   }
 
   .ctaReveal {
-    margin-top: 1.35rem;
+    margin-top: 1.05rem;
   }
 
   .cta {
@@ -225,10 +260,12 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   }
 
   .band {
-    height: 48%;
+    min-height: min(18rem, 48svh);
+    padding: 4.5rem 0 2rem;
   }
 
   .card {
-    height: min(22rem, 42vh);
+    height: min(38svh, 22rem);
+    border-radius: 0.75rem;
   }
 }

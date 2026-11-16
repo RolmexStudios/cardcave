@@ -1,6 +1,5 @@
 "use client";
 
-import { About } from "@/components/abouts";
 import { Contact } from "@/components/contacts";
 import { Footer } from "@/components/footers";
 import { Hero } from "@/components/heroes";
@@ -19,7 +18,6 @@ export default function Home() {
       <main id="top">
         <Hero />
         <Shop />
-        <About />
         <Contact />
       </main>
       <Footer />

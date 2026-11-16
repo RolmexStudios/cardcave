@@ -10,7 +10,9 @@ const navLinkSchema = z.object({
 });
 
 export const navBlueprintSchema = z.object({
-  variant: z.enum(["bar", "editorial", "runway", "studio"]).default("bar"),
+  variant: z
+    .enum(["bar", "editorial", "runway", "studio", "capsule"])
+    .default("bar"),
   businessName: z.string().default(""),
   phone: z.string().default(""),
   logoMark: z.string().default(""),

@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { showroomHref } from "@/components/inventory/data";
 import styles from "./page-chrome.module.scss";
@@ -9,6 +11,21 @@ type ShowroomChromeProps = {
   statusBanner?: string;
   children: ReactNode;
 };
+
+function BrandMark({ name, logoUrl }: { name: string; logoUrl: string }) {
+  const [failed, setFailed] = useState(false);
+  if (!logoUrl || failed) {
+    return name;
+  }
+  return (
+    <img
+      src={logoUrl}
+      alt=""
+      className={styles.logoImage}
+      onError={() => setFailed(true)}
+    />
+  );
+}
 
 /**
  * Slim editorial chrome for the standalone showroom routes. Cross-route links
@@ -28,11 +45,7 @@ export function ShowroomChrome({
       <header className={styles.bar}>
         <div className={styles.barInner}>
           <Link href="/" className={styles.wordmark} aria-label={name}>
-            {logo ? (
-              <img src={logo} alt="" className={styles.logoImage} />
-            ) : (
-              name
-            )}
+            <BrandMark name={name} logoUrl={logo} />
           </Link>
           <nav className={styles.links} aria-label="Primary">
             <Link href="/" className={styles.homeLink}>
