@@ -31,6 +31,9 @@ export function AdminChrome({ children }: { children: ReactNode }) {
   }
 
   const musicId = store.blueprint.BrochureMusic_1 ? "BrochureMusic_1" : null;
+  const inventoryId = store.blueprint.BrochureInventory_1
+    ? "BrochureInventory_1"
+    : null;
 
   function openEditor(instanceId: string) {
     const slice = store?.blueprint[instanceId];
@@ -77,6 +80,15 @@ export function AdminChrome({ children }: { children: ReactNode }) {
           >
             {store.editMode ? "Done" : "Edit"}
           </button>
+          {store.editMode && inventoryId ? (
+            <button
+              type="button"
+              className={styles.barButton}
+              onClick={() => openEditor(inventoryId)}
+            >
+              {instanceLabel(inventoryId)}
+            </button>
+          ) : null}
           {store.editMode && musicId ? (
             <button
               type="button"

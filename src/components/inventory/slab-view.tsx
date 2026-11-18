@@ -10,6 +10,8 @@ import { StaggerList } from "@/components/shared/stagger-list";
 import { cycleTurn, RotateImageButton } from "@/components/shared/rotate-image";
 import { visiblePrice } from "@/components/shared/price";
 import { sendBrochureInquiry, whatsappHref } from "@/components/shared/form-submit";
+import { EditChip } from "@/components/admin/edit-chip";
+import adminStyles from "@/components/admin/admin.module.scss";
 import { ShowroomChrome } from "@/components/inventory/page-chrome";
 import {
   INVENTORY_INSTANCE_ID,
@@ -140,6 +142,10 @@ export function SlabView({
   return (
     <ShowroomChrome businessName={businessName} logoUrl={logoUrl}>
       <article className={styles.page}>
+        <EditChip
+          instanceId={INVENTORY_INSTANCE_ID}
+          className={adminStyles.editChip}
+        />
         <div className={styles.inner}>
           <Link href={showroomHref()} className={styles.back}>
             <ArrowLeft className={styles.backIcon} aria-hidden />

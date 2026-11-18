@@ -1,5 +1,6 @@
 "use client";
 
+import { BrochureBlock } from "@/components/shared/brochure-block";
 import { ShowroomChrome } from "@/components/inventory/page-chrome";
 import { inventoryTemplates } from "@/components/inventory/templates";
 import { INVENTORY_INSTANCE_ID } from "@/components/inventory/data";
@@ -36,10 +37,12 @@ export function ShowroomView({
   const Template = inventoryTemplates[variant] ?? inventoryTemplates.showroom;
   return (
     <ShowroomChrome businessName={businessName} logoUrl={logoUrl}>
-      <Template
-        instanceId={instanceId}
-        data={{ ...content, variant, sectionSize: "auto" }}
-      />
+      <BrochureBlock instanceId={instanceId} size="auto" reveal={false}>
+        <Template
+          instanceId={instanceId}
+          data={{ ...content, variant, sectionSize: "auto" }}
+        />
+      </BrochureBlock>
     </ShowroomChrome>
   );
 }
