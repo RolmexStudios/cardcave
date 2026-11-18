@@ -86,7 +86,7 @@ function Icon({ network }: { network: Network }) {
     ),
     link: (
       <svg {...common}>
-        <path fill="currentColor" d="M10.6 13.4a3.2 3.2 0 0 0 4.5.2l2.4-2.4a3.2 3.2 0 0 0-4.5-4.5l-1.4 1.3" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M10.6 13.4a3.2 3.2 0 0 0 4.5.2l2.4-2.4a3.2 3.2 0 0 0-4.5-4.5l-1.4 1.3" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
         <path d="M13.4 10.6a3.2 3.2 0 0 0-4.5-.2l-2.4 2.4a3.2 3.2 0 0 0 4.5 4.5l1.3-1.3" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
       </svg>
     ),

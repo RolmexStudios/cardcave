@@ -43,6 +43,9 @@ export function AdminChrome({ children }: { children: ReactNode }) {
   }
 
   function closeEditor() {
+    if (!store?.site) {
+      return;
+    }
     const instanceId = editingId;
     const previous = snapshot;
     const current = draft;
@@ -53,7 +56,7 @@ export function AdminChrome({ children }: { children: ReactNode }) {
     setSnapshot(null);
     setDraft(null);
     if (instanceId && previous && current && store.token) {
-      void pruneReleasedMedia(store.site!, store.token, current, {
+      void pruneReleasedMedia(store.site, store.token, current, {
         ...store.blueprint,
         [instanceId]: previous,
       });
