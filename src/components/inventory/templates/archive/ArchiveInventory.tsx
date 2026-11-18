@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { fieldPath } from "@/components/shared/field-path";
 import { useSmoothHorizontalWheelScroll } from "@/components/shared/smooth-horizontal-wheel";
 import { emptyInventoryBlueprint } from "@/components/inventory/blueprint";
-import { vehicleHref, vehicleTitle } from "@/components/inventory/data";
+import { vehicleHref, vehicleTitle, vehicleYearLabel } from "@/components/inventory/data";
 import type {
   BrochureBlockProps,
   BrochureInventoryContent,
@@ -352,7 +352,7 @@ function ArchivePlate({
           <span className={styles.stamp}>Sold</span>
         </figure>
         <div className={styles.body}>
-          <p className={styles.year}>{vehicle.year}</p>
+          <p className={styles.year}>{vehicleYearLabel(vehicle)}</p>
           <h3 className={styles.model}>
             {vehicle.make ? <span className={styles.make}>{vehicle.make}</span> : null}
             {vehicle.model}

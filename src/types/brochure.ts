@@ -203,6 +203,9 @@ export type BrochureInventoryVariant =
   | "showroom"
   | "teaser"
   | "archive"
+  | "case"
+  | "binder"
+  | "vault"
   | "cards";
 
 /** `sold` records are kept off the teaser and showroom; the archive variant lists them. */
@@ -223,12 +226,16 @@ export interface BrochureVehicle {
   id: string;
   slug: string;
   year: string;
+  /** Optional end of a year range, e.g. 1974 when `year` is 1973. */
+  yearEnd?: string;
   make: string;
   model: string;
   chassis: string;
   transmission: string;
   status: BrochureVehicleStatus;
   price: string;
+  /** When false, price stays in the editor but is hidden on the public site. */
+  showPrice?: boolean;
   /** One quiet performance figure, e.g. "Power". */
   metricLabel: string;
   metricValue: string;
@@ -249,16 +256,24 @@ export interface BrochureSlab {
   id: string;
   slug: string;
   year: string;
+  /** Optional end of a season / print year range, e.g. 1994 when `year` is 1993. */
+  yearEnd?: string;
+  /** Product line, e.g. Prizm, Chrome. */
   set: string;
   player: string;
+  /** Variation, e.g. Pink Ice, Downtown, /5. */
   parallel: string;
   sport: string;
+  /** PSA, BGS, CGC, Raw. */
   grader: string;
   grade: string;
   cert: string;
+  /** Optional merchandising bucket, e.g. Budget, Grails. */
   band: string;
   status: BrochureSlabStatus;
   price: string;
+  /** When false, price stays in the editor but is hidden on the public site. */
+  showPrice?: boolean;
   imageUrl: string;
   imageAlt: string;
   galleryImageUrls: string[];
@@ -278,8 +293,11 @@ export interface BrochureInventoryContent {
   viewAllLabel: string;
   /** Showroom filter rail. Turn off when status is not part of the merchandising. */
   showStatusFilter: boolean;
+  /** When false, item prices stay in the editor but are hidden from visitors. */
+  showPrices?: boolean;
   sectionSize: BrochureSectionSize;
   vehicles: BrochureVehicle[];
+  /** Card / collectible register. When empty, case/binder/vault map `vehicles`. */
   items: BrochureSlab[];
   groupBy: BrochureSlabGroupBy;
 }

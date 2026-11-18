@@ -2,8 +2,10 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import { showroomHref } from "@/components/inventory/data";
+import { newsletterHref } from "@/components/newsletters/data";
 import styles from "./page-chrome.module.scss";
 
 type ShowroomChromeProps = {
@@ -40,6 +42,7 @@ export function ShowroomChrome({
 }: ShowroomChromeProps) {
   const name = businessName.trim() || "The Marque";
   const logo = logoUrl.trim();
+  const inventoryHref = showroomHref(usePathname());
 
   return (
     <div className={styles.root}>
@@ -52,9 +55,10 @@ export function ShowroomChrome({
             <Link href="/" className={styles.homeLink}>
               Home
             </Link>
-            <Link href={showroomHref()}>Inventory</Link>
+            <Link href={inventoryHref}>Showroom</Link>
+            <Link href={newsletterHref()}>Letters</Link>
             <Link href="/#BrochureContact_1" className={styles.inquire}>
-              Contact
+              Private inquiry
             </Link>
             <AdminSignInButton className={styles.signIn} />
           </nav>

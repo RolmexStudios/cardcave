@@ -7,8 +7,6 @@ import { ImageLightbox, type LightboxImage } from "@/components/shared/image-lig
 import { MediaSlot } from "@/components/shared/media";
 import { sendBrochureInquiry, whatsappHref } from "@/components/shared/form-submit";
 import { ShowroomChrome } from "@/components/inventory/page-chrome";
-import { EditChip } from "@/components/admin/edit-chip";
-import adminStyles from "@/components/admin/admin.module.scss";
 import {
   INVENTORY_INSTANCE_ID,
   VEHICLE_STATUS_LABELS,
@@ -16,6 +14,7 @@ import {
   vehicleCoverUrl,
   vehicleSlug,
   vehicleTitle,
+  vehicleYearLabel,
 } from "@/components/inventory/data";
 import type { BrochureVehicle } from "@/types/brochure";
 import styles from "./vehicle-view.module.scss";
@@ -108,7 +107,7 @@ export function VehicleView({
   }
 
   const specs: { label: string; value: string; mono?: boolean }[] = [
-    { label: "Year", value: vehicle.year },
+    { label: "Year", value: vehicleYearLabel(vehicle) },
     { label: "Make", value: vehicle.make },
     { label: "Model", value: vehicle.model },
     { label: "Chassis", value: vehicle.chassis, mono: true },
@@ -118,7 +117,10 @@ export function VehicleView({
       label: "Status",
       value: VEHICLE_STATUS_LABELS[vehicle.status] ?? vehicle.status,
     },
-    { label: "Price", value: sold ? "" : vehicle.price },
+    {
+      label: "Price",
+      value: sold || vehicle.showPrice === false ? "" : vehicle.price,
+    },
   ].filter((spec) => spec.value.trim());
 
   const wa = whatsappHref(
@@ -133,7 +135,6 @@ export function VehicleView({
       statusBanner={sold ? "Sold" : undefined}
     >
       <article className={styles.article}>
-        <EditChip instanceId={INVENTORY_INSTANCE_ID} className={adminStyles.editChip} />
         <button
           type="button"
           className={styles.cover}
@@ -159,7 +160,7 @@ export function VehicleView({
           <div className={styles.layout}>
             <div className={styles.main}>
               <header className={styles.heading}>
-                <p className={styles.year}>{vehicle.year}</p>
+                <p className={styles.year}>{vehicleYearLabel(vehicle)}</p>
                 <h1 className={styles.title}>
                   {vehicle.make ? (
                     <span className={styles.make}>{vehicle.make}</span>

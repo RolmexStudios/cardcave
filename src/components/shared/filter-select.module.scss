@@ -359,18 +359,111 @@
   }
 }
 
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 530;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(28, 25, 22, 0.4);
+  animation: fadeIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  width: min(40rem, 100%);
+  max-height: min(72dvh, 36rem);
+  border-radius: 20px 20px 0 0;
+  background: #faf8f5;
+  box-shadow: 0 -16px 48px rgba(28, 25, 22, 0.2);
+  animation: slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
+}
+
+.handle {
+  flex: none;
+  width: 2.4rem;
+  height: 4px;
+  margin: 0.6rem auto 0.2rem;
+  border-radius: 999px;
+  background: rgba(28, 25, 22, 0.18);
+}
+
+.sheetTitle {
+  flex: none;
+  margin: 0;
+  padding: 0.35rem 1.15rem 0.55rem;
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6b6560;
+}
+
+.sheetList {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0 0.65rem 0.35rem;
+  list-style: none;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sheetOption {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 0.85rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #1c1916;
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-size: 1.05rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sheetOption[data-active] {
+  background: rgba(28, 25, 22, 0.05);
+}
+
+.sheetOption[data-selected] {
+  background: #f4e6d8;
+  font-weight: 650;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 767px) {
   .root[data-variant="dropdown"] {
     flex: 1 1 auto;
     max-width: none;
     min-width: 0;
     width: 100%;
-  }
-
-  .root[data-variant="dropdown"] .menu {
-    right: 0;
-    width: 100%;
-    max-width: none;
   }
 }
 
@@ -385,7 +478,9 @@
     transition: none;
   }
 
-  .menu {
+  .menu,
+  .scrim,
+  .sheet {
     animation: none;
   }
 }

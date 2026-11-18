@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
+import { usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { ImageLightbox, type LightboxImage } from "@/components/shared/image-lightbox";
-import { MediaSlot } from "@/components/shared/media";
 import { FlipCard } from "@/components/shared/flip-card";
 import { StaggerList } from "@/components/shared/stagger-list";
-import { cycleTurn, RotateImageButton } from "@/components/shared/rotate-image";
-import { visiblePrice } from "@/components/shared/price";
+import { publicPrice } from "@/components/shared/price";
+import { yearRangesOverlap } from "@/components/shared/year-range";
 import { sendBrochureInquiry, whatsappHref } from "@/components/shared/form-submit";
 import { EditChip } from "@/components/admin/edit-chip";
 import adminStyles from "@/components/admin/admin.module.scss";
@@ -17,7 +16,9 @@ import {
   INVENTORY_INSTANCE_ID,
   SLAB_STATUS_LABELS,
   showroomHref,
+  publicItemPrice,
   slabGradeLabel,
+  slabYearLabel,
   vehicleCoverUrl,
   vehicleHref,
   vehicleSlug,
@@ -34,6 +35,7 @@ type SlabViewProps = {
   logoUrl?: string;
   inquiryEmail: string;
   whatsapp: string;
+  instagramHref?: string;
 };
 
 type SubmitState = "idle" | "sending" | "sent" | "error";
@@ -58,7 +60,7 @@ function suggest(current: BrochureVehicle, catalog: BrochureVehicle[]) {
       if (mine.grader && slab.grader === mine.grader) score += 3;
       if (mine.set && slab.set === mine.set) score += 2;
       if (mine.grade && slab.grade === mine.grade) score += 2;
-      if (mine.year && slab.year === mine.year) score += 1;
+      if (yearRangesOverlap(mine, slab)) score += 1;
       return { vehicle, score };
     })
     .sort((a, b) => b.score - a.score || vehicleSlug(a.vehicle).localeCompare(vehicleSlug(b.vehicle)));
@@ -76,6 +78,17 @@ function suggest(current: BrochureVehicle, catalog: BrochureVehicle[]) {
   return [...picked, ...rest.slice(0, 7 - picked.length)];
 }
 
+function InstagramMark() {
+  return (
+    <svg className={styles.instagramIcon} viewBox="0 0 24 24" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.25-.75a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1zM12 9.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2z"
+      />
+    </svg>
+  );
+}
+
 export function SlabView({
   vehicle,
   catalog,
@@ -83,48 +96,27 @@ export function SlabView({
   logoUrl,
   inquiryEmail,
   whatsapp,
+  instagramHref = "",
 }: SlabViewProps) {
+  const pathname = usePathname();
   const title = vehicleTitle(vehicle) || "Card";
   const slug = vehicleSlug(vehicle);
   const slab = vehicleToSlab(vehicle);
   const sold = slab.status === "sold" || slab.status === "traded";
-  const [selected, setSelected] = useState(0);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [turns, setTurns] = useState<Record<string, number>>({});
+  const [heroFlipped, setHeroFlipped] = useState(false);
   const [flippedId, setFlippedId] = useState<string | null>(null);
-
-  const frames = useMemo<LightboxImage[]>(() => {
-    const cover = vehicleCoverUrl(vehicle);
-    const urls = [
-      cover,
-      ...vehicle.galleryImageUrls,
-      vehicle.backImageUrl,
-    ];
-    const seen = new Set<string>();
-    const next: LightboxImage[] = [];
-    urls.forEach((url, index) => {
+  const cover = vehicleCoverUrl(vehicle);
+  const backUrl =
+    vehicle.backImageUrl.trim() ||
+    vehicle.galleryImageUrls.find((url) => {
       const trimmed = url.trim();
-      if (!trimmed || seen.has(trimmed)) return;
-      seen.add(trimmed);
-      next.push({
-        url: trimmed,
-        alt: vehicle.imageAlt.trim() || title,
-        slotId: `${INVENTORY_INSTANCE_ID}_${slug}_${index + 1}`,
-        jsonPath:
-          trimmed === cover
-            ? `${INVENTORY_INSTANCE_ID}.vehicles[].imageUrl`
-            : `${INVENTORY_INSTANCE_ID}.vehicles[].galleryImageUrls`,
-      });
-    });
-    return next;
-  }, [slug, title, vehicle]);
-
-  const safeSelected = frames.length ? Math.min(selected, frames.length - 1) : 0;
-  const current = frames[safeSelected];
+      return trimmed && trimmed !== cover;
+    })?.trim() ||
+    "";
   const suggestions = useMemo(() => suggest(vehicle, catalog), [catalog, vehicle]);
-  const price = visiblePrice(vehicle.price);
+  const price = publicPrice(vehicle.price, vehicle.showPrice !== false);
   const facts = [
-    { label: "Year", value: slab.year },
+    { label: "Year", value: slabYearLabel(slab) },
     { label: "Set", value: slab.set },
     { label: "Sport", value: slab.sport },
     { label: "Grading company", value: slab.grader },
@@ -138,6 +130,7 @@ export function SlabView({
   ].filter((fact) => fact.value.trim());
 
   const wa = whatsappHref(whatsapp, `Hello — I would like to enquire about ${title}.`);
+  const instagram = instagramHref.trim();
 
   return (
     <ShowroomChrome businessName={businessName} logoUrl={logoUrl}>
@@ -147,65 +140,34 @@ export function SlabView({
           className={adminStyles.editChip}
         />
         <div className={styles.inner}>
-          <Link href={showroomHref()} className={styles.back}>
+          <Link href={showroomHref(pathname)} className={styles.back}>
             <ArrowLeft className={styles.backIcon} aria-hidden />
             Inventory
           </Link>
 
           <div className={styles.layout}>
             <div className={styles.media}>
-              {current ? (
-                <div className={styles.stageWrap}>
-                  <button
-                    type="button"
-                    className={styles.stage}
-                    onClick={() => setLightboxIndex(safeSelected)}
-                    aria-label={`View ${title}`}
-                  >
-                    <MediaSlot
-                      url={current.url}
-                      slotId={current.slotId}
-                      jsonPath={current.jsonPath}
-                      alt={current.alt}
-                      className={styles.image}
-                      turn={turns[current.url] ?? 0}
-                    />
-                  </button>
-                  <RotateImageButton
-                    className={styles.rotate}
-                    onRotate={() =>
-                      setTurns((currentTurns) => ({
-                        ...currentTurns,
-                        [current.url]: cycleTurn(currentTurns[current.url] ?? 0),
-                      }))
-                    }
-                  />
-                </div>
-              ) : null}
-
-              {frames.length > 1 ? (
-                <ul className={styles.thumbs}>
-                  {frames.map((frame, index) => (
-                    <li key={frame.slotId}>
-                      <button
-                        type="button"
-                        className={styles.thumb}
-                        aria-current={index === safeSelected ? "true" : undefined}
-                        aria-label={`Photo ${index + 1} of ${frames.length}`}
-                        onClick={() => setSelected(index)}
-                      >
-                        <MediaSlot
-                          url={frame.url}
-                          slotId={`${frame.slotId}-thumb`}
-                          jsonPath={frame.jsonPath}
-                          alt=""
-                          className={styles.thumbImage}
-                        />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+              <div className={styles.hero}>
+                <FlipCard
+                  className={styles.heroCard}
+                  flipped={heroFlipped}
+                  onToggle={() => setHeroFlipped((current) => !current)}
+                  title={title}
+                  frontUrl={cover}
+                  frontAlt={vehicle.imageAlt.trim() || title}
+                  frontSlotId={`${INVENTORY_INSTANCE_ID}_${slug}`}
+                  frontJsonPath={`${INVENTORY_INSTANCE_ID}.vehicles[].imageUrl`}
+                  backUrl={backUrl}
+                  backAlt={vehicle.backImageAlt}
+                  backSlotId={`${INVENTORY_INSTANCE_ID}_${slug}-back`}
+                  backJsonPath={`${INVENTORY_INSTANCE_ID}.vehicles[].backImageUrl`}
+                  backText={vehicle.backText.trim() || vehicle.description}
+                  kicker={[slabYearLabel(slab), slab.set, slab.sport]
+                    .filter((part) => part.trim())
+                    .join(" · ")}
+                  price={publicItemPrice(vehicle.price, { showPrices: true }, vehicle)}
+                />
+              </div>
             </div>
 
             <div className={styles.copy}>
@@ -234,6 +196,17 @@ export function SlabView({
                     </div>
                   ))}
                 </dl>
+              ) : null}
+              {instagram ? (
+                <a
+                  className={styles.instagram}
+                  href={instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <InstagramMark />
+                  <span>Instagram</span>
+                </a>
               ) : null}
               <Inquiry
                 title={title}
@@ -271,11 +244,11 @@ export function SlabView({
                       backUrl={item.backImageUrl}
                       backAlt={item.backImageAlt}
                       backText={item.backText.trim() || item.description}
-                      kicker={[itemSlab.year, itemSlab.set, itemSlab.sport]
+                      kicker={[slabYearLabel(itemSlab), itemSlab.set, itemSlab.sport]
                         .filter((part) => part.trim())
                         .join(" · ")}
-                      price={item.price}
-                      href={vehicleHref(item)}
+                      price={publicItemPrice(item.price, { showPrices: true }, item)}
+                      href={vehicleHref(item, pathname)}
                       hrefLabel="View"
                     />
                   </li>
@@ -285,17 +258,6 @@ export function SlabView({
           </section>
         ) : null}
       </article>
-
-      {lightboxIndex !== null && frames.length > 0 ? (
-        <ImageLightbox
-          images={frames}
-          index={lightboxIndex}
-          title={title}
-          tone="paper"
-          onClose={() => setLightboxIndex(null)}
-          onIndexChange={setLightboxIndex}
-        />
-      ) : null}
     </ShowroomChrome>
   );
 }

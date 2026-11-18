@@ -1,5 +1,7 @@
 import inventoryJson from "./blueprint.json";
 import { inventoryBlueprintSchema } from "@/components/inventory/blueprint";
+import { publicPrice } from "@/components/shared/price";
+import { formatYearRange } from "@/components/shared/year-range";
 import type {
   BrochureInventoryContent,
   BrochureSlab,
@@ -35,16 +37,31 @@ export function vehicleSlug(vehicle: BrochureVehicle): string {
   return vehicle.slug.trim() || slugifyVehicleId(vehicle.id);
 }
 
-export function showroomHref(): string {
-  return "/shop";
+/** Shop kits mount inventory at `/shop`; brochure kits keep `/showroom`. */
+export function inventoryIndexHref(pathname = ""): string {
+  if (pathname === "/shop" || pathname.startsWith("/shop/")) {
+    return "/shop";
+  }
+  return "/showroom";
 }
 
-export function vehicleHref(vehicle: BrochureVehicle): string {
-  return `/shop/${vehicleSlug(vehicle)}`;
+export function showroomHref(pathname = ""): string {
+  return inventoryIndexHref(pathname);
+}
+
+export function vehicleHref(vehicle: BrochureVehicle, pathname = ""): string {
+  return `${inventoryIndexHref(pathname)}/${vehicleSlug(vehicle)}`;
+}
+
+export function vehicleYearLabel(vehicle: {
+  year: string;
+  yearEnd?: string;
+}): string {
+  return formatYearRange(vehicle.year, vehicle.yearEnd);
 }
 
 export function vehicleTitle(vehicle: BrochureVehicle): string {
-  return [vehicle.year, vehicle.make, vehicle.model]
+  return [vehicleYearLabel(vehicle), vehicle.make, vehicle.model]
     .map((part) => part.trim())
     .filter(Boolean)
     .join(" ");
@@ -109,6 +126,7 @@ export function vehicleToSlab(vehicle: BrochureVehicle): BrochureSlab {
     id: vehicle.id,
     slug: vehicle.slug,
     year: vehicle.year,
+    yearEnd: vehicle.yearEnd ?? "",
     set: vehicle.make,
     player: vehicle.model,
     parallel: "",
@@ -119,6 +137,7 @@ export function vehicleToSlab(vehicle: BrochureVehicle): BrochureSlab {
     band: vehicle.placedNote,
     status,
     price: vehicle.price,
+    showPrice: vehicle.showPrice !== false,
     imageUrl: vehicleCoverUrl(vehicle),
     imageAlt: vehicle.imageAlt,
     galleryImageUrls: vehicle.galleryImageUrls,
@@ -167,12 +186,41 @@ export function slabSlug(slab: BrochureSlab): string {
   return slab.slug.trim() || slugifyVehicleId(slab.id);
 }
 
-export function slabHref(slab: BrochureSlab): string {
-  return `${showroomHref()}/${slabSlug(slab)}`;
+export function slabHref(slab: BrochureSlab, pathname = ""): string {
+  return `${inventoryIndexHref(pathname)}/${slabSlug(slab)}`;
+}
+
+export function slabYearLabel(slab: { year: string; yearEnd?: string }): string {
+  return formatYearRange(slab.year, slab.yearEnd);
+}
+
+export function hasSlabPhoto(slab: {
+  imageUrl: string;
+  galleryImageUrls?: string[];
+}): boolean {
+  return Boolean(vehicleCoverUrl({
+    imageUrl: slab.imageUrl,
+    galleryImageUrls: slab.galleryImageUrls ?? [],
+  }));
+}
+
+export function pricesArePublic(
+  data: Pick<BrochureInventoryContent, "showPrices">,
+  item?: { showPrice?: boolean },
+): boolean {
+  return data.showPrices !== false && item?.showPrice !== false;
+}
+
+export function publicItemPrice(
+  price: string,
+  data: Pick<BrochureInventoryContent, "showPrices">,
+  item?: { showPrice?: boolean },
+): string {
+  return publicPrice(price, pricesArePublic(data, item));
 }
 
 export function slabTitle(slab: BrochureSlab): string {
-  return [slab.year, slab.player, slab.parallel || slab.set]
+  return [slabYearLabel(slab), slab.player, slab.parallel || slab.set]
     .map((part) => part.trim())
     .filter(Boolean)
     .join(" ");

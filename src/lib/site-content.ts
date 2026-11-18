@@ -46,6 +46,16 @@ export function siteContact(
   return data;
 }
 
+function instagramHrefFromLinks(
+  links: { label: string; href: string }[] | undefined,
+) {
+  return (
+    (links ?? []).find((link) =>
+      `${link.label} ${link.href}`.toLowerCase().includes("instagram"),
+    )?.href.trim() ?? ""
+  );
+}
+
 export function siteChrome(blueprint: BrochureBlueprint = siteBlueprint()) {
   const nav = siteNav(blueprint);
   const contact = siteContact(blueprint);
@@ -57,5 +67,6 @@ export function siteChrome(blueprint: BrochureBlueprint = siteBlueprint()) {
     logoUrl: nav.logoImageUrl.trim(),
     email: contact?.email.trim() ?? "",
     whatsapp: contact?.whatsapp.trim() ?? "",
+    instagram: instagramHrefFromLinks(contact?.links),
   };
 }

@@ -36,6 +36,7 @@ export function ShopSlugLive({ slug: slugProp }: { slug?: string } = {}) {
       logoUrl={chrome.logoUrl}
       inquiryEmail={chrome.email}
       whatsapp={chrome.whatsapp}
+      instagramHref={chrome.instagram}
     />
   );
 }

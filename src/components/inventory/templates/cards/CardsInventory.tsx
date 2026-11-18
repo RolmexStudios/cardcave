@@ -1,7 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { FilterSelect } from "@/components/shared/filter-select";
+import { YearFilter } from "@/components/shared/year-filter";
+import { matchesYearFilter } from "@/components/shared/year-range";
 import { TextSlot } from "@/components/shared/text-slot";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { FlipCard } from "@/components/shared/flip-card";
@@ -9,10 +12,13 @@ import { StaggerList } from "@/components/shared/stagger-list";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyInventoryBlueprint } from "@/components/inventory/blueprint";
 import {
+  hasSlabPhoto,
   indexedInventorySlabs,
+  publicItemPrice,
   slabHref,
   slabImagePath,
   slabTitle,
+  slabYearLabel,
   SLAB_STATUS_LABELS,
   uniqueSorted,
   vehicleHref,
@@ -27,6 +33,7 @@ const ALL = "all";
 
 type FilterState = {
   sport: string;
+  year: string;
   grader: string;
   grade: string;
   status: string;
@@ -34,6 +41,7 @@ type FilterState = {
 
 const EMPTY_FILTERS: FilterState = {
   sport: ALL,
+  year: ALL,
   grader: ALL,
   grade: ALL,
   status: ALL,
@@ -43,7 +51,11 @@ export function CardsInventory({
   instanceId = "BrochureInventory_1",
   data = emptyInventoryBlueprint(),
 }: BrochureBlockProps<BrochureInventoryContent>) {
-  const indexed = useMemo(() => indexedInventorySlabs(data), [data]);
+  const pathname = usePathname();
+  const indexed = useMemo(
+    () => indexedInventorySlabs(data).filter(({ slab }) => hasSlabPhoto(slab)),
+    [data],
+  );
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS);
 
   const sports = useMemo(
@@ -69,6 +81,9 @@ export function CardsInventory({
         if (filters.sport !== ALL && slab.sport.trim() !== filters.sport) {
           return false;
         }
+        if (!matchesYearFilter(slab, filters.year)) {
+          return false;
+        }
         if (filters.grader !== ALL && slab.grader.trim() !== filters.grader) {
           return false;
         }
@@ -85,6 +100,7 @@ export function CardsInventory({
 
   const hasActive =
     filters.sport !== ALL ||
+    filters.year !== ALL ||
     filters.grader !== ALL ||
     filters.grade !== ALL ||
     filters.status !== ALL;
@@ -128,6 +144,14 @@ export function CardsInventory({
             options={sports}
             onChange={(value) =>
               setFilters((current) => ({ ...current, sport: value }))
+            }
+          />
+          <YearFilter
+            id={`${instanceId}-year`}
+            value={filters.year}
+            entries={indexed.map(({ slab }) => slab)}
+            onChange={(value) =>
+              setFilters((current) => ({ ...current, year: value }))
             }
           />
           <FilterSelect
@@ -175,17 +199,17 @@ export function CardsInventory({
 
         {filtered.length > 0 ? (
           <StaggerList
-            key={`${filters.sport}|${filters.grader}|${filters.grade}|${filters.status}|${filtered.length}`}
+            key={`${filters.sport}|${filters.year}|${filters.grader}|${filters.grade}|${filters.status}|${filtered.length}`}
             className={styles.grid}
-            playKey={`${filters.sport}|${filters.grader}|${filters.grade}|${filters.status}|${filtered.length}`}
+            playKey={`${filters.sport}|${filters.year}|${filters.grader}|${filters.grade}|${filters.status}|${filtered.length}`}
           >
             {filtered.map((row) => {
               const title = slabTitle(row.slab) || "Card";
               const key = row.slab.id || `${instanceId}-${row.index}`;
               const href =
                 row.source === "vehicles"
-                  ? vehicleHref(data.vehicles[row.index])
-                  : slabHref(row.slab);
+                  ? vehicleHref(data.vehicles[row.index], pathname)
+                  : slabHref(row.slab, pathname);
               const cover = row.slab.imageUrl.trim();
               const backUrl =
                 row.slab.backImageUrl.trim() ||
@@ -212,10 +236,10 @@ export function CardsInventory({
                     backSlotId={`${instanceId}_${row.index + 1}-back`}
                     backJsonPath={`${instanceId}.${row.source}[${row.index}].backImageUrl`}
                     backText={row.slab.backText.trim() || row.slab.description}
-                    kicker={[row.slab.year, row.slab.set, row.slab.sport]
+                    kicker={[slabYearLabel(row.slab), row.slab.set, row.slab.sport]
                       .filter((part) => part.trim())
                       .join(" · ")}
-                    price={row.slab.price}
+                    price={publicItemPrice(row.slab.price, data, row.slab)}
                     href={href}
                     hrefLabel="View"
                   />

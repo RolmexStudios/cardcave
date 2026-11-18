@@ -28,6 +28,16 @@ export {
   type LightboxImage,
 } from "./image-lightbox";
 export { FilterSelect, type FilterSelectProps } from "./filter-select";
+export { YearFilter, type YearFilterProps } from "./year-filter";
+export {
+  collectFilterYears,
+  formatYearRange,
+  matchesYearFilter,
+  parseYearRange,
+  yearRangesOverlap,
+  type ParsedYearRange,
+  type YearRangeValue,
+} from "./year-range";
 export { HashLink, SmoothScrollScope } from "./hash-link";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal";
 export { Section, type SectionProps } from "./section";

@@ -1,7 +1,7 @@
 "use client";
 
 import { Contact } from "@/components/contacts";
-import { Footer } from "@/components/footers";
+import { Divider } from "@/components/dividers";
 import { Hero } from "@/components/heroes";
 import { SiteNav } from "@/components/navs";
 import { Shop } from "@/components/shops";
@@ -15,10 +15,10 @@ export default function Home() {
         <SiteNav />
         <main id="top">
           <Hero />
+          <Divider />
           <Shop />
           <Contact />
         </main>
-        <Footer />
       </SmoothScrollScope>
     </BrochureTree>
   );

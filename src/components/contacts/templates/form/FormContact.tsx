@@ -1,159 +1,243 @@
 "use client";
 
-import { useState } from "react";
-import { MapPin, Phone } from "lucide-react";
+import { useState, type FormEvent } from "react";
 import { telHref } from "@/components/shared/media";
 import { TextSlot } from "@/components/shared/text-slot";
+import { SectionHeading } from "@/components/shared/section-heading";
 import { fieldPath } from "@/components/shared/field-path";
+import { sendBrochureInquiry } from "@/components/shared/form-submit";
 import { emptyContactBlueprint } from "@/components/contacts/blueprint";
 import { SocialLinks } from "@/components/contacts/social-links";
 import type {
   BrochureBlockProps,
   BrochureContactContent,
+  BrochureContactLink,
 } from "@/types/brochure";
 import styles from "./form.module.scss";
+
+type SubmitState = "idle" | "sending" | "sent" | "error";
+
+function isInstagram(link: BrochureContactLink) {
+  return `${link.label} ${link.href}`.toLowerCase().includes("instagram");
+}
+
+function InstagramMark() {
+  return (
+    <svg className={styles.instagramIcon} viewBox="0 0 24 24" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.25-.75a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1zM12 9.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2z"
+      />
+    </svg>
+  );
+}
 
 export function FormContact({
   instanceId = "BrochureContact_1",
   data = emptyContactBlueprint(),
 }: BrochureBlockProps<BrochureContactContent>) {
   const call = telHref(data.phone);
-  const [submitted, setSubmitted] = useState(false);
+  const [state, setState] = useState<SubmitState>("idle");
   const showForm = data.channels !== "social";
   const showSocial = data.channels !== "form";
+  const links = (data.links ?? []).filter((link) => link.href.trim());
+  const instagram = links.find(isInstagram);
+  const otherLinks = links.filter((link) => !isInstagram(link));
+  const phone = data.phone.trim();
+  const area = data.serviceArea.trim();
+  const hours = data.hours.trim();
+  const hasFacts = Boolean(phone || area || hours);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSubmitted(true);
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const payload = new FormData(form);
+    if ((payload.get("company") as string)?.trim()) {
+      setState("sent");
+      form.reset();
+      return;
+    }
+    const name = (payload.get("name") as string)?.trim() ?? "";
+    const email = (payload.get("email") as string)?.trim() ?? "";
+    const message = (payload.get("message") as string)?.trim() ?? "";
+    if (!data.email.trim()) {
+      setState("sent");
+      form.reset();
+      return;
+    }
+    setState("sending");
+    try {
+      await sendBrochureInquiry(
+        data.email,
+        {
+          Name: name,
+          Email: email,
+          Message: message || "(no message)",
+        },
+        {
+          subject: data.mailtoSubject.trim() || `${data.title.trim() || "Contact"} — new message`,
+          replyTo: email,
+        },
+      );
+      setState("sent");
+      form.reset();
+    } catch {
+      setState("error");
+    }
   }
 
   return (
     <section id={instanceId} className={styles.section}>
       <div className={styles.inner}>
-        <TextSlot
-          value={data.title}
-          jsonPath={fieldPath(instanceId, "title")}
-          as="h2"
-          className={styles.title}
-        />
-        <TextSlot
-          value={data.intro}
-          jsonPath={fieldPath(instanceId, "intro")}
-          as="p"
-          className={styles.intro}
-        />
+        <div className={styles.panel} data-form={showForm ? "on" : "off"}>
+          <div className={styles.copy}>
+            <SectionHeading
+              instanceId={instanceId}
+              eyebrow={data.eyebrow}
+              title={data.title}
+              titleId={`${instanceId}-title`}
+              eyebrowClassName={styles.eyebrow}
+              titleClassName={styles.title}
+              titleInnerClassName={styles.titleText}
+            />
+            <TextSlot
+              value={data.intro}
+              jsonPath={fieldPath(instanceId, "intro")}
+              as="p"
+              className={styles.intro}
+            />
 
-        <div className={styles.grid} data-single={showForm ? undefined : "true"}>
-          <div className={styles.meta}>
-            {showSocial ? <SocialLinks links={data.links} /> : null}
-            {call ? (
+            {showSocial && instagram ? (
               <a
-                href={call}
-                className="flex items-start gap-3 text-[#1c1916] transition hover:text-[#c45c3e]"
+                className={styles.instagram}
+                href={instagram.href.trim()}
+                target="_blank"
+                rel="noreferrer"
               >
-                <Phone className="mt-0.5 h-5 w-5 shrink-0 text-[#c45c3e]" />
-                <div>
-                  <p className="text-sm font-medium text-[#5c5348]">Phone</p>
-                  <p className="text-lg font-semibold">{data.phone}</p>
-                </div>
+                <InstagramMark />
+                <span>{instagram.label.trim() || "Instagram"}</span>
               </a>
-            ) : (
-              <div className="flex items-start gap-3">
-                <Phone className="mt-0.5 h-5 w-5 shrink-0 text-[#c45c3e]" />
-                <div>
-                  <p className="text-sm font-medium text-[#5c5348]">Phone</p>
-                  <TextSlot
-                    value={data.phone}
-                    jsonPath={fieldPath(instanceId, "phone")}
-                    as="p"
-                    className="text-lg font-semibold"
-                  />
-                </div>
-              </div>
-            )}
-            <div className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#c45c3e]" />
-              <div>
-                <p className="text-sm font-medium text-[#5c5348]">Service area</p>
-                <TextSlot
-                  value={data.serviceArea}
-                  jsonPath={fieldPath(instanceId, "serviceArea")}
-                  as="p"
-                  className="leading-7 text-[#1c1916]"
-                />
-                <TextSlot
-                  value={data.hours}
-                  jsonPath={fieldPath(instanceId, "hours")}
-                  as="p"
-                  className="mt-2 text-sm text-[#5c5348]"
-                />
-              </div>
-            </div>
+            ) : null}
+
+            {showSocial && otherLinks.length > 0 ? (
+              <SocialLinks links={otherLinks} />
+            ) : null}
+
+            {hasFacts ? (
+              <dl className={styles.facts}>
+                {phone ? (
+                  <div className={styles.fact}>
+                    <dt>Phone</dt>
+                    <dd>
+                      {call ? (
+                        <a href={call} className={styles.factLink}>
+                          {phone}
+                        </a>
+                      ) : (
+                        <TextSlot
+                          value={data.phone}
+                          jsonPath={fieldPath(instanceId, "phone")}
+                          as="span"
+                        />
+                      )}
+                    </dd>
+                  </div>
+                ) : null}
+                {area ? (
+                  <div className={styles.fact}>
+                    <dt>Area</dt>
+                    <dd>
+                      <TextSlot
+                        value={data.serviceArea}
+                        jsonPath={fieldPath(instanceId, "serviceArea")}
+                        as="span"
+                      />
+                    </dd>
+                  </div>
+                ) : null}
+                {hours ? (
+                  <div className={styles.fact}>
+                    <dt>Hours</dt>
+                    <dd>
+                      <TextSlot
+                        value={data.hours}
+                        jsonPath={fieldPath(instanceId, "hours")}
+                        as="span"
+                      />
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+            ) : null}
           </div>
 
-          {showForm && submitted ? (
-            <div
-              className="rounded-2xl border border-[#e8e2d9] bg-[#faf8f5] p-8 text-center"
-              role="status"
-            >
-              <p className="font-medium text-[#1c1916]">Thanks for reaching out.</p>
-              <p className="mt-2 text-sm text-[#5c5348]">
-                This demo form does not send messages—we&apos;ll wire that up later.
-              </p>
+          {showForm ? (
+            <div className={styles.formCol}>
+              {state === "sent" ? (
+                <div className={styles.success} role="status">
+                  <p className={styles.successTitle}>Message received.</p>
+                  <p className={styles.successBody}>We will get back to you.</p>
+                </div>
+              ) : (
+                <form className={styles.form} onSubmit={handleSubmit} noValidate>
+                  <p className={styles.formLead}>Send a note</p>
+                  <div className={styles.honeypot} aria-hidden>
+                    <label htmlFor={`${instanceId}-company`}>Company</label>
+                    <input
+                      id={`${instanceId}-company`}
+                      name="company"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+                  <div className={styles.row}>
+                    <label className={styles.field} htmlFor={`${instanceId}-name`}>
+                      <span>Name</span>
+                      <input
+                        id={`${instanceId}-name`}
+                        name="name"
+                        type="text"
+                        required
+                        autoComplete="name"
+                      />
+                    </label>
+                    <label className={styles.field} htmlFor={`${instanceId}-email`}>
+                      <span>Email</span>
+                      <input
+                        id={`${instanceId}-email`}
+                        name="email"
+                        type="email"
+                        required
+                        autoComplete="email"
+                      />
+                    </label>
+                  </div>
+                  <label className={styles.field} htmlFor={`${instanceId}-message`}>
+                    <span>Message</span>
+                    <textarea
+                      id={`${instanceId}-message`}
+                      name="message"
+                      required
+                      rows={5}
+                    />
+                  </label>
+                  {state === "error" ? (
+                    <p className={styles.error} role="alert">
+                      That did not send. Try again in a moment.
+                    </p>
+                  ) : null}
+                  <button
+                    type="submit"
+                    className={styles.submit}
+                    disabled={state === "sending"}
+                  >
+                    {state === "sending"
+                      ? "Sending…"
+                      : data.ctaLabel.trim() || "Send a message"}
+                  </button>
+                </form>
+              )}
             </div>
-          ) : showForm ? (
-            <form onSubmit={handleSubmit} className={styles.form}>
-              <div>
-                <label
-                  htmlFor={`${instanceId}-name`}
-                  className="text-sm font-medium text-[#1c1916]"
-                >
-                  Name
-                </label>
-                <input
-                  id={`${instanceId}-name`}
-                  name="name"
-                  type="text"
-                  required
-                  autoComplete="name"
-                  className={styles.input}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor={`${instanceId}-email`}
-                  className="text-sm font-medium text-[#1c1916]"
-                >
-                  Email
-                </label>
-                <input
-                  id={`${instanceId}-email`}
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className={styles.input}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor={`${instanceId}-message`}
-                  className="text-sm font-medium text-[#1c1916]"
-                >
-                  Message
-                </label>
-                <textarea
-                  id={`${instanceId}-message`}
-                  name="message"
-                  required
-                  rows={4}
-                  className={styles.input}
-                />
-              </div>
-              <button type="submit" className={styles.submit}>
-                {data.ctaLabel.trim() || "Send message"}
-              </button>
-            </form>
           ) : null}
         </div>
       </div>

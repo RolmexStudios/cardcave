@@ -41,7 +41,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   isolation: isolate;
   z-index: 1;
   top: auto;
-  bottom: clamp(3.75rem, 14%, 6.5rem);
+  bottom: clamp(2.15rem, 8%, 4.25rem);
   left: 0;
   right: 0;
   display: flex;
@@ -127,19 +127,19 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   min-height: 2.75rem;
   padding: 0.75rem 2rem;
   border-radius: 999px;
-  background: #ef4444;
-  color: #fff;
+  background: #1c1916;
+  color: #faf8f5;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
-  box-shadow: 0 10px 22px rgba(239, 68, 68, 0.28);
+  box-shadow: 0 10px 22px rgba(28, 25, 22, 0.18);
   transition:
     transform 0.25s $ease,
     background-color 0.2s ease;
 
   &:hover {
-    background: #dc2626;
+    background: #2a2622;
     transform: scale(1.05);
   }
 
@@ -148,7 +148,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
   }
 
   &:focus-visible {
-    outline: 2px solid #f87171;
+    outline: 2px solid #1c1916;
     outline-offset: 3px;
   }
 }
@@ -229,7 +229,7 @@ $muted: color-mix(in srgb, var(--color-fg, #171717) 62%, transparent);
 @media (max-width: 767px) {
   .copy {
     top: auto;
-    bottom: clamp(2.75rem, 12%, 4.5rem);
+    bottom: clamp(1.5rem, 7%, 2.85rem);
     padding: 1.15rem 1.15rem 1rem;
   }
 

@@ -72,11 +72,9 @@ export function EditorSheet({
             <h2 className={styles.title}>
               Edit {isInventory ? "inventory" : instanceLabel(instanceId)}
             </h2>
-            <p className={styles.hint}>
-              {isInventory
-                ? "Find a slab, open it, then save to publish."
-                : "Changes preview on the page. Save to publish."}
-            </p>
+            {isInventory ? null : (
+              <p className={styles.hint}>Changes preview on the page. Save to publish.</p>
+            )}
           </div>
           <button type="button" className={styles.ghost} onClick={requestClose}>
             Close

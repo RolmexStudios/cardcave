@@ -1,11 +1,11 @@
 "use client";
 
-import type { MouseEvent, ReactNode } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { FlipHorizontal2 } from "lucide-react";
 import { MediaSlot } from "@/components/shared/media";
 import { Hover3d } from "@/components/shared/hover-3d";
-import { visiblePrice } from "@/components/shared/price";
+import { publicPrice } from "@/components/shared/price";
 import styles from "./flip-card.module.scss";
 
 export type FlipCardProps = {
@@ -66,16 +66,7 @@ export function FlipCard({
 }: FlipCardProps) {
   const backPhoto = backUrl.trim();
   const note = backText.trim();
-
-  const onClick = (event: MouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement;
-    if (target.closest("a[href]")) return;
-    onToggle();
-  };
-
-  const openCard = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.stopPropagation();
-  };
+  const detailsHref = href.trim();
 
   let back: ReactNode;
   if (backPhoto) {
@@ -97,44 +88,45 @@ export function FlipCard({
         {kicker ? <p className={styles.kicker}>{kicker}</p> : null}
         <p className={styles.title}>{title}</p>
         {note ? <p className={styles.text}>{note}</p> : null}
-        {visiblePrice(price) ? <p className={styles.price}>{visiblePrice(price)}</p> : null}
-        {href.trim() ? (
-          <Link href={href} className={styles.link} onClick={openCard}>
-            {hrefLabel}
-          </Link>
-        ) : null}
+        {publicPrice(price) ? <p className={styles.price}>{publicPrice(price)}</p> : null}
         <FlipMark />
       </div>
     );
   }
 
   return (
-    <Hover3d
-      className={classNames(className)}
-      ariaLabel={
-        flipped ? `${title}, back. Click to flip back.` : `${title}. Click to flip.`
-      }
-      pressed={flipped}
-      onClick={onClick}
-      passthrough={flipped}
-    >
-      <div className={styles.shell} data-flipped={flipped ? "true" : undefined}>
-        <div className={styles.inner}>
-          <div className={styles.front} inert={flipped || undefined}>
-            <MediaSlot
-              url={frontUrl}
-              slotId={frontSlotId}
-              jsonPath={frontJsonPath}
-              alt={frontAlt}
-              className={styles.image}
-            />
-            <FlipMark />
-          </div>
-          <div className={styles.back} inert={!flipped || undefined}>
-            {back}
+    <div className={classNames(styles.wrap, className)}>
+      <Hover3d
+        className={styles.tilt}
+        ariaLabel={
+          flipped ? `${title}, back. Click to flip back.` : `${title}. Click to flip.`
+        }
+        pressed={flipped}
+        onClick={() => onToggle()}
+      >
+        <div className={styles.shell} data-flipped={flipped ? "true" : undefined}>
+          <div className={styles.inner}>
+            <div className={styles.front} inert={flipped || undefined}>
+              <MediaSlot
+                url={frontUrl}
+                slotId={frontSlotId}
+                jsonPath={frontJsonPath}
+                alt={frontAlt}
+                className={styles.image}
+              />
+              <FlipMark />
+            </div>
+            <div className={styles.back} inert={!flipped || undefined}>
+              {back}
+            </div>
           </div>
         </div>
-      </div>
-    </Hover3d>
+      </Hover3d>
+      {flipped && detailsHref ? (
+        <Link href={detailsHref} className={styles.link}>
+          {hrefLabel}
+        </Link>
+      ) : null}
+    </div>
   );
 }

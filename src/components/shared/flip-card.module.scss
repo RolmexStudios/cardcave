@@ -4,12 +4,31 @@ $cream: #efe7d6;
 $mute: #b7c0b0;
 $gold: #d4b483;
 
+.wrap {
+  position: relative;
+  width: 100%;
+}
+
+.tilt {
+  filter: none;
+}
+
+.tilt > :first-child {
+  overflow: visible;
+  background: transparent;
+  border-radius: 1rem;
+
+  &::before {
+    content: none;
+  }
+}
+
 .shell {
   display: block;
   width: 100%;
   aspect-ratio: 2.5 / 3.5;
   border-radius: 1rem;
-  background: $well;
+  background: transparent;
 }
 
 .inner {
@@ -17,7 +36,19 @@ $gold: #d4b483;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.65s $ease;
+  border-radius: 1rem;
+  box-shadow:
+    0 0 0 1px rgba(12, 11, 9, 0.08),
+    0 10px 28px rgba(12, 11, 9, 0.14);
+  transition:
+    transform 0.65s $ease,
+    box-shadow ease-out 400ms;
+}
+
+.tilt:hover .inner {
+  box-shadow:
+    0 0 0 1px rgba(12, 11, 9, 0.1),
+    0 18px 44px rgba(12, 11, 9, 0.2);
 }
 
 .shell[data-flipped="true"] .inner {
@@ -30,9 +61,39 @@ $gold: #d4b483;
   inset: 0;
   overflow: hidden;
   border-radius: 1rem;
+  background: #fff;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   pointer-events: none;
+
+  &::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 33.333%;
+    height: 33.333%;
+    scale: 500%;
+    opacity: 0;
+    filter: blur(0.75rem);
+    background-image: radial-gradient(circle at 50%, #fff3 10%, transparent 50%);
+    translate: var(--shine, 100% 100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &::after {
+      transition:
+        translate ease-out 400ms,
+        opacity ease-out 400ms;
+    }
+  }
+}
+
+.tilt:hover .front::after,
+.tilt:hover .back::after {
+  opacity: 1;
 }
 
 .shell:not([data-flipped="true"]) .front,
@@ -48,7 +109,7 @@ $gold: #d4b483;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 
@@ -106,8 +167,10 @@ $gold: #d4b483;
 }
 
 .link {
-  align-self: flex-start;
-  margin-top: 0.7rem;
+  position: absolute;
+  z-index: 6;
+  left: 0.55rem;
+  top: 0.55rem;
   min-height: 44px;
   padding: 0 0.95rem;
   display: inline-flex;
@@ -120,6 +183,7 @@ $gold: #d4b483;
   text-transform: uppercase;
   color: $well;
   text-decoration: none;
+  box-shadow: 0 8px 20px rgba(12, 11, 9, 0.28);
 }
 
 .link:hover {

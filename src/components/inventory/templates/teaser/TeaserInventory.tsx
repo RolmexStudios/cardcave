@@ -62,6 +62,7 @@ export function TeaserInventory({
               vehicle={vehicle}
               instanceId={instanceId}
               index={index}
+              showPrices={data.showPrices}
             />
           ))}
         </div>

@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./filter-select.module.scss";
 
 const OPEN_EVENT = "brochure:filter-select-open";
 const ALL_VALUE = "all";
+const MOBILE_QUERY = "(max-width: 767px)";
 
 export type FilterSelectProps = {
   id?: string;
@@ -15,7 +17,7 @@ export type FilterSelectProps = {
   allValue?: string;
   allLabel?: string;
   labelFor?: (value: string) => string;
-  /** Overlay menu. Default stays the editorial inline list. */
+  /** Overlay menu on desktop; bottom sheet on small screens. */
   variant?: "inline" | "dropdown";
 };
 
@@ -26,6 +28,18 @@ type Item = {
 
 function optionDomId(rootId: string, value: string) {
   return `${rootId}-opt-${value.replace(/[^a-zA-Z0-9_-]+/g, "-")}`;
+}
+
+function useMobileSheet() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_QUERY);
+    const sync = () => setMobile(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+  return mobile;
 }
 
 export function FilterSelect({
@@ -40,11 +54,15 @@ export function FilterSelect({
   variant = "inline",
 }: FilterSelectProps) {
   const isDropdown = variant === "dropdown";
+  const mobile = useMobileSheet();
+  const sheet = isDropdown && mobile;
   const generatedId = useId();
   const rootId = id ?? generatedId;
   const listId = `${rootId}-list`;
   const rootRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const items = useMemo<Item[]>(() => {
@@ -99,9 +117,14 @@ export function FilterSelect({
   }
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (!open) return;
 
     function onPointerDown(event: PointerEvent) {
+      if (sheet) return;
       if (!rootRef.current?.contains(event.target as Node)) {
         close();
       }
@@ -120,7 +143,9 @@ export function FilterSelect({
       }
     }
 
-    document.addEventListener("pointerdown", onPointerDown);
+    if (!sheet) {
+      document.addEventListener("pointerdown", onPointerDown);
+    }
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener(OPEN_EVENT, onForeignOpen);
     return () => {
@@ -128,7 +153,84 @@ export function FilterSelect({
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener(OPEN_EVENT, onForeignOpen);
     };
-  }, [open, rootId]);
+  }, [open, rootId, sheet]);
+
+  useEffect(() => {
+    if (!open || !sheet) return;
+    const node =
+      listRef.current?.querySelector("[data-active]") ??
+      listRef.current?.querySelector("[data-selected]");
+    node?.scrollIntoView({ block: "center" });
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [activeIndex, open, sheet]);
+
+  const list = (
+    <ul
+      ref={listRef}
+      id={listId}
+      className={sheet ? styles.sheetList : styles.menu}
+      role="listbox"
+      aria-labelledby={`${rootId}-label`}
+    >
+      {items.map((item, index) => {
+        const selectedItem = item.value === selected.value;
+        const activeItem = item.value === active.value;
+        if (sheet) {
+          return (
+            <li key={item.value}>
+              <button
+                type="button"
+                id={optionDomId(rootId, item.value)}
+                role="option"
+                aria-selected={selectedItem}
+                className={styles.sheetOption}
+                data-active={activeItem || undefined}
+                data-selected={selectedItem || undefined}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => choose(item)}
+              >
+                {item.label}
+              </button>
+            </li>
+          );
+        }
+        return (
+          <li
+            key={item.value}
+            id={optionDomId(rootId, item.value)}
+            role="option"
+            aria-selected={selectedItem}
+            className={styles.option}
+            data-active={activeItem || undefined}
+            data-selected={selectedItem || undefined}
+            onMouseEnter={() => setActiveIndex(index)}
+            onPointerDown={(event) => {
+              event.preventDefault();
+              choose(item);
+            }}
+          >
+            {isDropdown ? null : (
+              <span className={styles.index} aria-hidden="true">
+                {index === 0 ? "—" : String(index).padStart(2, "0")}
+              </span>
+            )}
+            <span className={styles.optionLabel}>{item.label}</span>
+            {isDropdown ? (
+              <span className={styles.check} aria-hidden="true">
+                {selectedItem ? "✓" : ""}
+              </span>
+            ) : (
+              <span className={styles.pip} aria-hidden="true" />
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
 
   return (
     <div
@@ -181,49 +283,24 @@ export function FilterSelect({
           aria-hidden="true"
         />
       </button>
-      {open ? (
-        <ul
-          id={listId}
-          className={styles.menu}
-          role="listbox"
-          aria-labelledby={`${rootId}-label`}
-        >
-          {items.map((item, index) => {
-            const selectedItem = item.value === selected.value;
-            const activeItem = item.value === active.value;
-            return (
-              <li
-                key={item.value}
-                id={optionDomId(rootId, item.value)}
-                role="option"
-                aria-selected={selectedItem}
-                className={styles.option}
-                data-active={activeItem || undefined}
-                data-selected={selectedItem || undefined}
-                onMouseEnter={() => setActiveIndex(index)}
-                onPointerDown={(event) => {
-                  event.preventDefault();
-                  choose(item);
-                }}
+      {open && !sheet ? list : null}
+      {mounted && open && sheet
+        ? createPortal(
+            <div className={styles.scrim} onClick={close}>
+              <div
+                className={styles.sheet}
+                role="dialog"
+                aria-label={label}
+                onClick={(event) => event.stopPropagation()}
               >
-                {isDropdown ? null : (
-                  <span className={styles.index} aria-hidden="true">
-                    {index === 0 ? "—" : String(index).padStart(2, "0")}
-                  </span>
-                )}
-                <span className={styles.optionLabel}>{item.label}</span>
-                {isDropdown ? (
-                  <span className={styles.check} aria-hidden="true">
-                    {selectedItem ? "✓" : ""}
-                  </span>
-                ) : (
-                  <span className={styles.pip} aria-hidden="true" />
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      ) : null}
+                <div className={styles.handle} aria-hidden />
+                <p className={styles.sheetTitle}>{label}</p>
+                {list}
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }

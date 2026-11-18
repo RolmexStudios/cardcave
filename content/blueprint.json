@@ -33,8 +33,8 @@
     "variant": "marquee",
     "sectionSize": "peek",
     "eyebrow": "",
-    "headline": "The case is open.",
-    "subheadline": "Graded basketball and football from The Card Cave. Buy it, sell into it, or trade for it. The number is a message away.",
+    "headline": "What's in the case.",
+    "subheadline": "Graded basketball and football. Buy, sell, or trade. Message for the number.",
     "ctaLabel": "Browse inventory",
     "ctaHref": "/shop",
     "marqueeDurationMs": 40000,
@@ -81,13 +81,33 @@
       }
     ]
   },
+  "BrochureDivider_1": {
+    "component": "BrochureDivider",
+    "variant": "stats",
+    "eyebrow": "",
+    "sectionSize": "auto",
+    "items": [
+      {
+        "value": "Browse",
+        "label": "See every slab on the table"
+      },
+      {
+        "value": "Inquire",
+        "label": "Message for the number"
+      },
+      {
+        "value": "Deal",
+        "label": "Buy, sell, or trade"
+      }
+    ]
+  },
   "BrochureAbout_1": {
     "component": "BrochureAbout",
     "variant": "story",
     "eyebrow": "The owner",
     "title": "Lewis, aka The Card Cave.",
     "paragraphs": [
-      "The Card Cave is Lewis’s table: graded basketball and football, shown until now on Instagram and Facebook. This page is the case, with a name and a grade on every slab.",
+      "The Card Cave is Lewis\u2019s table: graded basketball and football, shown until now on Instagram and Facebook. This page is the case, with a name and a grade on every slab.",
       "He buys, sells, and trades. Online deals, hobby pulls, case setups, hosted trade nights, and local pickup in South Texas."
     ],
     "imageUrl": "/assets/730332008_18418677463196572_1568560958723003165_n.jpg",
@@ -730,6 +750,7 @@
         "backText": "",
         "description": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph. BGS 9, auto 10. Message @cardcave956 for the number."
       }
-    ]
+    ],
+    "showPrices": false
   }
 }

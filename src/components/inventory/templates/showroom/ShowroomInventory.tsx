@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { FilterSelect } from "@/components/shared/filter-select";
+import { YearFilter } from "@/components/shared/year-filter";
+import { matchesYearFilter } from "@/components/shared/year-range";
 import { TextSlot } from "@/components/shared/text-slot";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyInventoryBlueprint } from "@/components/inventory/blueprint";
 import { VehicleCard } from "@/components/inventory/templates/vehicle-card";
-import { EditChip } from "@/components/admin/edit-chip";
-import adminStyles from "@/components/admin/admin.module.scss";
 import {
   VEHICLE_STATUS_LABELS,
   isListedVehicle,
@@ -56,13 +56,6 @@ export function ShowroomInventory({
     () => uniqueSorted(vehicles.map((vehicle) => vehicle.make)),
     [vehicles],
   );
-  const years = useMemo(
-    () =>
-      uniqueSorted(vehicles.map((vehicle) => vehicle.year)).sort((a, b) =>
-        b.localeCompare(a),
-      ),
-    [vehicles],
-  );
   const transmissions = useMemo(
     () => uniqueSorted(vehicles.map((vehicle) => vehicle.transmission)),
     [vehicles],
@@ -89,7 +82,7 @@ export function ShowroomInventory({
         if (filters.make !== ALL && vehicle.make.trim() !== filters.make) {
           return false;
         }
-        if (filters.year !== ALL && vehicle.year.trim() !== filters.year) {
+        if (!matchesYearFilter(vehicle, filters.year)) {
           return false;
         }
         if (
@@ -119,12 +112,11 @@ export function ShowroomInventory({
 
   const countLabel =
     filtered.length === vehicles.length
-      ? `${vehicles.length} slabs`
+      ? `${vehicles.length} motorcars`
       : `${filtered.length} of ${vehicles.length}`;
 
   return (
     <section id={instanceId} className={styles.section} aria-label="Showroom">
-      <EditChip instanceId={instanceId} className={adminStyles.editChip} />
       <div className={styles.inner}>
         <aside className={styles.filters} aria-label="Filter the collection">
           <div className={styles.filtersInner}>
@@ -140,11 +132,11 @@ export function ShowroomInventory({
               options={makes}
               onChange={(value) => update("make", value)}
             />
-            <FilterSelect
+            <YearFilter
               id={`${instanceId}-year`}
-              label="Year"
+              variant="inline"
               value={filters.year}
-              options={years}
+              entries={vehicles}
               onChange={(value) => update("year", value)}
             />
             <FilterSelect
@@ -205,6 +197,7 @@ export function ShowroomInventory({
                   vehicle={vehicle}
                   instanceId={instanceId}
                   index={index}
+                  showPrices={data.showPrices}
                 />
               ))}
             </div>

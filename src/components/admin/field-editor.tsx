@@ -8,6 +8,7 @@ import {
   type FieldNode,
 } from "@/lib/admin/schema-fields";
 import { ImageField } from "./image-field";
+import { SheetSelect } from "./sheet-select";
 import styles from "./admin.module.scss";
 
 function pretty(key: string, labels?: Record<string, string>) {
@@ -100,19 +101,15 @@ function FieldControl({
 
   if (field.kind === "enum") {
     return (
-      <label className={styles.field}>
-        <span>{pretty(field.key, labels)}</span>
-        <select
-          value={String(current ?? "")}
-          onChange={(event) => patch(event.target.value)}
-        >
-          {(field.options ?? []).map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
+      <SheetSelect
+        label={pretty(field.key, labels)}
+        value={String(current ?? "")}
+        options={(field.options ?? []).map((option) => ({
+          value: option,
+          label: option.charAt(0).toUpperCase() + option.slice(1),
+        }))}
+        onChange={patch}
+      />
     );
   }
 

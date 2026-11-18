@@ -14,12 +14,14 @@ export const vehicleSchema = z.object({
   id: z.string().default(""),
   slug: z.string().default(""),
   year: z.string().default(""),
+  yearEnd: z.string().default(""),
   make: z.string().default(""),
   model: z.string().default(""),
   chassis: z.string().default(""),
   transmission: z.string().default(""),
   status: z.enum(["available", "incoming", "private", "sold"]).default("available"),
   price: z.string().default(""),
+  showPrice: z.boolean().default(true),
   metricLabel: z.string().default(""),
   metricValue: z.string().default(""),
   imageUrl: z.string().default(""),
@@ -38,6 +40,7 @@ export const slabSchema = z.object({
   id: z.string().default(""),
   slug: z.string().default(""),
   year: z.string().default(""),
+  yearEnd: z.string().default(""),
   set: z.string().default(""),
   player: z.string().default(""),
   parallel: z.string().default(""),
@@ -48,6 +51,7 @@ export const slabSchema = z.object({
   band: z.string().default(""),
   status: z.enum(["available", "hold", "traded", "sold"]).default("available"),
   price: z.string().default(""),
+  showPrice: z.boolean().default(true),
   imageUrl: z.string().default(""),
   imageAlt: z.string().default(""),
   galleryImageUrls: z.array(z.string()).default([]),
@@ -59,7 +63,7 @@ export const slabSchema = z.object({
 
 export const inventoryBlueprintSchema = z.object({
   variant: z
-    .enum(["showroom", "teaser", "archive", "cards"])
+    .enum(["showroom", "teaser", "archive", "case", "binder", "vault", "cards"])
     .default("showroom"),
   eyebrow: z.string().default(""),
   title: z.string().default("The showroom"),
@@ -67,6 +71,7 @@ export const inventoryBlueprintSchema = z.object({
   teaserLimit: z.number().int().min(1).max(12).default(3),
   viewAllLabel: z.string().default(""),
   showStatusFilter: z.boolean().default(true),
+  showPrices: z.boolean().default(true),
   sectionSize: sectionSizeSchema,
   vehicles: z.array(vehicleSchema).default([]),
   items: z.array(slabSchema).default([]),

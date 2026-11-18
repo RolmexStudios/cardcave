@@ -2,7 +2,13 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { MediaSlot } from "@/components/shared/media";
 import { fieldPath } from "@/components/shared/field-path";
-import { vehicleCoverUrl, vehicleHref, vehicleTitle } from "@/components/inventory/data";
+import {
+  publicItemPrice,
+  vehicleCoverUrl,
+  vehicleHref,
+  vehicleTitle,
+  vehicleYearLabel,
+} from "@/components/inventory/data";
 import type { BrochureVehicle } from "@/types/brochure";
 import styles from "./vehicle-card.module.scss";
 
@@ -10,18 +16,25 @@ type VehicleCardProps = {
   vehicle: BrochureVehicle;
   instanceId: string;
   index: number;
+  showPrices?: boolean;
 };
 
 /** Framed print card: plate, year, model, chassis, one figure, price. */
-export function VehicleCard({ vehicle, instanceId, index }: VehicleCardProps) {
+export function VehicleCard({
+  vehicle,
+  instanceId,
+  index,
+  showPrices = true,
+}: VehicleCardProps) {
   const title = vehicleTitle(vehicle) || "Motorcar";
   const alt = vehicle.imageAlt.trim() || title;
+  const price = publicItemPrice(vehicle.price, { showPrices }, vehicle);
 
   return (
     <Link
       href={vehicleHref(vehicle)}
       className={styles.card}
-      aria-label={`${title}${vehicle.price.trim() ? ` — ${vehicle.price}` : ""}`}
+      aria-label={`${title}${price ? ` — ${price}` : ""}`}
     >
       <figure className={styles.plate}>
         <MediaSlot
@@ -34,7 +47,7 @@ export function VehicleCard({ vehicle, instanceId, index }: VehicleCardProps) {
       </figure>
 
       <div className={styles.body}>
-        <p className={styles.year}>{vehicle.year}</p>
+        <p className={styles.year}>{vehicleYearLabel(vehicle)}</p>
         <h3 className={styles.model}>
           {vehicle.make ? <span className={styles.make}>{vehicle.make}</span> : null}
           {vehicle.model}
@@ -62,7 +75,7 @@ export function VehicleCard({ vehicle, instanceId, index }: VehicleCardProps) {
         </dl>
 
         <div className={styles.footer}>
-          <span className={styles.price}>{vehicle.price.trim() || "On request"}</span>
+          {price ? <span className={styles.price}>{price}</span> : <span className={styles.price} />}
           <span className={styles.view}>
             View
             <ArrowUpRight className={styles.viewIcon} aria-hidden />

@@ -10,6 +10,9 @@ import styles from "./admin.module.scss";
 
 type Aspect = number | undefined;
 
+/** Standard trading-card face (2.5" × 3.5"), same as FlipCard. */
+const CARD_ASPECT = 5 / 7;
+
 const ASPECTS: { label: string; value: Aspect }[] = [
   { label: "Free", value: undefined },
   { label: "1:1", value: 1 },
@@ -21,17 +24,26 @@ export function ImageField({
   label,
   value,
   onChange,
+  hint,
+  required = false,
+  emptyLabel,
+  shape = "wide",
 }: {
   label: string;
   value: string;
   onChange: (url: string) => void;
+  hint?: string;
+  required?: boolean;
+  emptyLabel?: string;
+  shape?: "wide" | "card";
 }) {
   const store = useBrochureStore();
   const preview = store?.site ? rewriteMediaUrl(value, store.site.adminApi) : value;
   const [source, setSource] = useState<string | null>(null);
+  const cardCrop = shape === "card";
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [aspect, setAspect] = useState<Aspect>(undefined);
+  const [aspect, setAspect] = useState<Aspect>(cardCrop ? CARD_ASPECT : undefined);
   const [area, setArea] = useState<Area | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -53,6 +65,7 @@ export function ImageField({
     });
     setCrop({ x: 0, y: 0 });
     setZoom(1);
+    setAspect(cardCrop ? CARD_ASPECT : undefined);
   }
 
   async function confirmCrop() {
@@ -86,30 +99,68 @@ export function ImageField({
 
   return (
     <div className={styles.field}>
-      <span>{label}</span>
-      {preview ? (
-        // Uploaded media can be any host the Worker returns.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={preview}
-          alt=""
-          className={styles.preview}
-          loading="lazy"
-          decoding="async"
-        />
-      ) : null}
-      <div className={styles.row}>
-        <FilePickButton label={value ? "Replace" : "Choose photo"} onPick={pickFile} />
-        <FilePickButton
-          label="Take photo"
-          capture="environment"
-          onPick={pickFile}
-        />
-        {value ? (
-          <button type="button" className={styles.ghost} onClick={() => onChange("")}>
-            Remove
-          </button>
-        ) : null}
+      <span>
+        {label}
+        {required && !preview ? <span className={styles.reqMark}>Required</span> : null}
+      </span>
+      {hint ? <p className={styles.hint}>{hint}</p> : null}
+      <div className={styles.photoSlot}>
+        <label
+          className={`${styles.previewWell} ${shape === "card" ? styles.previewCard : ""}`.trim()}
+          data-empty={preview ? undefined : "true"}
+          data-required={required && !preview ? "true" : undefined}
+        >
+          {preview ? (
+            // Uploaded media can be any host the Worker returns.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={preview}
+              alt=""
+              className={styles.previewImage}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span className={styles.previewPlaceholder}>
+              <span className={styles.previewGlyph} aria-hidden />
+              {emptyLabel ?? "Add a photo"}
+            </span>
+          )}
+          {preview ? (
+            <button
+              type="button"
+              className={styles.removePhoto}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onChange("");
+              }}
+            >
+              Remove
+            </button>
+          ) : null}
+          <span className={styles.srOnly}>{value ? "Replace photo" : "Choose photo"}</span>
+          <input
+            type="file"
+            accept="image/*"
+            className={styles.fileInput}
+            onChange={(event) => {
+              pickFile(event.target.files?.[0]);
+              event.target.value = "";
+            }}
+          />
+        </label>
+        <div className={styles.photoActions}>
+          <FilePickButton
+            label={value ? "Replace" : "Choose photo"}
+            onPick={pickFile}
+          />
+          <FilePickButton
+            label="Take photo"
+            capture="environment"
+            onPick={pickFile}
+          />
+        </div>
       </div>
       {source ? (
         <div className={styles.scrim} onClick={() => setSource(null)}>
@@ -118,33 +169,37 @@ export function ImageField({
             onClick={(event) => event.stopPropagation()}
           >
             <div className={styles.modalHead}>
-              <h2 className={styles.title}>Crop image</h2>
+              <h2 className={styles.title}>{cardCrop ? "Crop to card" : "Crop image"}</h2>
             </div>
             <div className={styles.modalBody}>
-              <div className={styles.cropWrap}>
+              <div
+                className={`${styles.cropWrap} ${cardCrop ? styles.cropWrapCard : ""}`.trim()}
+              >
                 <Cropper
                   image={source}
                   crop={crop}
                   zoom={zoom}
-                  aspect={aspect}
+                  aspect={cardCrop ? CARD_ASPECT : aspect}
                   onCropChange={setCrop}
                   onZoomChange={setZoom}
                   onCropComplete={onCropComplete}
                 />
               </div>
-              <div className={styles.row}>
-                {ASPECTS.map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    className={styles.itemButton}
-                    data-active={aspect === item.value ? "true" : undefined}
-                    onClick={() => setAspect(item.value)}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
+              {cardCrop ? null : (
+                <div className={styles.row}>
+                  {ASPECTS.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      className={styles.itemButton}
+                      data-active={aspect === item.value ? "true" : undefined}
+                      onClick={() => setAspect(item.value)}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
               {error ? <p className={styles.error}>{error}</p> : null}
             </div>
             <div className={styles.modalFoot}>

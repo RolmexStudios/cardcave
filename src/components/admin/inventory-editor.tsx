@@ -6,11 +6,18 @@ import {
   fieldsForSchema,
 } from "@/lib/admin/schema-fields";
 import {
+  hasSlabPhoto,
   SLAB_STATUS_LABELS,
+  slabYearLabel,
   VEHICLE_STATUS_LABELS,
   slugifyVehicleId,
   vehicleToSlab,
 } from "@/components/inventory/data";
+import {
+  collectFilterYears,
+  matchesYearFilter,
+  parseYearRange,
+} from "@/components/shared/year-range";
 import {
   inventoryBlueprintSchema,
   slabSchema,
@@ -24,55 +31,141 @@ import type {
 import { rewriteMediaUrl } from "@/lib/admin/media-url";
 import { useBrochureStore } from "@/lib/admin/store";
 import { FieldList } from "./field-editor";
+import { ImageField } from "./image-field";
+import { SheetSelect } from "./sheet-select";
 import admin from "./admin.module.scss";
 import styles from "./inventory-editor.module.scss";
 
 const PAGE_SIZE = 12;
+const SLAB_VARIANTS = new Set(["case", "binder", "vault", "cards"]);
+const NEW_SPORT = "__new__";
+
+const SETTINGS_LABELS: Record<string, string> = {
+  showPrices: "Show prices to visitors",
+  showStatusFilter: "Show availability filter",
+};
 
 const VEHICLE_LABELS: Record<string, string> = {
   make: "Brand",
-  model: "Name",
+  model: "Player name",
   transmission: "Sport",
   chassis: "Cert",
   metricLabel: "Grade label",
   metricValue: "Grade",
   placedNote: "Band",
-  imageUrl: "Photo",
-  imageAlt: "Photo alt",
+  imageUrl: "Front picture",
+  backImageUrl: "Back picture",
   galleryImageUrls: "More photos",
+  backText: "Back text",
+  showPrice: "Show price to visitors",
+  yearEnd: "End year",
+  description: "Notes",
 };
 
 const SLAB_LABELS: Record<string, string> = {
-  player: "Player",
+  player: "Player name",
   set: "Set",
   sport: "Sport",
   band: "Band",
-  imageUrl: "Photo",
-  imageAlt: "Photo alt",
+  imageUrl: "Front picture",
+  backImageUrl: "Back picture",
   galleryImageUrls: "More photos",
+  backText: "Back text",
+  showPrice: "Show price to visitors",
+  yearEnd: "End year",
+  description: "Notes",
 };
+
+const SLAB_HIDDEN = new Set([
+  "id",
+  "slug",
+  "cert",
+  "imageAlt",
+  "backImageAlt",
+  "galleryImageUrls",
+  "provenance",
+  "year",
+  "yearEnd",
+  "sport",
+  "imageUrl",
+  "backImageUrl",
+  "player",
+  "set",
+  "band",
+  "backText",
+  "description",
+]);
+
+const VEHICLE_SLAB_HIDDEN = new Set([
+  "id",
+  "slug",
+  "chassis",
+  "imageAlt",
+  "backImageAlt",
+  "galleryImageUrls",
+  "provenance",
+  "year",
+  "yearEnd",
+  "transmission",
+  "imageUrl",
+  "backImageUrl",
+  "model",
+  "make",
+  "metricLabel",
+  "placedNote",
+  "backText",
+  "description",
+]);
+
+const VEHICLE_SLAB_LABELS: Record<string, string> = {
+  ...VEHICLE_LABELS,
+  make: "Set",
+  model: "Player name",
+};
+
+const CAR_GEARBOX = /^(manual|automatic|pdk|dct|cvt|semi-automatic|sequential)/i;
+
+const VEHICLE_HIDDEN = new Set(["provenance", "yearEnd", "imageAlt", "backImageAlt"]);
 
 type CatalogSource = "vehicles" | "items";
 type View =
   | { pane: "list" }
   | { pane: "settings" }
-  | { pane: "item"; index: number };
+  | { pane: "item"; index: number }
+  | { pane: "draft" };
 
 function asInventory(value: unknown): BrochureInventoryContent {
   const parsed = inventoryBlueprintSchema.safeParse(value);
   return parsed.success ? parsed.data : inventoryBlueprintSchema.parse({});
 }
 
-function catalogSource(data: BrochureInventoryContent): CatalogSource {
-  const variant = String(data.variant);
-  if (variant === "case" || variant === "binder" || variant === "vault") {
-    return "items";
+function isSlabInventory(data: BrochureInventoryContent): boolean {
+  if (SLAB_VARIANTS.has(String(data.variant))) {
+    return true;
   }
   const items = data.items ?? [];
-  const authored = items.some(
+  if (items.some((item) => item.player.trim() || item.imageUrl.trim() || item.id.trim())) {
+    return true;
+  }
+  const transmissions = data.vehicles
+    .map((vehicle) => vehicle.transmission.trim())
+    .filter(Boolean);
+  return transmissions.length > 0 && transmissions.every((value) => !CAR_GEARBOX.test(value));
+}
+
+function catalogSource(data: BrochureInventoryContent): CatalogSource {
+  const variant = String(data.variant);
+  const items = data.items ?? [];
+  const authoredItems = items.some(
     (item) => item.id.trim() || item.imageUrl.trim() || item.player.trim(),
   );
-  return authored ? "items" : "vehicles";
+  const authoredVehicles = data.vehicles.some(
+    (vehicle) => vehicle.id.trim() || vehicle.imageUrl.trim() || vehicle.model.trim(),
+  );
+  if (SLAB_VARIANTS.has(variant)) {
+    return authoredItems || !authoredVehicles ? "items" : "vehicles";
+  }
+  return authoredItems ? "items" : "vehicles";
 }
 
 function uniqueTags(values: string[]): string[] {
@@ -92,6 +185,76 @@ function matchesQuery(haystack: string[], query: string): boolean {
   return haystack.some((part) => part.toLowerCase().includes(needle));
 }
 
+function readString(item: object, key: string): string {
+  return String((item as Record<string, unknown>)[key] ?? "");
+}
+
+function patchRecord<T extends object>(item: T, patch: Record<string, unknown>): T {
+  return { ...item, ...patch } as T;
+}
+
+function withCoverPhoto(item: unknown): unknown {
+  if (!item || typeof item !== "object" || Array.isArray(item)) {
+    return item;
+  }
+  const record = item as {
+    imageUrl?: unknown;
+    imageAlt?: unknown;
+    galleryImageUrls?: unknown;
+    backImageUrl?: unknown;
+    backImageAlt?: unknown;
+    player?: unknown;
+    model?: unknown;
+    year?: unknown;
+    yearEnd?: unknown;
+  };
+  let imageUrl = String(record.imageUrl ?? "").trim();
+  const gallery = Array.isArray(record.galleryImageUrls)
+    ? record.galleryImageUrls.map(String)
+    : [];
+  if (!imageUrl) {
+    imageUrl = gallery.find((url) => url.trim())?.trim() ?? "";
+  }
+  const player =
+    String(record.player ?? "").trim() || String(record.model ?? "").trim();
+  const year = slabYearLabel({
+    year: String(record.year ?? ""),
+    yearEnd: String(record.yearEnd ?? ""),
+  });
+  const title = [year, player].filter(Boolean).join(" ");
+  const imageAlt = String(record.imageAlt ?? "").trim();
+  const backImageUrl = String(record.backImageUrl ?? "").trim();
+  const backImageAlt = String(record.backImageAlt ?? "").trim();
+  return {
+    ...record,
+    imageUrl: imageUrl || String(record.imageUrl ?? ""),
+    imageAlt:
+      imageAlt ||
+      (imageUrl ? (title ? `Front of ${title}` : "Front of card") : ""),
+    backImageAlt:
+      backImageAlt ||
+      (backImageUrl ? (title ? `Back of ${title}` : "Back of card") : ""),
+  };
+}
+
+function isDraftDirty(item: object): boolean {
+  const keys = [
+    "imageUrl",
+    "backImageUrl",
+    "player",
+    "model",
+    "year",
+    "yearEnd",
+    "set",
+    "make",
+    "sport",
+    "transmission",
+    "price",
+    "description",
+  ];
+  return keys.some((key) => readString(item, key).trim());
+}
+
 export function InventoryEditor({
   value,
   onChange,
@@ -101,13 +264,16 @@ export function InventoryEditor({
 }) {
   const data = asInventory(value);
   const source = catalogSource(data);
+  const slabForm = isSlabInventory(data);
   const records = source === "items" ? (data.items ?? []) : data.vehicles;
   const [view, setView] = useState<View>({ pane: "list" });
+  const [draft, setDraft] = useState<BrochureSlab | BrochureVehicle | null>(null);
   const [query, setQuery] = useState("");
   const [sport, setSport] = useState("");
+  const [year, setYear] = useState("");
   const [status, setStatus] = useState("");
-  const [band, setBand] = useState("");
   const [shown, setShown] = useState(PAGE_SIZE);
+  const [photoError, setPhotoError] = useState(false);
 
   const rows = useMemo(() => {
     return records.map((record, index) => {
@@ -123,8 +289,8 @@ export function InventoryEditor({
     () => uniqueTags(rows.map((row) => row.slab.sport)),
     [rows],
   );
-  const bands = useMemo(
-    () => uniqueTags(rows.map((row) => row.slab.band)),
+  const years = useMemo(
+    () => collectFilterYears(rows.map((row) => row.slab)),
     [rows],
   );
   const statuses =
@@ -139,15 +305,17 @@ export function InventoryEditor({
       if (sport && slab.sport.trim().toLowerCase() !== sport.toLowerCase()) {
         return false;
       }
-      if (status && slab.status !== status) {
+      if (!matchesYearFilter(slab, year, "")) {
         return false;
       }
-      if (band && slab.band.trim().toLowerCase() !== band.toLowerCase()) {
+      if (status && slab.status !== status) {
         return false;
       }
       return matchesQuery(
         [
+          slabYearLabel(slab),
           slab.year,
+          slab.yearEnd ?? "",
           slab.player,
           slab.set,
           slab.parallel,
@@ -161,7 +329,7 @@ export function InventoryEditor({
         query,
       );
     });
-  }, [band, query, rows, sport, status]);
+  }, [query, rows, sport, status, year]);
 
   const visible = filtered.slice(0, shown);
   const statusLabel =
@@ -179,6 +347,14 @@ export function InventoryEditor({
     });
   }
 
+  function resetFilters() {
+    setQuery("");
+    setSport("");
+    setYear("");
+    setStatus("");
+    setShown(PAGE_SIZE);
+  }
+
   function addRecord() {
     const id = `slab-${Date.now().toString(36)}`;
     const fresh =
@@ -187,23 +363,47 @@ export function InventoryEditor({
             ...(emptyFromSchema(slabSchema) as BrochureSlab),
             id,
             slug: slugifyVehicleId(id),
+            showPrice: true,
           } as BrochureSlab)
         : ({
             ...(emptyFromSchema(vehicleSchema) as BrochureVehicle),
             id,
             slug: slugifyVehicleId(id),
+            showPrice: true,
           } as BrochureVehicle);
-    patchCatalog([fresh, ...records]);
-    setQuery("");
-    setSport("");
-    setStatus("");
-    setBand("");
-    setShown(PAGE_SIZE);
+    setPhotoError(false);
+    setDraft(fresh);
+    resetFilters();
+    setView({ pane: "draft" });
+  }
+
+  function commitDraft(item: BrochureSlab | BrochureVehicle) {
+    const prepared = withCoverPhoto(item) as typeof item;
+    if (!hasSlabPhoto(prepared)) {
+      setPhotoError(true);
+      setDraft(prepared);
+      return;
+    }
+    patchCatalog([prepared, ...records]);
+    setDraft(null);
+    setPhotoError(false);
     setView({ pane: "item", index: 0 });
   }
 
-  if (view.pane === "item") {
-    const current = records[view.index];
+  function closeItem() {
+    if (view.pane === "draft" && draft && isDraftDirty(draft)) {
+      if (!window.confirm("Discard this slab? It has no front picture yet, so it was not saved.")) {
+        return;
+      }
+    }
+    setDraft(null);
+    setPhotoError(false);
+    setView({ pane: "list" });
+  }
+
+  if (view.pane === "item" || view.pane === "draft") {
+    const current =
+      view.pane === "draft" ? draft : records[view.index];
     if (!current) {
       return null;
     }
@@ -212,80 +412,131 @@ export function InventoryEditor({
         ? (current as BrochureSlab)
         : vehicleToSlab(current as BrochureVehicle);
     const title =
-      [slab.year, slab.player].filter((part) => part.trim()).join(" ") ||
+      [slabYearLabel(slab), slab.player].filter((part) => part.trim()).join(" ") ||
       "New slab";
+    const isDraft = view.pane === "draft";
+    const itemIndex = view.pane === "item" ? view.index : -1;
+    const missingPhoto = !hasSlabPhoto(current);
+
+    function saveItem(nextItem: unknown) {
+      const prepared = withCoverPhoto(nextItem) as BrochureSlab | BrochureVehicle;
+      if (isDraft) {
+        setDraft(prepared);
+        if (hasSlabPhoto(prepared)) {
+          commitDraft(prepared);
+        }
+        return;
+      }
+      const next = [...records];
+      next[itemIndex] = prepared;
+      patchCatalog(next);
+    }
+
     return (
       <div className={styles.root}>
-        <div className={styles.toolbar}>
-          <button
-            type="button"
-            className={admin.ghost}
-            onClick={() => setView({ pane: "list" })}
-          >
-            Back to list
+        <div className={`${styles.toolbar} ${styles.itemHead}`}>
+          <button type="button" className={admin.ghost} onClick={closeItem}>
+            Back
           </button>
           <p className={styles.itemTitle}>{title}</p>
         </div>
         <div className={styles.scroll}>
-          <FieldList
-            fields={fieldsForSchema(
-              source === "items" ? slabSchema : vehicleSchema,
-              current,
-              { locked: [], prefix: "" },
-            ).filter((field) => field.key !== "provenance")}
-            value={current}
-            labels={source === "items" ? SLAB_LABELS : VEHICLE_LABELS}
-            onChange={(nextItem) => {
-              const next = [...records];
-              next[view.index] = withCoverPhoto(nextItem) as typeof current;
-              patchCatalog(next);
-            }}
-          />
-          <div className={styles.itemActions}>
-            <button
-              type="button"
-              className={admin.itemButton}
-              disabled={view.index === 0}
-              onClick={() => {
-                if (view.index === 0) return;
-                const next = [...records];
-                const [item] = next.splice(view.index, 1);
-                next.splice(view.index - 1, 0, item);
-                patchCatalog(next);
-                setView({ pane: "item", index: view.index - 1 });
-              }}
-            >
-              Move up
-            </button>
-            <button
-              type="button"
-              className={admin.itemButton}
-              disabled={view.index >= records.length - 1}
-              onClick={() => {
-                if (view.index >= records.length - 1) return;
-                const next = [...records];
-                const [item] = next.splice(view.index, 1);
-                next.splice(view.index + 1, 0, item);
-                patchCatalog(next);
-                setView({ pane: "item", index: view.index + 1 });
-              }}
-            >
-              Move down
-            </button>
-            <button
-              type="button"
-              className={admin.ghost}
-              onClick={() => {
-                if (!window.confirm("Remove this slab from inventory?")) {
-                  return;
+          {missingPhoto && photoError ? (
+            <p className={styles.banner} role="status">
+              Add a front picture before this slab can be saved.
+            </p>
+          ) : null}
+          {slabForm ? (
+            <SlabFields
+              current={current}
+              source={source}
+              sports={sports}
+              onChange={saveItem}
+            />
+          ) : (
+            <>
+              <YearRangeField
+                year={readString(current, "year")}
+                yearEnd={readString(current, "yearEnd")}
+                onChange={(nextYear, nextEnd) =>
+                  saveItem(patchRecord(current, { year: nextYear, yearEnd: nextEnd }))
                 }
-                patchCatalog(records.filter((_, i) => i !== view.index));
-                setView({ pane: "list" });
-              }}
-            >
-              Remove
-            </button>
-          </div>
+              />
+              <FieldList
+                fields={fieldsForSchema(vehicleSchema, current, {
+                  locked: [],
+                  prefix: "",
+                }).filter(
+                  (field) =>
+                    field.key !== "provenance" &&
+                    field.key !== "year" &&
+                    !VEHICLE_HIDDEN.has(field.key),
+                )}
+                value={current}
+                labels={VEHICLE_LABELS}
+                onChange={saveItem}
+              />
+            </>
+          )}
+          {isDraft ? (
+            <div className={styles.itemActions}>
+              <button
+                type="button"
+                className={admin.primary}
+                onClick={() => commitDraft(current)}
+              >
+                Add slab
+              </button>
+            </div>
+          ) : (
+            <div className={styles.itemActions}>
+              <button
+                type="button"
+                className={admin.itemButton}
+                disabled={itemIndex <= 0}
+                onClick={() => {
+                  if (itemIndex <= 0) return;
+                  const next = [...records];
+                  const [item] = next.splice(itemIndex, 1);
+                  next.splice(itemIndex - 1, 0, item);
+                  patchCatalog(next);
+                  setView({ pane: "item", index: itemIndex - 1 });
+                }}
+              >
+                Move up
+              </button>
+              <button
+                type="button"
+                className={admin.itemButton}
+                disabled={itemIndex < 0 || itemIndex >= records.length - 1}
+                onClick={() => {
+                  if (itemIndex < 0 || itemIndex >= records.length - 1) {
+                    return;
+                  }
+                  const next = [...records];
+                  const [item] = next.splice(itemIndex, 1);
+                  next.splice(itemIndex + 1, 0, item);
+                  patchCatalog(next);
+                  setView({ pane: "item", index: itemIndex + 1 });
+                }}
+              >
+                Move down
+              </button>
+              <button
+                type="button"
+                className={admin.ghost}
+                onClick={() => {
+                  if (!window.confirm("Remove this slab from inventory?")) {
+                    return;
+                  }
+                  patchCatalog(records.filter((_, i) => i !== itemIndex));
+                  setView({ pane: "list" });
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -315,6 +566,7 @@ export function InventoryEditor({
           <FieldList
             fields={settingsFields}
             value={data}
+            labels={SETTINGS_LABELS}
             onChange={(next) => {
               const record =
                 next && typeof next === "object" ? (next as Record<string, unknown>) : {};
@@ -352,7 +604,7 @@ export function InventoryEditor({
             value={query}
             enterKeyHint="search"
             autoComplete="off"
-            placeholder="Search player, year, set…"
+            placeholder="Search player, year…"
             onChange={(event) => {
               setQuery(event.target.value);
               setShown(PAGE_SIZE);
@@ -382,6 +634,22 @@ export function InventoryEditor({
             ))}
           </div>
         ) : null}
+        {years.length > 0 ? (
+          <SheetSelect
+            label="Year"
+            hideLabel
+            value={year}
+            placeholder="All years"
+            options={[
+              { value: "", label: "All years" },
+              ...years.map((tag) => ({ value: tag, label: tag })),
+            ]}
+            onChange={(next) => {
+              setYear(next);
+              setShown(PAGE_SIZE);
+            }}
+          />
+        ) : null}
         <div className={styles.chips} role="group" aria-label="Status">
           <FilterChip
             label="Any status"
@@ -403,29 +671,6 @@ export function InventoryEditor({
             />
           ))}
         </div>
-        {bands.length > 0 ? (
-          <div className={styles.chips} role="group" aria-label="Band">
-            <FilterChip
-              label="All bands"
-              active={!band}
-              onClick={() => {
-                setBand("");
-                setShown(PAGE_SIZE);
-              }}
-            />
-            {bands.map((tag) => (
-              <FilterChip
-                key={tag}
-                label={tag}
-                active={band.toLowerCase() === tag.toLowerCase()}
-                onClick={() => {
-                  setBand(tag);
-                  setShown(PAGE_SIZE);
-                }}
-              />
-            ))}
-          </div>
-        ) : null}
         <div className={styles.addRow}>
           <p className={styles.count}>
             {filtered.length === rows.length
@@ -444,13 +689,7 @@ export function InventoryEditor({
             <button
               type="button"
               className={admin.ghost}
-              onClick={() => {
-                setQuery("");
-                setSport("");
-                setStatus("");
-                setBand("");
-                setShown(PAGE_SIZE);
-              }}
+              onClick={resetFilters}
             >
               Clear filters
             </button>
@@ -467,19 +706,23 @@ export function InventoryEditor({
                   <Thumb src={slab.imageUrl} alt="" />
                   <span className={styles.meta}>
                     <span className={styles.name}>
-                      {[slab.year, slab.player].filter(Boolean).join(" ") ||
-                        "Untitled slab"}
+                      {[slabYearLabel(slab), slab.player]
+                        .filter(Boolean)
+                        .join(" ") || "Untitled slab"}
                     </span>
                     <span className={styles.sub}>
                       {[
                         slab.sport,
                         [slab.grader, slab.grade].filter(Boolean).join(" "),
-                        slab.price,
+                        slab.showPrice === false ? "" : slab.price,
                       ]
                         .filter((part) => part.trim())
                         .join(" · ")}
                     </span>
-                    <span className={styles.status}>{statusLabel(slab.status)}</span>
+                    <span className={styles.status}>
+                      {statusLabel(slab.status)}
+                      {hasSlabPhoto(slab) ? "" : " · Needs photo"}
+                    </span>
                   </span>
                 </button>
               </li>
@@ -500,23 +743,229 @@ export function InventoryEditor({
   );
 }
 
-function withCoverPhoto(item: unknown): unknown {
-  if (!item || typeof item !== "object" || Array.isArray(item)) {
-    return item;
+function SlabFields({
+  current,
+  source,
+  sports,
+  onChange,
+}: {
+  current: BrochureSlab | BrochureVehicle;
+  source: CatalogSource;
+  sports: string[];
+  onChange: (next: BrochureSlab | BrochureVehicle) => void;
+}) {
+  const playerKey = source === "items" ? "player" : "model";
+  const sportKey = source === "items" ? "sport" : "transmission";
+  const hidden = source === "items" ? SLAB_HIDDEN : VEHICLE_SLAB_HIDDEN;
+  const schema = source === "items" ? slabSchema : vehicleSchema;
+  const labels = source === "items" ? SLAB_LABELS : VEHICLE_SLAB_LABELS;
+
+  return (
+    <>
+      <div className={styles.photos}>
+        <ImageField
+          label="Front"
+          emptyLabel="Front"
+          shape="card"
+          required
+          value={readString(current, "imageUrl")}
+          onChange={(url) => onChange(patchRecord(current, { imageUrl: url }))}
+        />
+        <ImageField
+          label="Back"
+          emptyLabel="Back"
+          shape="card"
+          value={readString(current, "backImageUrl")}
+          onChange={(url) => onChange(patchRecord(current, { backImageUrl: url }))}
+        />
+      </div>
+      <label className={admin.field}>
+        <span>Player name</span>
+        <input
+          value={readString(current, playerKey)}
+          autoComplete="off"
+          onChange={(event) =>
+            onChange(patchRecord(current, { [playerKey]: event.target.value }))
+          }
+        />
+      </label>
+      <YearRangeField
+        year={readString(current, "year")}
+        yearEnd={readString(current, "yearEnd")}
+        onChange={(nextYear, nextEnd) =>
+          onChange(patchRecord(current, { year: nextYear, yearEnd: nextEnd }))
+        }
+      />
+      <SuggestField
+        key={`${readString(current, "id")}-${sportKey}`}
+        label="Sport"
+        value={readString(current, sportKey)}
+        options={sports}
+        onChange={(nextSport) =>
+          onChange(patchRecord(current, { [sportKey]: nextSport }))
+        }
+      />
+      <FieldList
+        fields={fieldsForSchema(schema, current, { locked: [], prefix: "" }).filter(
+          (field) => !hidden.has(field.key),
+        )}
+        value={current}
+        labels={labels}
+        onChange={(next) => onChange(next as BrochureSlab | BrochureVehicle)}
+      />
+      <label className={admin.field}>
+        <span>Notes</span>
+        <textarea
+          value={readString(current, "description")}
+          onChange={(event) =>
+            onChange(patchRecord(current, { description: event.target.value }))
+          }
+        />
+      </label>
+    </>
+  );
+}
+
+const YEAR_MAX = new Date().getFullYear() + 1;
+const YEAR_MIN = 1948;
+
+function yearChoices(...extras: string[]): string[] {
+  const years = new Set<string>();
+  for (let year = YEAR_MAX; year >= YEAR_MIN; year -= 1) {
+    years.add(String(year));
   }
-  const record = item as { imageUrl?: unknown; galleryImageUrls?: unknown };
-  const imageUrl = String(record.imageUrl ?? "").trim();
-  if (imageUrl) {
-    return item;
+  for (const extra of extras) {
+    if (/^\d{4}$/.test(extra.trim())) {
+      years.add(extra.trim());
+    }
   }
-  const gallery = Array.isArray(record.galleryImageUrls)
-    ? record.galleryImageUrls.map(String)
-    : [];
-  const cover = gallery.find((url) => url.trim())?.trim() ?? "";
-  if (!cover) {
-    return item;
+  return [...years].sort((a, b) => Number(b) - Number(a));
+}
+
+function YearRangeField({
+  year,
+  yearEnd,
+  onChange,
+}: {
+  year: string;
+  yearEnd: string;
+  onChange: (year: string, yearEnd: string) => void;
+}) {
+  const parsed = parseYearRange(year, yearEnd);
+  const startValue =
+    yearEnd.trim() || /^\d{4}$/.test(year.trim())
+      ? year.trim()
+      : parsed
+        ? String(parsed.start)
+        : "";
+  const endValue = yearEnd.trim()
+    ? yearEnd.trim()
+    : parsed && parsed.end !== parsed.start && !/^\d{4}$/.test(year.trim())
+      ? String(parsed.end)
+      : "";
+  const start = /^\d{4}$/.test(startValue) ? startValue : "";
+  const end = /^\d{4}$/.test(endValue) ? endValue : "";
+  const startNum = start ? Number(start) : 0;
+  const toYears = yearChoices(end).filter((option) => Number(option) > startNum);
+
+  return (
+    <div className={styles.yearRow}>
+      <SheetSelect
+        label="Year"
+        value={start}
+        placeholder="Year"
+        options={yearChoices(start).map((option) => ({
+          value: option,
+          label: option,
+        }))}
+        onChange={(nextStart) => {
+          const nextEnd =
+            end && nextStart && Number(end) <= Number(nextStart) ? "" : end;
+          onChange(nextStart, nextEnd);
+        }}
+      />
+      <SheetSelect
+        label="To"
+        value={end}
+        placeholder="None"
+        disabled={!start}
+        options={[
+          { value: "", label: "None" },
+          ...toYears.map((option) => ({
+            value: option,
+            label: option,
+          })),
+        ]}
+        onChange={(nextEnd) => onChange(start, nextEnd)}
+      />
+    </div>
+  );
+}
+
+function SuggestField({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  const known = options.some(
+    (option) => option.toLowerCase() === value.trim().toLowerCase(),
+  );
+  const [adding, setAdding] = useState(!known && value.trim() !== "");
+  const selectValue = adding ? NEW_SPORT : value;
+
+  if (options.length === 0) {
+    return (
+      <label className={admin.field}>
+        <span>{label}</span>
+        <input
+          value={value}
+          autoComplete="off"
+          onChange={(event) => onChange(event.target.value)}
+        />
+      </label>
+    );
   }
-  return { ...record, imageUrl: cover };
+
+  return (
+    <>
+      <SheetSelect
+        label={label}
+        value={selectValue}
+        placeholder={label}
+        options={[
+          { value: "", label },
+          ...options.map((option) => ({ value: option, label: option })),
+          { value: NEW_SPORT, label: "Add another…" },
+        ]}
+        onChange={(next) => {
+          if (next === NEW_SPORT) {
+            setAdding(true);
+            if (known) onChange("");
+            return;
+          }
+          setAdding(false);
+          onChange(next);
+        }}
+      />
+      {adding ? (
+        <label className={admin.field}>
+          <span className={admin.srOnly}>New sport</span>
+          <input
+            value={known ? "" : value}
+            autoComplete="off"
+            autoFocus
+            onChange={(event) => onChange(event.target.value)}
+          />
+        </label>
+      ) : null}
+    </>
+  );
 }
 
 function FilterChip({
