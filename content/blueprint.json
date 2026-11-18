@@ -17,7 +17,11 @@
       },
       {
         "href": "/shop",
-        "label": "The case"
+        "label": "Inventory"
+      },
+      {
+        "href": "/#BrochureContact_1",
+        "label": "Contact"
       }
     ],
     "description": "Buy, sell, and trade graded sports cards in South Texas.",
@@ -27,12 +31,12 @@
   "BrochureHero_1": {
     "component": "BrochureHero",
     "variant": "marquee",
-    "sectionSize": "tall",
+    "sectionSize": "peek",
     "eyebrow": "",
     "headline": "The case is open.",
     "subheadline": "Graded basketball and football from The Card Cave. Buy it, sell into it, or trade for it. The number is a message away.",
-    "ctaLabel": "Browse the case",
-    "ctaHref": "#BrochureShop_1-categories",
+    "ctaLabel": "Browse inventory",
+    "ctaHref": "/shop",
     "marqueeDurationMs": 40000,
     "slideshowImages": [
       {
@@ -83,7 +87,7 @@
     "eyebrow": "The owner",
     "title": "Lewis, aka The Card Cave.",
     "paragraphs": [
-      "The Card Cave is Lewis\u2019s table: graded basketball and football, shown until now on Instagram and Facebook. This page is the case, with a name and a grade on every slab.",
+      "The Card Cave is Lewis’s table: graded basketball and football, shown until now on Instagram and Facebook. This page is the case, with a name and a grade on every slab.",
       "He buys, sells, and trades. Online deals, hobby pulls, case setups, hosted trade nights, and local pickup in South Texas."
     ],
     "imageUrl": "/assets/730332008_18418677463196572_1568560958723003165_n.jpg",
@@ -119,7 +123,7 @@
     "component": "BrochureContact",
     "variant": "form",
     "eyebrow": "The counter",
-    "title": "Ask for a number",
+    "title": "Get in touch",
     "intro": "Name the slab. Lewis prices it, then you buy, trade, or set a pickup. Deals still start at @cardcave956.",
     "ctaLabel": "Send a message",
     "phone": "@cardcave956",
@@ -138,7 +142,8 @@
     "bg": "#f4f0e8",
     "theme": "light",
     "mailtoSubject": "Card Cave slab",
-    "sectionSize": "auto"
+    "sectionSize": "auto",
+    "channels": "both"
   },
   "BrochureFooter_1": {
     "component": "BrochureFooter",
@@ -155,15 +160,15 @@
   },
   "BrochureShop_1": {
     "component": "BrochureShop",
-    "variant": "rail",
+    "variant": "cards",
     "sectionSize": "auto",
-    "title": "On the table",
+    "title": "Spotlight",
     "galleryTitle": "The case",
-    "categoriesTitle": "Shop by ask",
+    "categoriesTitle": "",
     "categoriesLayout": "stack",
     "viewCategoryLabel": "View more",
     "viewAllLabel": "View all",
-    "teaserLimit": 8,
+    "teaserLimit": 10,
     "items": [
       {
         "id": "downtown-wemby",
@@ -171,10 +176,13 @@
         "brand": "Panini",
         "category": "Budget",
         "title": "2023 Downtown Wemby",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/735485982_18419682529196572_426163222991249355_n.jpg",
         "imageAlt": "2023 Panini One and One Victor Wembanyama Downtown variation in a PSA 9 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Panini One and One Victor Wembanyama Downtown variation. PSA 9. Message @cardcave956 for the number.",
         "details": [
           {
@@ -198,10 +206,13 @@
         "brand": "Panini",
         "category": "Budget",
         "title": "2023 Downtown LeBron",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/756724632_18422882044196572_8032618252022348740_n.jpg",
         "imageAlt": "2023 Panini One and One LeBron James Downtown variation in a PSA 9 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Panini One and One LeBron James Downtown variation. PSA 9. Message @cardcave956 for the number.",
         "details": [
           {
@@ -225,10 +236,13 @@
         "brand": "Panini",
         "category": "Budget",
         "title": "2023 Prizm Wemby Silver",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/711868118_18414092185196572_1672283198720507384_n.jpg",
         "imageAlt": "2023 Prizm Victor Wembanyama Silver in a PSA 10 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Prizm Victor Wembanyama Silver. PSA 10. Message @cardcave956 for the number.",
         "details": [
           {
@@ -252,10 +266,13 @@
         "brand": "Donruss",
         "category": "Fair",
         "title": "2025 Downtown Saquon",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/704327540_18412085167196572_2671822380625971863_n.jpg",
         "imageAlt": "2025 Donruss Saquon Barkley Downtown in a PSA 10 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2025 Donruss Saquon Barkley Downtown. PSA 10. Message @cardcave956 for the number.",
         "details": [
           {
@@ -279,10 +296,13 @@
         "brand": "Panini",
         "category": "Fair",
         "title": "2009 Adrenalyn LeBron",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/825269515_18434080396196572_6940731086745302122_n.jpg",
         "imageAlt": "2009 Panini Adrenalyn XL LeBron James Extra Signature in a PSA 10 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2009 Panini Adrenalyn XL LeBron James Extra Signature. PSA 10. Message @cardcave956 for the number.",
         "details": [
           {
@@ -306,10 +326,13 @@
         "brand": "Panini",
         "category": "Steep",
         "title": "2023 Prizm Wemby Pink Ice",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/722753823_18415710913196572_925972500517994534_n.jpg",
         "imageAlt": "2023 Prizm Victor Wembanyama Pink Ice in a PSA 10 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Prizm Victor Wembanyama Pink Ice. PSA 10. Message @cardcave956 for the number.",
         "details": [
           {
@@ -333,10 +356,13 @@
         "brand": "Bowman",
         "category": "Steep",
         "title": "Mendoza Chrome auto",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/843190956_18436815697196572_7233723678124321756_n.jpg",
         "imageAlt": "Fernando Mendoza Chrome autograph numbered 5 of 5 in a one-touch",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "Fernando Mendoza Chrome autograph, numbered 5 of 5. Message @cardcave956 for the number.",
         "details": [
           {
@@ -360,10 +386,13 @@
         "brand": "Topps",
         "category": "Grails",
         "title": "1996 Chrome Kobe",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/689238732_18411625486196572_6744477452910825488_n.jpg",
         "imageAlt": "1996 Topps Chrome Kobe Bryant Refractor in a PSA 9 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "1996 Topps Chrome Kobe Bryant Refractor. PSA 9. Message @cardcave956 for the number.",
         "details": [
           {
@@ -387,10 +416,13 @@
         "brand": "Topps",
         "category": "Grails",
         "title": "1998 East-West Jordan",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/703564894_18411941770196572_4942629863577185610_n.jpg",
         "imageAlt": "1998 Topps East-West Michael Jordan and Kobe Bryant in a PSA 10 slab",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "1998 Topps East-West Michael Jordan and Kobe Bryant. PSA 10. Message @cardcave956 for the number.",
         "details": [
           {
@@ -414,10 +446,13 @@
         "brand": "Panini",
         "category": "Grails",
         "title": "2012-13 Modern Marks Kobe",
-        "price": "Ask",
+        "price": "",
         "imageUrl": "/assets/773736068_18426261514196572_798115229119899304_n.jpg",
         "imageAlt": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph, BGS 9 with a 10 auto",
         "images": [],
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph. BGS 9, auto 10. Message @cardcave956 for the number.",
         "details": [
           {
@@ -435,14 +470,15 @@
         ],
         "status": "available"
       }
-    ]
+    ],
+    "showInNav": false
   },
   "BrochureInventory_1": {
     "component": "BrochureInventory",
-    "variant": "showroom",
-    "eyebrow": "The case",
+    "variant": "cards",
+    "eyebrow": "Inventory",
     "title": "What's on offer",
-    "intro": "Filter by year, brand, or sport. Every number is still Ask \u2014 message @cardcave956.",
+    "intro": "Filter by sport, grading company, grade, or availability. Message @cardcave956.",
     "teaserLimit": 3,
     "viewAllLabel": "",
     "showStatusFilter": false,
@@ -457,7 +493,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 9",
         "imageUrl": "/assets/735485982_18419682529196572_426163222991249355_n.jpg",
@@ -467,6 +503,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Panini One and One Victor Wembanyama Downtown variation. PSA 9. Message @cardcave956 for the number."
       },
       {
@@ -478,7 +517,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 9",
         "imageUrl": "/assets/756724632_18422882044196572_8032618252022348740_n.jpg",
@@ -488,6 +527,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Panini One and One LeBron James Downtown variation. PSA 9. Message @cardcave956 for the number."
       },
       {
@@ -499,7 +541,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 10",
         "imageUrl": "/assets/711868118_18414092185196572_1672283198720507384_n.jpg",
@@ -509,6 +551,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Prizm Victor Wembanyama Silver. PSA 10. Message @cardcave956 for the number."
       },
       {
@@ -520,7 +565,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 10",
         "imageUrl": "/assets/722753823_18415710913196572_925972500517994534_n.jpg",
@@ -530,6 +575,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2023 Prizm Victor Wembanyama Pink Ice. PSA 10. Message @cardcave956 for the number."
       },
       {
@@ -541,7 +589,7 @@
         "chassis": "",
         "transmission": "Football",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 10",
         "imageUrl": "/assets/704327540_18412085167196572_2671822380625971863_n.jpg",
@@ -551,6 +599,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2025 Donruss Saquon Barkley Downtown. PSA 10. Message @cardcave956 for the number."
       },
       {
@@ -562,7 +613,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 10",
         "imageUrl": "/assets/825269515_18434080396196572_6940731086745302122_n.jpg",
@@ -572,6 +623,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2009 Panini Adrenalyn XL LeBron James Extra Signature. PSA 10. Message @cardcave956 for the number."
       },
       {
@@ -583,9 +637,9 @@
         "chassis": "",
         "transmission": "Football",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
-        "metricValue": "Raw /5",
+        "metricValue": "Raw",
         "imageUrl": "/assets/843190956_18436815697196572_7233723678124321756_n.jpg",
         "imageAlt": "Fernando Mendoza Chrome autograph numbered 5 of 5 in a one-touch",
         "galleryImageUrls": [
@@ -593,6 +647,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "Fernando Mendoza Chrome autograph, numbered 5 of 5. Message @cardcave956 for the number."
       },
       {
@@ -604,7 +661,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 9",
         "imageUrl": "/assets/689238732_18411625486196572_6744477452910825488_n.jpg",
@@ -614,6 +671,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "1996 Topps Chrome Kobe Bryant Refractor. PSA 9. Message @cardcave956 for the number."
       },
       {
@@ -625,7 +685,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "PSA 10",
         "imageUrl": "/assets/703564894_18411941770196572_4942629863577185610_n.jpg",
@@ -635,6 +695,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "1998 Topps East-West Michael Jordan and Kobe Bryant. PSA 10. Message @cardcave956 for the number."
       },
       {
@@ -646,7 +709,7 @@
         "chassis": "",
         "transmission": "Basketball",
         "status": "available",
-        "price": "Ask",
+        "price": "",
         "metricLabel": "Grade",
         "metricValue": "BGS 9 / auto 10",
         "imageUrl": "/assets/773736068_18426261514196572_798115229119899304_n.jpg",
@@ -656,6 +719,9 @@
         ],
         "provenance": [],
         "placedNote": "",
+        "backImageUrl": "",
+        "backImageAlt": "",
+        "backText": "",
         "description": "2012-13 Panini Past and Present Modern Marks Kobe Bryant autograph. BGS 9, auto 10. Message @cardcave956 for the number."
       }
     ]

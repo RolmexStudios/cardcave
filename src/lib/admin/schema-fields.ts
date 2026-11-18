@@ -31,11 +31,12 @@ const IMAGE_KEYS = new Set([
   "faviconUrl",
   "shareImageUrl",
   "imageSrc",
+  "backImageUrl",
 ]);
 
 const IMAGE_ARRAY_KEYS = new Set(["images", "galleryImageUrls"]);
 
-const LONG_TEXT = /description|bio|quote|intro|paragraph|story|note|excerpt|colophon|subheadline|subject/i;
+const LONG_TEXT = /description|bio|quote|intro|paragraph|story|note|excerpt|colophon|subheadline|subject|backText/i;
 
 type ZodLike = ZodType & {
   type?: string;

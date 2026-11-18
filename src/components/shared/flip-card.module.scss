@@ -1,0 +1,165 @@
+$ease: cubic-bezier(0.22, 1, 0.36, 1);
+$well: #161410;
+$cream: #efe7d6;
+$mute: #b7c0b0;
+$gold: #d4b483;
+
+.shell {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.5 / 3.5;
+  border-radius: 1rem;
+  background: $well;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.65s $ease;
+}
+
+.shell[data-flipped="true"] .inner {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 1rem;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+}
+
+.shell:not([data-flipped="true"]) .front,
+.shell[data-flipped="true"] .back {
+  pointer-events: auto;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.panel {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  width: 100%;
+  height: 100%;
+  padding: 2.4rem 1rem 1rem;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #2a241c 0%, $well 55%, #0c0b09 100%);
+  color: $cream;
+  text-align: left;
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $mute;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-editorial-serif), Georgia, serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: $mute;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.price {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-editorial-serif), Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: $gold;
+}
+
+.link {
+  align-self: flex-start;
+  margin-top: 0.7rem;
+  min-height: 44px;
+  padding: 0 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: $cream;
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $well;
+  text-decoration: none;
+}
+
+.link:hover {
+  background: #fff;
+}
+
+.flipMark {
+  position: absolute;
+  z-index: 2;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  min-height: 1.7rem;
+  padding: 0.2rem 0.5rem 0.2rem 0.38rem;
+  border-radius: 999px;
+  background: rgba(12, 11, 9, 0.72);
+  color: $cream;
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+
+  svg {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+}
+
+.panel .flipMark {
+  top: 0.55rem;
+  bottom: auto;
+  background: rgba(239, 231, 214, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner {
+    transition: none;
+  }
+}

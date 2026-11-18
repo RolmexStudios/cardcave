@@ -68,6 +68,21 @@ export const SLAB_STATUS_LABELS: Record<BrochureSlabStatus, string> = {
   sold: "Sold",
 };
 
+export function isListedSlab(slab: BrochureSlab): boolean {
+  return slab.status !== "sold" && slab.status !== "traded";
+}
+
+export function uniqueSorted(values: string[]): string[] {
+  return Array.from(
+    new Set(values.map((value) => value.trim()).filter(Boolean)),
+  ).sort((a, b) => a.localeCompare(b));
+}
+
+function isPrintRun(value: string): boolean {
+  const trimmed = value.trim();
+  return /^\/\d+$/.test(trimmed) || /^\d+\s*\/\s*\d+$/.test(trimmed);
+}
+
 function parseGradeParts(value: string): { grader: string; grade: string } {
   const trimmed = value.trim();
   const match = trimmed.match(/^(PSA|BGS|CGC|SGC|RAW)\s*(.*)$/i);
@@ -75,9 +90,10 @@ function parseGradeParts(value: string): { grader: string; grade: string } {
     return { grader: "", grade: trimmed };
   }
   const tag = match[1].toUpperCase();
+  const remainder = match[2].trim();
   return {
     grader: tag === "RAW" ? "Raw" : tag,
-    grade: match[2].trim(),
+    grade: isPrintRun(remainder) ? "" : remainder,
   };
 }
 
@@ -98,7 +114,7 @@ export function vehicleToSlab(vehicle: BrochureVehicle): BrochureSlab {
     parallel: "",
     sport: vehicle.transmission,
     grader: parsed.grader,
-    grade: parsed.grade || vehicle.metricValue,
+    grade: parsed.grade || (parsed.grader === "Raw" ? "Raw" : vehicle.metricValue),
     cert: vehicle.chassis,
     band: vehicle.placedNote,
     status,
@@ -106,8 +122,71 @@ export function vehicleToSlab(vehicle: BrochureVehicle): BrochureSlab {
     imageUrl: vehicleCoverUrl(vehicle),
     imageAlt: vehicle.imageAlt,
     galleryImageUrls: vehicle.galleryImageUrls,
+    backImageUrl: vehicle.backImageUrl,
+    backImageAlt: vehicle.backImageAlt,
+    backText: vehicle.backText,
     description: vehicle.description,
   };
+}
+
+/** Prefer authored slabs; otherwise map the car register so older blueprints still render. */
+export function inventorySlabs(data: BrochureInventoryContent): BrochureSlab[] {
+  if (data.items.some((item) => item.id.trim() || item.imageUrl.trim() || item.player.trim())) {
+    return data.items;
+  }
+  return data.vehicles.map(vehicleToSlab);
+}
+
+export type IndexedSlab = {
+  slab: BrochureSlab;
+  index: number;
+  source: "items" | "vehicles";
+};
+
+export function indexedInventorySlabs(
+  data: BrochureInventoryContent,
+): IndexedSlab[] {
+  const authored = data.items.some(
+    (item) => item.id.trim() || item.imageUrl.trim() || item.player.trim(),
+  );
+  if (authored) {
+    return data.items.map((slab, index) => ({
+      slab,
+      index,
+      source: "items" as const,
+    }));
+  }
+  return data.vehicles.map((vehicle, index) => ({
+    slab: vehicleToSlab(vehicle),
+    index,
+    source: "vehicles" as const,
+  }));
+}
+
+export function slabSlug(slab: BrochureSlab): string {
+  return slab.slug.trim() || slugifyVehicleId(slab.id);
+}
+
+export function slabHref(slab: BrochureSlab): string {
+  return `${showroomHref()}/${slabSlug(slab)}`;
+}
+
+export function slabTitle(slab: BrochureSlab): string {
+  return [slab.year, slab.player, slab.parallel || slab.set]
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join(" ");
+}
+
+export function slabGradeLabel(slab: BrochureSlab): string {
+  return [slab.grader, slab.grade].map((part) => part.trim()).filter(Boolean).join(" ");
+}
+
+export function slabImagePath(
+  instanceId: string,
+  row: IndexedSlab,
+): string {
+  return `${instanceId}.${row.source}[${row.index}].imageUrl`;
 }
 
 type BlueprintLike = Record<string, unknown> | null | undefined;

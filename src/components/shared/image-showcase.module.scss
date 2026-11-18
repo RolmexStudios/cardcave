@@ -26,6 +26,15 @@
   pointer-events: none;
 }
 
+.rotate {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 4;
+  color: #1c1916;
+  background: rgba(255, 253, 249, 0.92);
+}
+
 .mainViewport {
   overflow: hidden;
   aspect-ratio: 16 / 10;

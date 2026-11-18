@@ -7,10 +7,7 @@ import { TextSlot } from "@/components/shared/text-slot";
 import { NavSurfaceHeader } from "@/components/shared/nav-surface";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
-import {
-  BROCHURE_QUOTE_CTA,
-  brochureContactHref,
-} from "@/components/navs/links";
+import { brochureContactHref } from "@/components/navs/links";
 import type {
   BrochureBlockProps,
   BrochureNavContent,
@@ -26,7 +23,7 @@ function capsuleLinks(data: BrochureNavContent): BrochureNavLink[] {
   const seen = new Set<string>();
   const items: BrochureNavLink[] = [];
 
-  for (const item of [...data.links, ...data.routeLinks]) {
+  for (const item of [...data.routeLinks, ...data.links]) {
     const href = item.href.trim();
     const label = item.label.trim();
     if (!href || !label || isHomeHref(href)) {
@@ -96,10 +93,14 @@ export function CapsuleNav({
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const contactHref = brochureContactHref(data.links);
-  const navLinks = capsuleLinks(data).filter(
+  const authored = capsuleLinks(data);
+  const hasContactLink = authored.some(
     (item) =>
-      item.href !== contactHref && !item.href.includes("BrochureContact"),
+      item.href === contactHref || item.href.includes("BrochureContact"),
   );
+  const navLinks = hasContactLink
+    ? authored
+    : [...authored, { href: contactHref, label: "Contact" }];
   const showBrandName = data.brandDisplay === "logo-and-name";
   const brandClassName = showBrandName
     ? styles.brand
@@ -177,10 +178,6 @@ export function CapsuleNav({
             ))}
           </nav>
 
-          <a href={contactHref} className={styles.cta}>
-            {BROCHURE_QUOTE_CTA.label}
-          </a>
-
           <button
             type="button"
             className={styles.menuButton}
@@ -213,13 +210,6 @@ export function CapsuleNav({
               {item.label}
             </a>
           ))}
-          <a
-            href={contactHref}
-            className={styles.drawerCta}
-            onClick={() => setOpen(false)}
-          >
-            {BROCHURE_QUOTE_CTA.label}
-          </a>
         </nav>
       </div>
     </NavSurfaceHeader>

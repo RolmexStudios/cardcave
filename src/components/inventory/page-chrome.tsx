@@ -51,9 +51,9 @@ export function ShowroomChrome({
             <Link href="/" className={styles.homeLink}>
               Home
             </Link>
-            <Link href={showroomHref()}>The case</Link>
+            <Link href={showroomHref()}>Inventory</Link>
             <Link href="/#BrochureContact_1" className={styles.inquire}>
-              Ask for a number
+              Contact
             </Link>
           </nav>
         </div>

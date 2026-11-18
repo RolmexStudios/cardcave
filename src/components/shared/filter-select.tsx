@@ -15,6 +15,8 @@ export type FilterSelectProps = {
   allValue?: string;
   allLabel?: string;
   labelFor?: (value: string) => string;
+  /** Overlay menu. Default stays the editorial inline list. */
+  variant?: "inline" | "dropdown";
 };
 
 type Item = {
@@ -35,7 +37,9 @@ export function FilterSelect({
   allValue = ALL_VALUE,
   allLabel = "All",
   labelFor,
+  variant = "inline",
 }: FilterSelectProps) {
+  const isDropdown = variant === "dropdown";
   const generatedId = useId();
   const rootId = id ?? generatedId;
   const listId = `${rootId}-list`;
@@ -130,6 +134,7 @@ export function FilterSelect({
     <div
       ref={rootRef}
       className={styles.root}
+      data-variant={variant}
       data-open={open || undefined}
       data-active={isFiltered || undefined}
     >
@@ -171,7 +176,10 @@ export function FilterSelect({
         }}
       >
         <span className={styles.value}>{selected.label}</span>
-        <span className={styles.mark} aria-hidden="true" />
+        <span
+          className={isDropdown ? styles.chevron : styles.mark}
+          aria-hidden="true"
+        />
       </button>
       {open ? (
         <ul
@@ -198,11 +206,19 @@ export function FilterSelect({
                   choose(item);
                 }}
               >
-                <span className={styles.index} aria-hidden="true">
-                  {index === 0 ? "—" : String(index).padStart(2, "0")}
-                </span>
+                {isDropdown ? null : (
+                  <span className={styles.index} aria-hidden="true">
+                    {index === 0 ? "—" : String(index).padStart(2, "0")}
+                  </span>
+                )}
                 <span className={styles.optionLabel}>{item.label}</span>
-                <span className={styles.pip} aria-hidden="true" />
+                {isDropdown ? (
+                  <span className={styles.check} aria-hidden="true">
+                    {selectedItem ? "✓" : ""}
+                  </span>
+                ) : (
+                  <span className={styles.pip} aria-hidden="true" />
+                )}
               </li>
             );
           })}

@@ -1,10 +1,7 @@
 import { telHref } from "@/components/shared/media";
 import { TextSlot } from "@/components/shared/text-slot";
 import { fieldPath } from "@/components/shared/field-path";
-import {
-  BROCHURE_QUOTE_CTA,
-  brochureContactHref,
-} from "@/components/navs/links";
+import { brochureContactHref } from "@/components/navs/links";
 import { emptyFooterBlueprint } from "@/components/footers/blueprint";
 import type {
   BrochureBlockProps,
@@ -41,7 +38,7 @@ export function StackedFooter({
             className={styles.tagline}
           />
           <a href={contactHref} className={styles.cta}>
-            {BROCHURE_QUOTE_CTA.label}
+            Contact
           </a>
         </div>
 

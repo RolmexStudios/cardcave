@@ -7,6 +7,7 @@ import { ImageLightbox, type LightboxImage } from "@/components/shared/image-lig
 import { MediaSlot } from "@/components/shared/media";
 import { TextSlot } from "@/components/shared/text-slot";
 import { fieldPath } from "@/components/shared/field-path";
+import { visiblePrice } from "@/components/shared/price";
 import {
   shopCategoryHref,
   shopHref,
@@ -141,14 +142,14 @@ export function ProductView({
             />
             {sold ? (
               <p className={styles.sold}>Sold</p>
-            ) : (
+            ) : visiblePrice(item.price) ? (
               <TextSlot
-                value={item.price}
+                value={visiblePrice(item.price)}
                 jsonPath={fieldPath(instanceId, `${base}.price`)}
                 as="p"
                 className={styles.price}
               />
-            )}
+            ) : null}
 
             {item.category.trim() ? (
               <Link href={shopCategoryHref(item.category)} className={styles.more}>

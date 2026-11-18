@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode, type Ref } from "react";
 import { MediaSlot } from "@/components/shared/media";
+import { cycleTurn, RotateImageButton } from "@/components/shared/rotate-image";
 import styles from "./image-showcase.module.scss";
 
 export type ImageShowcaseSlide = {
@@ -33,12 +34,14 @@ function SlideMedia({
   alt,
   className,
   placeholderClassName,
+  turn = 0,
 }: {
   slide: ImageShowcaseSlide;
   slotId: string;
   alt: string;
   className: string;
   placeholderClassName: string;
+  turn?: number;
 }) {
   if (!slide.imageUrl.trim() && slide.placeholderLabel) {
     return (
@@ -54,6 +57,7 @@ function SlideMedia({
       jsonPath={slide.jsonPath}
       alt={alt}
       className={className}
+      turn={turn}
     />
   );
 }
@@ -68,6 +72,7 @@ export function ImageShowcase({
   thumbSize = "compact",
 }: ImageShowcaseProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [turns, setTurns] = useState<Record<string, number>>({});
   const safeIndex = Math.min(activeIndex, Math.max(0, slides.length - 1));
   const slideShare = slides.length > 0 ? 100 / slides.length : 100;
   const stripRef = useRef<HTMLDivElement>(null);
@@ -108,6 +113,19 @@ export function ImageShowcase({
           {overlay ? (
             <div className={styles.stageOverlay}>{overlay}</div>
           ) : null}
+          {slides[safeIndex]?.imageUrl.trim() ? (
+            <RotateImageButton
+              className={styles.rotate}
+              onRotate={() => {
+                const key = slides[safeIndex]?.imageUrl ?? "";
+                if (!key) return;
+                setTurns((current) => ({
+                  ...current,
+                  [key]: cycleTurn(current[key] ?? 0),
+                }));
+              }}
+            />
+          ) : null}
           <div className={styles.mainViewport} aria-live="polite">
             {slides.length > 0 ? (
               <div
@@ -130,6 +148,7 @@ export function ImageShowcase({
                       alt={slide.alt}
                       className={styles.mainImage}
                       placeholderClassName={styles.placeholder}
+                      turn={turns[slide.imageUrl] ?? 0}
                     />
                   </div>
                 ))}

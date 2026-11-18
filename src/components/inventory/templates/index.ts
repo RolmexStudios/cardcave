@@ -7,6 +7,7 @@ import type {
 import { ShowroomInventory } from "@/components/inventory/templates/showroom/ShowroomInventory";
 import { ArchiveInventory } from "@/components/inventory/templates/archive/ArchiveInventory";
 import { TeaserInventory } from "@/components/inventory/templates/teaser/TeaserInventory";
+import { CardsInventory } from "@/components/inventory/templates/cards/CardsInventory";
 
 export type InventoryTemplateComponent = ComponentType<
   BrochureBlockProps<BrochureInventoryContent>
@@ -19,4 +20,5 @@ export const inventoryTemplates: Record<
   showroom: ShowroomInventory,
   teaser: TeaserInventory,
   archive: ArchiveInventory,
+  cards: CardsInventory,
 };

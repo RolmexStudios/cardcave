@@ -199,7 +199,11 @@ export interface BrochureGalleryContent {
   categories: BrochureGalleryCategory[];
 }
 
-export type BrochureInventoryVariant = "showroom" | "teaser" | "archive";
+export type BrochureInventoryVariant =
+  | "showroom"
+  | "teaser"
+  | "archive"
+  | "cards";
 
 /** `sold` records are kept off the teaser and showroom; the archive variant lists them. */
 export type BrochureVehicleStatus = "available" | "incoming" | "private" | "sold";
@@ -231,6 +235,9 @@ export interface BrochureVehicle {
   imageUrl: string;
   imageAlt: string;
   galleryImageUrls: string[];
+  backImageUrl: string;
+  backImageAlt: string;
+  backText: string;
   provenance: BrochureVehicleProvenance[];
   /** Archive variant: one line on where and when the car was placed. */
   placedNote: string;
@@ -255,6 +262,9 @@ export interface BrochureSlab {
   imageUrl: string;
   imageAlt: string;
   galleryImageUrls: string[];
+  backImageUrl: string;
+  backImageAlt: string;
+  backText: string;
   description: string;
 }
 
@@ -430,8 +440,12 @@ export interface BrochureContactLink {
   href: string;
 }
 
+export type BrochureContactChannels = "form" | "social" | "both";
+
 export interface BrochureContactContent {
   variant: BrochureContactVariant;
+  /** Form, social icons, or both. */
+  channels: BrochureContactChannels;
   eyebrow: string;
   title: string;
   intro: string;
@@ -575,7 +589,7 @@ export interface BrochureProjectContent {
   projects: BrochureProjectRecord[];
 }
 
-export type BrochureShopVariant = "rail" | "gallery";
+export type BrochureShopVariant = "rail" | "gallery" | "cards";
 
 /** Home type index: a wrapping grid of tiles, or one photo deck per type. */
 export type BrochureShopCategoriesLayout = "grid" | "stack";
@@ -601,6 +615,11 @@ export interface BrochureShopItem {
   imageAlt: string;
   /** More frames after the cover. */
   images: string[];
+  /** Optional reverse of the card. Blank uses `backText` or the facts panel. */
+  backImageUrl: string;
+  backImageAlt: string;
+  /** Written back when there is no reverse photo. */
+  backText: string;
   /** Blank lines split paragraphs on the piece page. */
   description: string;
   /** Labeled facts: size, material, condition. */
@@ -611,6 +630,8 @@ export interface BrochureShopItem {
 export interface BrochureShopContent {
   variant: BrochureShopVariant;
   sectionSize: BrochureSectionSize;
+  /** When false, the home nav skips the automatic Shop link. */
+  showInNav: boolean;
   /** Home rail heading. */
   title: string;
   /** Shop page heading. Blank uses `title`. */

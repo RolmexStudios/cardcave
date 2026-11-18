@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { VehicleView } from "@/components/inventory/vehicle-view";
-import { getVehicleBySlug } from "@/components/inventory/data";
+import { SlabView } from "@/components/inventory/slab-view";
+import { getAllInventoryVehicles, getVehicleBySlug } from "@/components/inventory/data";
 import { useBrochureBlueprint } from "@/lib/admin/store";
 import { siteChrome } from "@/lib/site-content";
 
@@ -21,16 +21,17 @@ export function ShopSlugLive({ slug: slugProp }: { slug?: string } = {}) {
   if (!vehicle) {
     return (
       <main className="flex min-h-[70vh] flex-col items-center justify-center gap-4 px-6 text-center">
-        <p>This slab isn’t in the case.</p>
+        <p>This card isn’t in the inventory.</p>
         <Link href="/shop" className="underline underline-offset-4">
-          Back to the case
+          Back to inventory
         </Link>
       </main>
     );
   }
   return (
-    <VehicleView
+    <SlabView
       vehicle={vehicle}
+      catalog={getAllInventoryVehicles(blueprint)}
       businessName={chrome.businessName}
       logoUrl={chrome.logoUrl}
       inquiryEmail={chrome.email}

@@ -13,7 +13,7 @@ export function ShopIndexLive() {
   }
   return (
     <ShowroomView
-      content={content}
+      content={{ ...content, variant: "cards" }}
       businessName={chrome.businessName}
       logoUrl={chrome.logoUrl}
     />

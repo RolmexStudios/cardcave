@@ -6,6 +6,7 @@ import { telHref } from "@/components/shared/media";
 import { TextSlot } from "@/components/shared/text-slot";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyContactBlueprint } from "@/components/contacts/blueprint";
+import { SocialLinks } from "@/components/contacts/social-links";
 import type {
   BrochureBlockProps,
   BrochureContactContent,
@@ -18,6 +19,8 @@ export function FormContact({
 }: BrochureBlockProps<BrochureContactContent>) {
   const call = telHref(data.phone);
   const [submitted, setSubmitted] = useState(false);
+  const showForm = data.channels !== "social";
+  const showSocial = data.channels !== "form";
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -40,8 +43,9 @@ export function FormContact({
           className={styles.intro}
         />
 
-        <div className={styles.grid}>
+        <div className={styles.grid} data-single={showForm ? undefined : "true"}>
           <div className={styles.meta}>
+            {showSocial ? <SocialLinks links={data.links} /> : null}
             {call ? (
               <a
                 href={call}
@@ -87,7 +91,7 @@ export function FormContact({
             </div>
           </div>
 
-          {submitted ? (
+          {showForm && submitted ? (
             <div
               className="rounded-2xl border border-[#e8e2d9] bg-[#faf8f5] p-8 text-center"
               role="status"
@@ -97,7 +101,7 @@ export function FormContact({
                 This demo form does not send messages—we&apos;ll wire that up later.
               </p>
             </div>
-          ) : (
+          ) : showForm ? (
             <form onSubmit={handleSubmit} className={styles.form}>
               <div>
                 <label
@@ -147,10 +151,10 @@ export function FormContact({
                 />
               </div>
               <button type="submit" className={styles.submit}>
-                Send message
+                {data.ctaLabel.trim() || "Send message"}
               </button>
             </form>
-          )}
+          ) : null}
         </div>
       </div>
     </section>

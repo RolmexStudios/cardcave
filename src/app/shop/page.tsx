@@ -5,10 +5,10 @@ import { ShopIndexLive } from "./live";
 const chrome = siteChrome();
 
 export const metadata: Metadata = {
-  title: `The case — ${chrome.businessName}`,
+  title: `Inventory — ${chrome.businessName}`,
   description:
     chrome.description ||
-    "The current register of graded cards. Filter by year, brand, or sport.",
+    "The current register of graded cards. Filter by sport, grading company, grade, or availability.",
 };
 
 export default function ShopPage() {

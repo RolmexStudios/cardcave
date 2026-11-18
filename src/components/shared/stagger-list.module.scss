@@ -1,0 +1,40 @@
+$ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+@keyframes dealIn {
+  from {
+    opacity: 0;
+    transform: translate3d(-1.15rem, 0.7rem, 0) rotate(-3.5deg) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+.list {
+  --stagger-delay: 64ms;
+  --stagger-row-gap: 90ms;
+  --stagger-duration: 0.72s;
+}
+
+.item {
+  opacity: 0;
+  min-width: 0;
+}
+
+.list[data-play="true"] .item {
+  animation: dealIn var(--stagger-duration) $ease both;
+  animation-delay: calc(
+    (var(--stagger-index, 0) * var(--stagger-delay)) +
+      (var(--stagger-row, 0) * var(--stagger-row-gap))
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+}

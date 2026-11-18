@@ -28,6 +28,10 @@
   display: grid;
   gap: 2.5rem;
   grid-template-columns: 1fr 1.1fr;
+
+  &[data-single="true"] {
+    grid-template-columns: minmax(0, 28rem);
+  }
 }
 
 .meta {

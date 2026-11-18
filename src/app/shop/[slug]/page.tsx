@@ -28,7 +28,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const vehicle = getVehicleBySlug(siteBlueprint(), slug);
   if (!vehicle) {
-    return { title: `The case — ${chrome.businessName}` };
+    return { title: `Inventory — ${chrome.businessName}` };
   }
   return {
     title: `${vehicleTitle(vehicle)} — ${chrome.businessName}`,

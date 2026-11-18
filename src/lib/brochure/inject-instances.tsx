@@ -97,7 +97,7 @@ export function injectBrochureInstances(
   const layoutInstances = collectBrochureInstances(node);
   const navLinks = [
     ...anchorNavLinks(blueprint, layoutInstances),
-    ...buildBrochureNavLinks(layoutInstances),
+    ...buildBrochureNavLinks(layoutInstances, blueprint),
   ];
   const counts: Partial<Record<BrochureComponentId, number>> = {};
 

@@ -25,6 +25,9 @@ export const vehicleSchema = z.object({
   imageUrl: z.string().default(""),
   imageAlt: z.string().default(""),
   galleryImageUrls: z.array(z.string()).default([]),
+  backImageUrl: z.string().default(""),
+  backImageAlt: z.string().default(""),
+  backText: z.string().default(""),
   provenance: z.array(vehicleProvenanceSchema).default([]),
   placedNote: z.string().default(""),
   /** Longer write-up for the vehicle page. Blank lines split paragraphs. */
@@ -48,11 +51,16 @@ export const slabSchema = z.object({
   imageUrl: z.string().default(""),
   imageAlt: z.string().default(""),
   galleryImageUrls: z.array(z.string()).default([]),
+  backImageUrl: z.string().default(""),
+  backImageAlt: z.string().default(""),
+  backText: z.string().default(""),
   description: z.string().default(""),
 });
 
 export const inventoryBlueprintSchema = z.object({
-  variant: z.enum(["showroom", "teaser", "archive"]).default("showroom"),
+  variant: z
+    .enum(["showroom", "teaser", "archive", "cards"])
+    .default("showroom"),
   eyebrow: z.string().default(""),
   title: z.string().default("The showroom"),
   intro: z.string().default(""),

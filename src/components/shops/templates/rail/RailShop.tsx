@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { useSmoothHorizontalWheelScroll } from "@/components/shared/smooth-horizontal-wheel";
 import { emptyShopBlueprint } from "@/components/shops/blueprint";
 import { CategoryIndex } from "@/components/shops/category-index";
 import { ProductCard } from "@/components/shops/product-card";
@@ -19,6 +21,8 @@ export function RailShop({
   instanceId = "BrochureShop_1",
   data = emptyShopBlueprint(),
 }: BrochureBlockProps<BrochureShopContent>) {
+  const trackRef = useRef<HTMLUListElement>(null);
+  useSmoothHorizontalWheelScroll(trackRef, true, { mapVertical: false });
   const limit = Math.max(1, data.teaserLimit);
   const preview = data.items
     .map((item, index) => ({ item, index }))
@@ -29,13 +33,15 @@ export function RailShop({
 
   return (
     <>
-      <CategoryIndex
-        instanceId={instanceId}
-        title={data.categoriesTitle}
-        groups={categories}
-        layout={data.categoriesLayout}
-        viewLabel={data.viewCategoryLabel}
-      />
+      {data.categoriesTitle.trim() && categories.length > 0 ? (
+        <CategoryIndex
+          instanceId={instanceId}
+          title={data.categoriesTitle}
+          groups={categories}
+          layout={data.categoriesLayout}
+          viewLabel={data.viewCategoryLabel}
+        />
+      ) : null}
       <section
         id={instanceId}
         className={styles.section}
@@ -64,7 +70,7 @@ export function RailShop({
         </ScrollReveal>
 
         <ScrollReveal compact delayMs={80}>
-          <ul className={styles.track}>
+          <ul ref={trackRef} className={styles.track}>
             {preview.map(({ item, index }) => (
               <li key={`${item.id || "item"}-${index}`} className={styles.item}>
                 <ProductCard

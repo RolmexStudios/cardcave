@@ -12,6 +12,7 @@ const contactLinkSchema = z.object({
 
 export const contactBlueprintSchema = z.object({
   variant: z.enum(["form", "split", "concierge", "acquisition", "plate"]).default("form"),
+  channels: z.enum(["form", "social", "both"]).default("form"),
   eyebrow: z.string().default(""),
   title: z.string().default("Get a free estimate"),
   intro: z.string().default(""),

@@ -20,14 +20,18 @@ export const shopItemSchema = z.object({
   imageUrl: z.string().default(""),
   imageAlt: z.string().default(""),
   images: z.array(z.string()).default([]),
+  backImageUrl: z.string().default(""),
+  backImageAlt: z.string().default(""),
+  backText: z.string().default(""),
   description: z.string().default(""),
   details: z.array(shopDetailSchema).default([]),
   status: z.enum(["available", "sold"]).default("available"),
 });
 
 export const shopBlueprintSchema = z.object({
-  variant: z.enum(["rail", "gallery"]).default("rail"),
+  variant: z.enum(["rail", "gallery", "cards"]).default("rail"),
   sectionSize: sectionSizeSchema,
+  showInNav: z.boolean().default(true),
   title: z.string().default(""),
   galleryTitle: z.string().default(""),
   categoriesTitle: z.string().default(""),

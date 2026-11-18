@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { MediaSlot } from "@/components/shared/media";
+import { cycleTurn, RotateImageButton } from "@/components/shared/rotate-image";
 import { useSmoothHorizontalWheelScroll } from "@/components/shared/smooth-horizontal-wheel";
 import styles from "./image-lightbox.module.scss";
 
@@ -36,7 +37,7 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function Frame({ image }: { image: LightboxImage }) {
+function Frame({ image, turn = 0 }: { image: LightboxImage; turn?: number }) {
   return (
     <figure className={styles.slide}>
       <MediaSlot
@@ -45,6 +46,7 @@ function Frame({ image }: { image: LightboxImage }) {
         jsonPath={image.jsonPath}
         alt={image.alt}
         className={styles.image}
+        turn={turn}
       />
     </figure>
   );
@@ -67,6 +69,7 @@ export function ImageLightbox({
   const safeIndex = wrapIndex(index, count);
   const current = images[safeIndex];
 
+  const [turns, setTurns] = useState<Record<string, number>>({});
   const [offset, setOffset] = useState(0);
   const [animate, setAnimate] = useState(false);
   const [activeThumb, setActiveThumb] = useState(safeIndex);
@@ -183,6 +186,7 @@ export function ImageLightbox({
   }
 
   const label = `${activeThumb + 1} of ${count}`;
+  const currentImageKey = current.url;
   const prevImage = images[windowSlides.prev] ?? current;
   const currImage = images[windowSlides.curr] ?? current;
   const nextImage = images[windowSlides.next] ?? current;
@@ -206,15 +210,28 @@ export function ImageLightbox({
             {label}
           </p>
         )}
-        <button
-          ref={closeRef}
-          type="button"
-          className={styles.iconButton}
-          onClick={onClose}
-          aria-label="Close gallery"
-        >
-          <X aria-hidden />
-        </button>
+        <div className={styles.actions}>
+          <RotateImageButton
+            onRotate={() =>
+              setTurns((currentTurns) => ({
+                ...currentTurns,
+                [currentImageKey]: cycleTurn(currentTurns[currentImageKey] ?? 0),
+              }))
+            }
+          />
+          <button
+            ref={closeRef}
+            type="button"
+            className={styles.iconButton}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClose();
+            }}
+            aria-label="Close gallery"
+          >
+            <X aria-hidden />
+          </button>
+        </div>
       </header>
 
       <div
@@ -262,13 +279,13 @@ export function ImageLightbox({
                 settleAt(activeThumb);
               }}
             >
-              <Frame image={prevImage} />
-              <Frame image={currImage} />
-              <Frame image={nextImage} />
+              <Frame image={prevImage} turn={turns[prevImage.url] ?? 0} />
+              <Frame image={currImage} turn={turns[currImage.url] ?? 0} />
+              <Frame image={nextImage} turn={turns[nextImage.url] ?? 0} />
             </div>
           </div>
         ) : (
-          <Frame image={current} />
+          <Frame image={current} turn={turns[current.url] ?? 0} />
         )}
 
         {count > 1 ? (

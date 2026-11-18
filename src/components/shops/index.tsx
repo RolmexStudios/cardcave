@@ -9,7 +9,8 @@ export function Shop({
   instanceId = "BrochureShop_1",
   data = emptyShopBlueprint(),
 }: BrochureBlockProps<BrochureShopContent>) {
-  const Template = shopTemplates[data.variant] ?? shopTemplates.rail;
+  const variant = data.variant === "gallery" ? "gallery" : "cards";
+  const Template = shopTemplates[variant] ?? shopTemplates.cards;
   return (
     <BrochureBlock instanceId={instanceId} size={data.sectionSize} reveal={false}>
       <Template instanceId={instanceId} data={data} />

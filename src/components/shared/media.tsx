@@ -22,19 +22,34 @@ export function Photo({
   src,
   alt,
   className,
+  turn = 0,
 }: {
   src: string;
   alt: string;
   className?: string;
+  /** Quarter-turns clockwise. */
+  turn?: number;
 }) {
   if (!src) {
     return <div className={className} aria-hidden />;
   }
 
+  const quarter = ((turn % 4) + 4) % 4;
+
   return (
     // Scraped and fixture URLs come from arbitrary hosts.
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} className={className} />
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      data-turn={quarter || undefined}
+      style={
+        quarter
+          ? { transform: `rotate(${quarter * 90}deg)`, transformOrigin: "center" }
+          : undefined
+      }
+    />
   );
 }
 
@@ -45,6 +60,7 @@ export function MediaSlot({
   alt = "",
   className,
   playing,
+  turn = 0,
 }: {
   url: string;
   slotId: string;
@@ -52,6 +68,8 @@ export function MediaSlot({
   alt?: string;
   className?: string;
   playing?: boolean;
+  /** Quarter-turns clockwise. */
+  turn?: number;
 }) {
   const trimmed = (url ?? "").trim();
   if (trimmed) {
@@ -65,7 +83,7 @@ export function MediaSlot({
         />
       );
     }
-    return <Photo src={trimmed} alt={alt} className={className} />;
+    return <Photo src={trimmed} alt={alt} className={className} turn={turn} />;
   }
 
   return (

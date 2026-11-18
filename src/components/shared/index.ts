@@ -2,6 +2,9 @@ export { fieldPath } from "./field-path";
 export { TextSlot, hasSlotText } from "./text-slot";
 export { SectionHeading } from "./section-heading";
 export { MediaSlot, Photo, initials, telHref } from "./media";
+export { Hover3d } from "./hover-3d";
+export { FlipCard, type FlipCardProps } from "./flip-card";
+export { StaggerList, type StaggerListProps } from "./stagger-list";
 export { Slideshow, type SlideshowProps, type SlideshowSlide } from "./slideshow";
 export { ImageStack, type ImageStackProps, type ImageStackFrame } from "./image-stack";
 export {

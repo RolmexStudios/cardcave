@@ -1,7 +1,7 @@
 .root {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 640;
   display: flex;
   flex-direction: column;
   background: #1c1916;
@@ -29,6 +29,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .count {
@@ -115,6 +121,7 @@
   width: auto;
   height: auto;
   object-fit: contain;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav {
@@ -186,7 +193,7 @@
 }
 
 .paper {
-  z-index: 220;
+  z-index: 640;
   background: color-mix(in srgb, var(--paper, #f4f0e8) 82%, transparent);
   color: var(--ink, #1a1917);
   backdrop-filter: blur(10px);

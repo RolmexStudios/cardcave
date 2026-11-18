@@ -196,12 +196,192 @@
   }
 }
 
+.root[data-variant="dropdown"] {
+  z-index: 2;
+  min-width: 9.25rem;
+  flex: 1 1 9.25rem;
+  max-width: 14rem;
+
+  &[data-open] {
+    z-index: 8;
+  }
+}
+
+.root[data-variant="dropdown"] .trigger {
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.85rem 0.55rem 1rem;
+  border: 1px solid rgba(28, 25, 22, 0.14);
+  border-bottom-width: 1px;
+  border-radius: 0.85rem;
+  background: #fffdf9;
+  box-shadow: 0 1px 0 rgba(28, 25, 22, 0.04);
+  transition:
+    border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    border-color: rgba(28, 25, 22, 0.38);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #6b4ea8;
+    outline-offset: 3px;
+    border-bottom-width: 1px;
+    border-color: #161410;
+  }
+}
+
+.root[data-variant="dropdown"][data-open] .trigger,
+.root[data-variant="dropdown"][data-active] .trigger {
+  border-color: #161410;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(22, 20, 16, 0.08);
+}
+
+.root[data-variant="dropdown"][data-open] .trigger {
+  color: #161410;
+}
+
+.root[data-variant="dropdown"] .value {
+  font-size: 1.05rem;
+}
+
+.chevron {
+  position: relative;
+  flex: 0 0 0.7rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  align-self: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0.12rem;
+    left: 0.12rem;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transform-origin: 60% 60%;
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.root[data-open] .chevron::before {
+  transform: rotate(225deg);
+}
+
+.root[data-variant="dropdown"] .menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 8;
+  min-width: max(100%, 12rem);
+  width: max-content;
+  max-width: min(20rem, 86vw);
+  max-height: min(22rem, 70vh);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.45rem;
+  border: 0;
+  border-radius: 1rem;
+  background: #161410;
+  box-shadow:
+    0 22px 48px rgba(22, 20, 16, 0.32),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  -webkit-overflow-scrolling: touch;
+  animation: dropIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.root[data-variant="dropdown"] .option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.7rem;
+  color: #b7c0b0;
+}
+
+.root[data-variant="dropdown"] .option[data-active] {
+  color: #efe7d6;
+  background: rgba(239, 231, 214, 0.1);
+}
+
+.root[data-variant="dropdown"] .option[data-selected] {
+  color: #efe7d6;
+  background: rgba(212, 180, 131, 0.18);
+}
+
+.root[data-variant="dropdown"] .optionLabel {
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0;
+  color: inherit;
+}
+
+.root[data-variant="dropdown"] .option[data-selected] .optionLabel {
+  font-family: var(--font-editorial-sans), system-ui, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 0.94rem;
+  letter-spacing: 0;
+}
+
+.check {
+  flex: 0 0 1rem;
+  width: 1rem;
+  min-height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  line-height: 1;
+  color: #d4b483;
+}
+
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.4rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .root[data-variant="dropdown"] {
+    flex: 1 1 auto;
+    max-width: none;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .root[data-variant="dropdown"] .menu {
+    right: 0;
+    width: 100%;
+    max-width: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .trigger,
   .mark::before,
   .mark::after,
+  .chevron::before,
   .option,
-  .pip {
+  .pip,
+  .check {
     transition: none;
   }
 

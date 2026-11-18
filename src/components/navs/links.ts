@@ -1,4 +1,8 @@
-import type { BrochureComponentId, BrochureInstanceRef } from "@/types/brochure";
+import type {
+  BrochureBlueprint,
+  BrochureComponentId,
+  BrochureInstanceRef,
+} from "@/types/brochure";
 
 export type BrochureNavLink = {
   href: string;
@@ -27,11 +31,15 @@ const NAV_LABELS: Partial<Record<BrochureComponentId, string>> = {
 /** In-page nav targets for brochure sections present in the layout JSX. */
 export function buildBrochureNavLinks(
   instances: readonly BrochureInstanceRef[],
+  blueprint?: BrochureBlueprint,
 ): BrochureNavLink[] {
   // One link per label: a second Inventory (e.g. the archive) should not add
   // another "Showroom". The first instance in document order wins.
   const seen = new Set<string>();
   return instances.flatMap(({ component, instanceId }) => {
+    if (component === "BrochureShop" && blueprint?.[instanceId]?.component === "BrochureShop") {
+      if (blueprint[instanceId].showInNav === false) return [];
+    }
     const label = NAV_LABELS[component];
     if (!label || seen.has(label)) {
       return [];
