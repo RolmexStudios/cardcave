@@ -20,6 +20,7 @@ export const footerBlueprintSchema = z.object({
   hours: z.string().default(""),
   colophon: z.string().default(""),
   links: z.array(footerLinkSchema).default([]),
+  socialLinks: z.array(footerLinkSchema).default([]),
   sectionSize: sectionSizeSchema,
 });
 

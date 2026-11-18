@@ -4,6 +4,7 @@ import { NavSurfaceHeader } from "@/components/shared/nav-surface";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
 import { brochureContactHref } from "@/components/navs/links";
+import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import type { BrochureBlockProps, BrochureNavContent } from "@/types/brochure";
 import styles from "./editorial.module.scss";
 
@@ -54,6 +55,7 @@ export function EditorialNav({
           <a href={contactHref} className={styles.inquire}>
             Private inquiry
           </a>
+          <AdminSignInButton className={styles.link} />
         </div>
       </div>
     </NavSurfaceHeader>

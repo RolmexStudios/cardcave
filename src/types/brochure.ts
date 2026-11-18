@@ -677,6 +677,8 @@ export interface BrochureFooterContent {
   /** Closing line under the name. Empty keeps the editorial footer’s default sentence. */
   colophon: string;
   links: BrochureNavLink[];
+  /** External profiles (Instagram, etc.). Kept separate so nav injection cannot overwrite them. */
+  socialLinks: BrochureNavLink[];
   sectionSize: BrochureSectionSize;
 }
 

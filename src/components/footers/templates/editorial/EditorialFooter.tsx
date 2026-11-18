@@ -100,6 +100,23 @@ export function EditorialFooter({
             as="p"
             className={styles.metaMuted}
           />
+          {(data.socialLinks ?? [])
+            .filter((item) => item.href.trim() && item.label.trim())
+            .map((item) => {
+              const href = item.href.trim();
+              const external = /^https?:\/\//i.test(href);
+              return (
+                <a
+                  key={`${item.label}-${href}`}
+                  href={href}
+                  className={styles.metaLink}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
         </div>
       </div>
 

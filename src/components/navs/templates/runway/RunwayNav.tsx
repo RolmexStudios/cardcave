@@ -3,6 +3,7 @@ import { TextSlot } from "@/components/shared/text-slot";
 import { NavSurfaceHeader } from "@/components/shared/nav-surface";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
+import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import type { BrochureBlockProps, BrochureNavContent } from "@/types/brochure";
 import styles from "./runway.module.scss";
 
@@ -58,6 +59,7 @@ export function RunwayNav({
         ) : (
           <span className={styles.phone} />
         )}
+        <AdminSignInButton className={styles.link} />
       </div>
     </NavSurfaceHeader>
   );

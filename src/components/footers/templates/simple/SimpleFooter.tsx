@@ -33,6 +33,22 @@ export function SimpleFooter({
             </a>
           ))}
           {call ? <a href={call}>{data.phone}</a> : null}
+          {(data.socialLinks ?? [])
+            .filter((item) => item.href.trim() && item.label.trim())
+            .map((item) => {
+              const href = item.href.trim();
+              const external = /^https?:\/\//i.test(href);
+              return (
+                <a
+                  key={`${item.label}-${href}`}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
         </nav>
       </div>
       <p className={styles.copy}>

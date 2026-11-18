@@ -126,7 +126,7 @@
     "title": "Get in touch",
     "intro": "Name the slab. Lewis prices it, then you buy, trade, or set a pickup. Deals still start at @cardcave956.",
     "ctaLabel": "Send a message",
-    "phone": "@cardcave956",
+    "phone": "(956) 555-0100",
     "serviceArea": "South Texas",
     "hours": "Online deals and local pickup",
     "email": "",
@@ -151,11 +151,17 @@
     "businessName": "The Card Cave",
     "logoImageUrl": "/assets/689465304_18410736532196572_4154030771356181880_n.jpg",
     "tagline": "Buy, sell, and trade sports cards.",
-    "phone": "@cardcave956",
+    "phone": "(956) 555-0100",
     "serviceArea": "South Texas",
     "hours": "Online deals and local pickup",
     "colophon": "",
     "links": [],
+    "socialLinks": [
+      {
+        "label": "Instagram",
+        "href": "https://www.instagram.com/cardcave956/"
+      }
+    ],
     "sectionSize": "auto"
   },
   "BrochureShop_1": {

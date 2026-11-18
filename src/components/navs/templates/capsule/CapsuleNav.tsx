@@ -8,6 +8,7 @@ import { NavSurfaceHeader } from "@/components/shared/nav-surface";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
 import { brochureContactHref } from "@/components/navs/links";
+import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import type {
   BrochureBlockProps,
   BrochureNavContent,
@@ -177,6 +178,8 @@ export function CapsuleNav({
               </a>
             ))}
           </nav>
+
+          <AdminSignInButton className={styles.link} />
 
           <button
             type="button"

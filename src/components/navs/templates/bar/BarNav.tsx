@@ -3,7 +3,11 @@ import { NavSurfaceHeader } from "@/components/shared/nav-surface";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
 import type { BrochureBlockProps, BrochureNavContent } from "@/types/brochure";
-import { brochureContactHref } from "../../links";
+import {
+  BROCHURE_QUOTE_CTA,
+  brochureContactHref,
+} from "../../links";
+import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import { NavLogoMark } from "../../logo-mark";
 import styles from "./bar.module.scss";
 
@@ -46,12 +50,13 @@ export function BarNav({
             </a>
           ))}
           <a href={contactHref} className={styles.phone}>
-            Buy, sell, or trade
+            {BROCHURE_QUOTE_CTA.label}
           </a>
+          <AdminSignInButton className={styles.link} />
         </nav>
 
         <a href={contactHref} className={styles.callMobile}>
-          Buy, sell, or trade
+          {BROCHURE_QUOTE_CTA.label}
         </a>
       </div>
     </NavSurfaceHeader>

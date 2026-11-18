@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import { showroomHref } from "@/components/inventory/data";
 import styles from "./page-chrome.module.scss";
 
@@ -55,6 +56,7 @@ export function ShowroomChrome({
             <Link href="/#BrochureContact_1" className={styles.inquire}>
               Contact
             </Link>
+            <AdminSignInButton className={styles.signIn} />
           </nav>
         </div>
         {statusBanner.trim() ? (

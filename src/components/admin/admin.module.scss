@@ -21,11 +21,21 @@
   min-height: 44px;
 }
 
-.signIn {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 520;
+.headerSignIn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 44px;
 }
 
 .chip {

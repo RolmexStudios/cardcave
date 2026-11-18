@@ -7,6 +7,7 @@ import { HashLink } from "@/components/shared/hash-link";
 import { TextSlot } from "@/components/shared/text-slot";
 import { fieldPath } from "@/components/shared/field-path";
 import { emptyNavBlueprint } from "@/components/navs/blueprint";
+import { AdminSignInButton } from "@/components/admin/sign-in-button";
 import type {
   BrochureBlockProps,
   BrochureNavContent,
@@ -80,6 +81,7 @@ export function StudioNav({
         {links.map((item) => (
           <StudioLink key={`${item.href}-${item.label}`} item={item} className={styles.link} />
         ))}
+        <AdminSignInButton className={styles.link} />
       </nav>
     </header>
   );

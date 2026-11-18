@@ -6,6 +6,18 @@ import {
 } from "@/lib/admin/media-url";
 import type { SiteConfig } from "@/lib/admin/site";
 
+export class AdminApiError extends Error {
+  status: number;
+  retryAfter?: number;
+
+  constructor(message: string, status: number, retryAfter?: number) {
+    super(message);
+    this.name = "AdminApiError";
+    this.status = status;
+    this.retryAfter = retryAfter;
+  }
+}
+
 async function request<T>(
   site: SiteConfig,
   path: string,
@@ -28,11 +40,23 @@ async function request<T>(
     }
   }
   if (!response.ok) {
+    const payload = data && typeof data === "object" ? (data as Record<string, unknown>) : {};
     const message =
-      data && typeof data === "object" && "error" in data
-        ? String((data as { error: unknown }).error)
+      "error" in payload
+        ? String(payload.error)
         : `Request failed (${response.status})`;
-    throw new Error(message);
+    const retryHeader = response.headers.get("retry-after");
+    const retryAfter =
+      typeof payload.retryAfter === "number"
+        ? payload.retryAfter
+        : retryHeader
+          ? Number(retryHeader)
+          : undefined;
+    throw new AdminApiError(
+      message,
+      response.status,
+      Number.isFinite(retryAfter) ? retryAfter : undefined,
+    );
   }
   return data as T;
 }

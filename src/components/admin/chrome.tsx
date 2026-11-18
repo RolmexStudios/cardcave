@@ -15,6 +15,7 @@ import { EditChip } from "./edit-chip";
 import { EditorSheet } from "./editor-sheet";
 import { LoginModal } from "./login-modal";
 import { PasswordModal } from "./password-modal";
+import { AdminAuthUiProvider } from "./sign-in-button";
 import styles from "./admin.module.scss";
 
 export function AdminChrome({ children }: { children: ReactNode }) {
@@ -60,15 +61,9 @@ export function AdminChrome({ children }: { children: ReactNode }) {
   }
 
   return (
+    <AdminAuthUiProvider openLogin={() => setLoginOpen(true)}>
     <AdminEditorProvider value={{ editMode: store.editMode, openEditor }}>
       {children}
-      {store.loginEnabled && !store.signedIn ? (
-        <div className={styles.signIn}>
-          <button type="button" className={styles.chip} onClick={() => setLoginOpen(true)}>
-            Sign in
-          </button>
-        </div>
-      ) : null}
       {store.signedIn ? (
         <div className={styles.bar}>
           <button
@@ -171,5 +166,6 @@ export function AdminChrome({ children }: { children: ReactNode }) {
         />
       ) : null}
     </AdminEditorProvider>
+    </AdminAuthUiProvider>
   );
 }

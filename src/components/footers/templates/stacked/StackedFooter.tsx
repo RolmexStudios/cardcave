@@ -15,6 +15,9 @@ export function StackedFooter({
 }: BrochureBlockProps<BrochureFooterContent>) {
   const call = telHref(data.phone);
   const contactHref = brochureContactHref(data.links);
+  const socialLinks = (data.socialLinks ?? []).filter(
+    (item) => item.href.trim() && item.label.trim(),
+  );
   const year = new Date().getFullYear();
   const copyrightName = data.businessName.trim() || "Your business";
   const copyright = copyrightName.endsWith(".")
@@ -78,6 +81,21 @@ export function StackedFooter({
             as="p"
             className={styles.metaMuted}
           />
+          {socialLinks.map((item) => {
+            const href = item.href.trim();
+            const external = /^https?:\/\//i.test(href);
+            return (
+              <a
+                key={`${item.label}-${href}`}
+                href={href}
+                className={styles.metaLink}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noreferrer" : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </div>
       </div>
 
